@@ -1,7 +1,7 @@
-package com.tsl.model.warehouse.order;
+package com.tsl.dtos;
 
-import com.tsl.model.contractor.CustomerDTO;
-import com.tsl.model.warehouse.WarehouseDTO;
+import com.tsl.dtos.CustomerDTO;
+import com.tsl.dtos.WarehouseDTO;
 import lombok.Getter;
 import lombok.Setter;
 

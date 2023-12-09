@@ -1,6 +1,6 @@
-package com.tsl.model.warehouse;
+package com.tsl.dtos;
 
-import com.tsl.model.address.AddressDTO;
+import com.tsl.dtos.AddressDTO;
 import lombok.Getter;
 import lombok.Setter;
 

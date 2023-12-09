@@ -1,4 +1,4 @@
-package com.tsl.model.contractor;
+package com.tsl.dtos;
 
 import lombok.Getter;
 import lombok.Setter;

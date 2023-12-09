@@ -1,7 +1,7 @@
-package com.tsl.model.invoice;
+package com.tsl.dtos;
 
-import com.tsl.model.contractor.CarrierDTO;
-import com.tsl.model.order.ForwardingOrderDTO;
+import com.tsl.dtos.CargoDTO;
+import com.tsl.dtos.CustomerDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class CarrierInvoiceDTO {
+public class CustomerInvoiceDTO {
     private Long id;
     private String invoiceNumber;
     private LocalDate invoiceDate;
@@ -18,6 +18,6 @@ public class CarrierInvoiceDTO {
     private BigDecimal netValue;
     private BigDecimal grossValue;
     private Boolean isPaid;
-    private ForwardingOrderDTO orderDTO;
-    private CarrierDTO carrierDTO; // pomyslec o samych Id lub nazwach
+    private CargoDTO cargoDTO;
+    private CustomerDTO customerDTO;
 }

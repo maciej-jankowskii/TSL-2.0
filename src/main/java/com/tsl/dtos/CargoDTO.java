@@ -1,6 +1,5 @@
-package com.tsl.model.cargo;
+package com.tsl.dtos;
 
-import com.tsl.model.contractor.CustomerDTO;
 import lombok.Getter;
 import lombok.Setter;
 import java.math.BigDecimal;

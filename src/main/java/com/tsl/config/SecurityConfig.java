@@ -18,14 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final CustomUserDetailsService customUserDetailService;
     private final JWTAuthEntryPoint authEntryPoint;
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailService, JWTAuthEntryPoint authEntryPoint) {
-        this.customUserDetailService = customUserDetailService;
+    public SecurityConfig(JWTAuthEntryPoint authEntryPoint) {
         this.authEntryPoint = authEntryPoint;
     }
-
 
 
     @Bean
@@ -39,11 +36,9 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(request -> request
                 .requestMatchers("/auth/login").permitAll()
-                .requestMatchers("/auth/allForwarders").permitAll()
                 .anyRequest().authenticated());
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
 
         return http.build();
     }

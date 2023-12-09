@@ -1,4 +1,4 @@
-package com.tsl.model.warehouse.goods;
+package com.tsl.dtos;
 
 import lombok.Getter;
 import lombok.Setter;

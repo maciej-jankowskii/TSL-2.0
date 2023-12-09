@@ -1,9 +1,6 @@
-package com.tsl.model.employee;
+package com.tsl.dtos;
 
-import com.tsl.enums.FormOfEmployment;
-import com.tsl.model.address.AddressDTO;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.tsl.dtos.AddressDTO;
 import lombok.Getter;
 import lombok.Setter;
 

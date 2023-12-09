@@ -2,7 +2,7 @@ package com.tsl.service;
 
 import com.tsl.config.jwt.JWTGenerator;
 import com.tsl.exceptions.UnauthorizedException;
-import com.tsl.model.employee.UserLoginDTO;
+import com.tsl.dtos.UserLoginDTO;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

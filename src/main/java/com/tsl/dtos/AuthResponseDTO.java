@@ -1,4 +1,4 @@
-package com.tsl.model.employee;
+package com.tsl.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
