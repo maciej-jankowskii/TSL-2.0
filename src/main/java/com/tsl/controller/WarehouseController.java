@@ -3,10 +3,10 @@ package com.tsl.controller;
 import com.tsl.dtos.WarehouseDTO;
 import com.tsl.service.WarehouseService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -26,5 +26,15 @@ public class WarehouseController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(allWarehouses);
+    }
+
+    @PostMapping
+    public ResponseEntity<WarehouseDTO> addWarehouse(@RequestBody WarehouseDTO warehouseDTO){
+        WarehouseDTO created = warehouseService.addWarehouse(warehouseDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(created);
     }
 }
