@@ -9,7 +9,7 @@ import lombok.Setter;
 public class WarehouseDTO {
     private Long id;
     private String typeOfGoods;
-    private AddressDTO address;
+    private Long addressId;
     private Boolean crane;
     private Boolean forklift;
     private Double costPer100SquareMeters;
