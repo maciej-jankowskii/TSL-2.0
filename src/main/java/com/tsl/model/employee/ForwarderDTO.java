@@ -22,8 +22,7 @@ public class ForwarderDTO {
     private AddressDTO address;
     private BigDecimal basicGrossSalary;
     private LocalDate dateOfEmployment;
-    @Enumerated(EnumType.STRING)
-    private FormOfEmployment formOfEmployment;
+    private String formOfEmployment;
     private LocalDate contractExpiryDate;
     private Double extraPercentage;
     private BigDecimal totalMargin; // czy aby na pewno chcemy to pokazywac ?

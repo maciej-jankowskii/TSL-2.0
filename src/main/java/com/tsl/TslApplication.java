@@ -8,6 +8,8 @@ public class TslApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TslApplication.class, args);
+
+
 	}
 
 }

@@ -10,7 +10,9 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 @Entity
 @Getter
@@ -41,6 +43,5 @@ public class User {
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<EmployeeRole> roles = new HashSet<>();
-
+    private List<EmployeeRole> roles = new ArrayList<>();
 }
