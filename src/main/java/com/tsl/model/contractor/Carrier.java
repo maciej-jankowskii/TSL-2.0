@@ -4,6 +4,7 @@ import com.tsl.model.invoice.CarrierInvoice;
 import com.tsl.model.order.ForwardingOrder;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "carriers")
 public class Carrier extends Contractor{
     @OneToMany(mappedBy = "carrier")
     private List<ForwardingOrder> orders = new ArrayList<>();

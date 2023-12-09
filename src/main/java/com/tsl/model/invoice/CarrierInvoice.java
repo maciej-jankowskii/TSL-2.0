@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "carrier_invoices")
 public class CarrierInvoice extends Invoice{
     @OneToOne
     @JoinColumn(name = "order_id")

@@ -5,7 +5,7 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
 
     <changeSet id="001" author="maciej-jankowski">
-        <createTable tableName="address">
+        <createTable tableName="addresses">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -67,7 +67,7 @@
             </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="employees" baseColumnNames="address_id" constraintName="empl_address"
-                                 referencedTableName="address"
+                                 referencedTableName="addresses"
                                  referencedColumnNames="id"/>
     </changeSet>
 
@@ -102,5 +102,565 @@
                                  referencedTableName="employee_role"
                                  referencedColumnNames="id"/>
     </changeSet>
+
+    <changeSet id="005" author="maciej-jankowski">
+        <createTable tableName="forwarders">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="extra_percentage" type="DOUBLE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="total_margin" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="forwarders" baseColumnNames="id"
+                                 constraintName="forwarder_employee"
+                                 referencedTableName="employees"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="006" author="maciej-jankowski">
+        <createTable tableName="accountants">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type_of_accounting" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="accountants" baseColumnNames="id"
+                                 constraintName="accountant_employee"
+                                 referencedTableName="employees"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="007" author="maciej-jankowski">
+        <createTable tableName="transport_planners">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="salary_bonus" type="DOUBLE">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="transport_planners" baseColumnNames="id" constraintName="transport_planner_employee"
+                                 referencedTableName="employees" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="008" author="maciej-jankowski">
+        <createTable tableName="trucks">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="brand" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="model" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="plates" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="technical_inspection_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="insurance_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="assigned_to_driver" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="transport_planner_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="trucks" baseColumnNames="transport_planner_id"
+                                 constraintName="truck_transport_planner"
+                                 referencedTableName="employees"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="009" author="maciej-jankowski">
+        <createTable tableName="drivers">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="driver_licence_number" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="licence_expiry_date" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="work_system" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="truck_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="assigned_to_truck" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="main_driver" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="drivers" baseColumnNames="id"
+                                 constraintName="driver_employee"
+                                 referencedTableName="employees"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="drivers" baseColumnNames="truck_id"
+                                 constraintName="driver_truck"
+                                 referencedTableName="trucks"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="010" author="maciej-jankowski">
+        <createTable tableName="warehouse_workers">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="permissions_forklift" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="permissions_crane" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="warehouse_workers" baseColumnNames="id"
+                                 constraintName="worker_employee"
+                                 referencedTableName="employees"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="011" author="maciej-jankowski">
+        <createTable tableName="contractors">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="full_name" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="short_name" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="address_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="vat_number" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="term_of_payment" type="INT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="balance" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="contractors" baseColumnNames="address_id"
+                                 constraintName="contractor_address"
+                                 referencedTableName="addresses"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="012" author="maciej-jankowski">
+        <createTable tableName="carriers">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="insurance_expiration_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="licence_expiration_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="carriers" baseColumnNames="id"
+                                 constraintName="carrier_contractor"
+                                 referencedTableName="contractors"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="013" author="maciej-jankowski">
+        <createTable tableName="customers">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="payment_rating" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="customers" baseColumnNames="id"
+                                 constraintName="customer_contractor"
+                                 referencedTableName="contractors"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="014" author="maciej-jankowski">
+        <createTable tableName="contact_persons">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="telephone" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="contractor_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="contact_persons" baseColumnNames="contractor_id"
+                                 constraintName="contact_person_contractor"
+                                 referencedTableName="contractors"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="015" author="maciej-jankowski">
+        <createTable tableName="cargos">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cargo_number" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="currency" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_added" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="loading_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="unloading_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="loading_address" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="unloading_address" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="goods" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="assigned_to_order" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="invoiced" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="cargos" baseColumnNames="customer_id"
+                                 constraintName="cargo_customer"
+                                 referencedTableName="customers"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="016" author="maciej-jankowski">
+        <createTable tableName="warehouses">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type_of_goods" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="address_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="crane" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="forklift" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="cost_per100square_meters" type="DOUBLE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="available_area" type="DOUBLE">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="warehouses" baseColumnNames="address_id"
+                                 constraintName="warehouse_address"
+                                 referencedTableName="addresses"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="017" author="maciej-jankowski">
+        <createTable tableName="goods">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="type_of_goods" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="quantity" type="DOUBLE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="label" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="required_area" type="DOUBLE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="assigned_to_order" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="018" author="maciej-jankowski">
+        <createTable tableName="warehouse_orders">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="warehouse_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_added" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_of_return" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="total_costs" type="DOUBLE">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="warehouse_orders" baseColumnNames="warehouse_id"
+                                 constraintName="order_warehouse"
+                                 referencedTableName="warehouses"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="warehouse_orders" baseColumnNames="customer_id"
+                                 constraintName="order_customer"
+                                 referencedTableName="customers"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="019" author="maciej-jankowski">
+        <createTable tableName="warehouse_order_goods">
+            <column name="warehouse_order_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="goods_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="warehouse_order_goods" baseColumnNames="warehouse_order_id"
+                                 constraintName="order_goods_order"
+                                 referencedTableName="warehouse_orders"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="warehouse_order_goods" baseColumnNames="goods_id"
+                                 constraintName="order_goods_goods"
+                                 referencedTableName="goods"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="020" author="maciej-jankowski">
+        <createTable tableName="company_orders">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_number" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_added" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="cargo_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="currency" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="order_status" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_invoiced" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="company_orders" baseColumnNames="cargo_id"
+                                 constraintName="order_cargo"
+                                 referencedTableName="cargos"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="021" author="maciej-jankowski">
+        <createTable tableName="forwarding_orders">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="forwarder_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="carrier_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="type_of_truck" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="truck_numbers" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="margin" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="forwarding_orders" baseColumnNames="forwarder_id"
+                                 constraintName="forwarding_forwarder"
+                                 referencedTableName="forwarders"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="forwarding_orders" baseColumnNames="carrier_id"
+                                 constraintName="forwarding_carrier"
+                                 referencedTableName="carriers"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="022" author="maciej-jankowski">
+        <createTable tableName="transport_orders">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="transport_planner_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="truck_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="transport_orders" baseColumnNames="transport_planner_id"
+                                 constraintName="transport_transport_planner"
+                                 referencedTableName="transport_planners"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="transport_orders" baseColumnNames="truck_id"
+                                 constraintName="transport_truck"
+                                 referencedTableName="trucks"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="023" author="maciej-jankowski">
+        <createTable tableName="invoices">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="invoice_number" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="invoice_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="due_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="net_value" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="gross_value" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_paid" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="024" author="maciej-jankowski">
+        <createTable tableName="customer_invoices">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cargo_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="customer_invoices" baseColumnNames="cargo_id"
+                                 constraintName="customer_invoice_cargo"
+                                 referencedTableName="cargos"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="customer_invoices" baseColumnNames="customer_id"
+                                 constraintName="customer_invoice_customer"
+                                 referencedTableName="customers"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="025" author="maciej-jankowski">
+        <createTable tableName="carrier_invoices">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="carrier_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="carrier_invoices" baseColumnNames="order_id"
+                                 constraintName="carrier_invoice_order"
+                                 referencedTableName="forwarding_orders"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="carrier_invoices" baseColumnNames="carrier_id"
+                                 constraintName="carrier_invoice_carrier"
+                                 referencedTableName="carriers"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="026" author="maciej-jankowski">
+        <createTable tableName="warehouse_order_invoices">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="warehouse_order_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="warehouse_order_invoices" baseColumnNames="warehouse_order_id"
+                                 constraintName="warehouse_order_invoice_warehouse_order"
+                                 referencedTableName="warehouse_orders"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+
 
 </databaseChangeLog>

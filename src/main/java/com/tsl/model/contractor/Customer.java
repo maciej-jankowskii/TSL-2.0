@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "customers")
 public class Customer extends Contractor {
     @OneToMany(mappedBy = "customer")
     private List<Cargo> cargos = new ArrayList<>();

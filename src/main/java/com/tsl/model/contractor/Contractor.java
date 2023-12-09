@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "contractors")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Contractor {
     @Id

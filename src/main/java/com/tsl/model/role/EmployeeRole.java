@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "employee_role")
 public class EmployeeRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

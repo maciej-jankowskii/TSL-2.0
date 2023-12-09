@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "invoices")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Invoice {
     @Id

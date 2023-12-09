@@ -4,6 +4,7 @@ import com.tsl.enums.TypeOfAccounting;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +13,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "accountants")
 public class Accountant extends User{
     @Enumerated(EnumType.STRING)
-    private TypeOfAccounting typeOfRole;
+    private TypeOfAccounting typeOfAccounting;
 }

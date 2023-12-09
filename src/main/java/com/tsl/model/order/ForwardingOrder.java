@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "forwarding_orders")
 public class ForwardingOrder extends Order{
     @ManyToOne
     @JoinColumn(name = "forwarder_id")

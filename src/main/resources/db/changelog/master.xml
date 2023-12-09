@@ -9,4 +9,9 @@
     <include file="../data/role.sql" relativeToChangelogFile="true"/>
     <include file="../data/employees.sql" relativeToChangelogFile="true"/>
     <include file="../data/empl_roles.sql" relativeToChangelogFile="true"/>
+    <include file="../data/forwarders.sql" relativeToChangelogFile="true"/>
+    <include file="../data/accountants.sql" relativeToChangelogFile="true"/>
+    <include file="../data/contractors.sql" relativeToChangelogFile="true"/>
+    <include file="../data/customers.sql" relativeToChangelogFile="true"/>
+    <include file="../data/carriers.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

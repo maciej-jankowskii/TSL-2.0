@@ -5,6 +5,7 @@ import com.tsl.model.truck.Truck;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "transport_planners")
 public class TransportPlanner extends User{
     @OneToMany(mappedBy = "transportPlanner")
     private List<Truck> companyTrucks;
