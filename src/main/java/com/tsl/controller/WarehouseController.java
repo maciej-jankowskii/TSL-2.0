@@ -2,7 +2,9 @@ package com.tsl.controller;
 
 import com.tsl.dtos.GoodsDTO;
 import com.tsl.dtos.WarehouseDTO;
+import com.tsl.dtos.WarehouseOrderDTO;
 import com.tsl.service.GoodsService;
+import com.tsl.service.WarehouseOrderService;
 import com.tsl.service.WarehouseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +19,12 @@ public class WarehouseController {
 
     private final WarehouseService warehouseService;
     private final GoodsService goodsService;
+    private final WarehouseOrderService warehouseOrderService;
 
-    public WarehouseController(WarehouseService warehouseService, GoodsService goodsService) {
+    public WarehouseController(WarehouseService warehouseService, GoodsService goodsService, WarehouseOrderService warehouseOrderService) {
         this.warehouseService = warehouseService;
         this.goodsService = goodsService;
+        this.warehouseOrderService = warehouseOrderService;
     }
 
     @GetMapping
@@ -63,6 +67,25 @@ public class WarehouseController {
     @PostMapping("/goods")
     public ResponseEntity<GoodsDTO> addGoods(@RequestBody GoodsDTO goodsDTO){
         GoodsDTO created = goodsService.addGoods(goodsDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(created);
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<List<WarehouseOrderDTO>> findAllWarehouseOrders(){
+        List<WarehouseOrderDTO> allWarehouseOrders = warehouseOrderService.findAllWarehouseOrders();
+        if (allWarehouseOrders.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allWarehouseOrders);
+    }
+
+    @PostMapping("/orders")
+    public ResponseEntity<WarehouseOrderDTO> addWarehouseOrder(@RequestBody WarehouseOrderDTO warehouseOrderDTO){
+        WarehouseOrderDTO created = warehouseOrderService.addWarehouseOrder(warehouseOrderDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(created.getId())
