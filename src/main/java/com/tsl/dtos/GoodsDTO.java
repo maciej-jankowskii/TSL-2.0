@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GoodsDTO {
+    private Long id;
     private String name;
     private String typeOfGoods;
     private Double quantity;

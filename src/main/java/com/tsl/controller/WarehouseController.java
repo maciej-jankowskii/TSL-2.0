@@ -1,6 +1,8 @@
 package com.tsl.controller;
 
+import com.tsl.dtos.GoodsDTO;
 import com.tsl.dtos.WarehouseDTO;
+import com.tsl.service.GoodsService;
 import com.tsl.service.WarehouseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +16,11 @@ import java.util.List;
 public class WarehouseController {
 
     private final WarehouseService warehouseService;
+    private final GoodsService goodsService;
 
-    public WarehouseController(WarehouseService warehouseService) {
+    public WarehouseController(WarehouseService warehouseService, GoodsService goodsService) {
         this.warehouseService = warehouseService;
+        this.goodsService = goodsService;
     }
 
     @GetMapping
@@ -32,6 +36,34 @@ public class WarehouseController {
     public ResponseEntity<WarehouseDTO> addWarehouse(@RequestBody WarehouseDTO warehouseDTO){
         WarehouseDTO created = warehouseService.addWarehouse(warehouseDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(created);
+    }
+
+    @GetMapping("/goods")
+    public ResponseEntity<List<GoodsDTO>> findAllGoods(){
+        List<GoodsDTO> allGoods = goodsService.findAll();
+        if (allGoods.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allGoods);
+    }
+
+    @GetMapping("/goods/not-assigned")
+    public ResponseEntity<List<GoodsDTO>> findAllNotAssignedGoods(){
+        List<GoodsDTO> allNotAssignedToOrderGoods = goodsService.findAllNotAssignedToOrderGoods();
+        if (allNotAssignedToOrderGoods.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allNotAssignedToOrderGoods);
+    }
+
+    @PostMapping("/goods")
+    public ResponseEntity<GoodsDTO> addGoods(@RequestBody GoodsDTO goodsDTO){
+        GoodsDTO created = goodsService.addGoods(goodsDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(created.getId())
                 .toUri();
