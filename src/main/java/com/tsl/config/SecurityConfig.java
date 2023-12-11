@@ -2,7 +2,6 @@ package com.tsl.config;
 
 import com.tsl.config.jwt.JWTAuthEntryPoint;
 import com.tsl.config.jwt.JWTAuthenticationFilter;
-import com.tsl.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

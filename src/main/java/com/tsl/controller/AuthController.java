@@ -7,19 +7,15 @@ import com.tsl.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserRepository userRepository;
     private final AuthService authService;
 
-    public AuthController(UserRepository userRepository, AuthService authService) {
-        this.userRepository = userRepository;
+    public AuthController(AuthService authService) {
         this.authService = authService;
     }
 

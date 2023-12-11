@@ -4,7 +4,6 @@ import com.tsl.dtos.WarehouseOrderDTO;
 import com.tsl.enums.TypeOfGoods;
 import com.tsl.exceptions.IncompatibleGoodsTypeException;
 import com.tsl.exceptions.InsufficientWarehouseSpaceException;
-import com.tsl.exceptions.NoGoodsSelectedException;
 import com.tsl.mapper.WarehouseOrderMapper;
 import com.tsl.model.warehouse.Warehouse;
 import com.tsl.model.warehouse.goods.Goods;
@@ -26,16 +25,14 @@ public class WarehouseOrderService {
     private final WarehouseOrderRepository warehouseOrderRepository;
     private final WarehouseOrderMapper warehouseOrderMapper;
     private final WarehouseRepository warehouseRepository;
-    private final CustomerRepository customerRepository;
-    private final GoodsRepository goodsRepository;
     private final StorageCostService storageCostService;
 
-    public WarehouseOrderService(WarehouseOrderRepository warehouseOrderRepository, WarehouseOrderMapper warehouseOrderMapper, WarehouseRepository warehouseRepository, CustomerRepository customerRepository, GoodsRepository goodsRepository, StorageCostService storageCostService) {
+    public WarehouseOrderService(WarehouseOrderRepository warehouseOrderRepository,
+                                 WarehouseOrderMapper warehouseOrderMapper, WarehouseRepository warehouseRepository,
+                                 StorageCostService storageCostService) {
         this.warehouseOrderRepository = warehouseOrderRepository;
         this.warehouseOrderMapper = warehouseOrderMapper;
         this.warehouseRepository = warehouseRepository;
-        this.customerRepository = customerRepository;
-        this.goodsRepository = goodsRepository;
         this.storageCostService = storageCostService;
     }
 

@@ -1,10 +1,7 @@
 package com.tsl.dtos;
 
-import com.tsl.dtos.CustomerDTO;
-import com.tsl.dtos.WarehouseDTO;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
