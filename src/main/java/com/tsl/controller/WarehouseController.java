@@ -6,6 +6,7 @@ import com.tsl.dtos.WarehouseOrderDTO;
 import com.tsl.service.GoodsService;
 import com.tsl.service.WarehouseOrderService;
 import com.tsl.service.WarehouseService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -37,7 +38,7 @@ public class WarehouseController {
     }
 
     @PostMapping
-    public ResponseEntity<WarehouseDTO> addWarehouse(@RequestBody WarehouseDTO warehouseDTO){
+    public ResponseEntity<WarehouseDTO> addWarehouse(@RequestBody @Valid WarehouseDTO warehouseDTO){
         WarehouseDTO created = warehouseService.addWarehouse(warehouseDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
                 .path("/{id}")
@@ -65,7 +66,7 @@ public class WarehouseController {
     }
 
     @PostMapping("/goods")
-    public ResponseEntity<GoodsDTO> addGoods(@RequestBody GoodsDTO goodsDTO){
+    public ResponseEntity<GoodsDTO> addGoods(@RequestBody @Valid GoodsDTO goodsDTO){
         GoodsDTO created = goodsService.addGoods(goodsDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -84,7 +85,7 @@ public class WarehouseController {
     }
 
     @PostMapping("/orders")
-    public ResponseEntity<WarehouseOrderDTO> addWarehouseOrder(@RequestBody WarehouseOrderDTO warehouseOrderDTO){
+    public ResponseEntity<WarehouseOrderDTO> addWarehouseOrder(@RequestBody @Valid WarehouseOrderDTO warehouseOrderDTO){
         WarehouseOrderDTO created = warehouseOrderService.addWarehouseOrder(warehouseOrderDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
