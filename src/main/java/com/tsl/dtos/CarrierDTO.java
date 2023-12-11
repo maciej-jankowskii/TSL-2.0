@@ -15,7 +15,6 @@ public class CarrierDTO {
     private String vatNumber;
     private String description;
     private Integer termOfPayment;
-    private BigDecimal balance;
     private LocalDate insuranceExpirationDate;
     private LocalDate licenceExpirationDate;
 }

@@ -7,5 +7,6 @@ public enum PaymentRating {
     PAYMENTS_ON_TIME,
     SMALL_DELAYS,
     LONG_DELAYS,
-    BLACK_LIST
+    BLACK_LIST,
+    NONE
 }
