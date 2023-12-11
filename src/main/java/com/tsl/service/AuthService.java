@@ -4,6 +4,7 @@ import com.tsl.config.jwt.JWTGenerator;
 import com.tsl.exceptions.UnauthorizedException;
 import com.tsl.dtos.UserLoginDTO;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -31,7 +32,7 @@ public class AuthService {
             String token = jwtGenerator.generatedToken(authenticate);
             return token;
         } catch (AuthenticationException exception){
-            throw new UnauthorizedException("Invalid data");
+            throw new BadCredentialsException("Invalid email or password");
         }
     }
 }
