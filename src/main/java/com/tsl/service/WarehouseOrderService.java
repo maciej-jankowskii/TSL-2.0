@@ -83,6 +83,7 @@ public class WarehouseOrderService {
 
     private void addAdditionalDataForOrder(WarehouseOrder warehouseOrder) {
         warehouseOrder.setTotalCosts(0.0);
+        warehouseOrder.setIsCompleted(false);
         warehouseOrder.setDateAdded(LocalDate.now());
         Double storageCosts = storageCostService.calculateStorageCosts(warehouseOrder);
         warehouseOrder.setTotalCosts(storageCosts);

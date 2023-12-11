@@ -68,6 +68,7 @@ public class WarehouseOrderMapper {
         dto.setGoodsIds(goodsIds);
         dto.setTotalCosts(warehouseOrder.getTotalCosts());
         dto.setDateAdded(warehouseOrder.getDateAdded());
+        dto.setIsCompleted(warehouseOrder.getIsCompleted());
         return dto;
     }
 

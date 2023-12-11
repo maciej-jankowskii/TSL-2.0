@@ -36,4 +36,5 @@ public class WarehouseOrder {
     private LocalDate dateAdded;
     private LocalDate dateOfReturn;
     private Double totalCosts;
+    private Boolean isCompleted;
 }

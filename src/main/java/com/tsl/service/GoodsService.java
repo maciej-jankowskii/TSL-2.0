@@ -37,6 +37,7 @@ public class GoodsService {
         if (goodsRepository.existsByLabelAndAssignedToOrderFalse(goods.getLabel())){
             throw new NonUniqueLabelsException("Label must be unique among unassigned goods");
         }
+        goods.setAssignedToOrder(false);
         Goods saved = goodsRepository.save(goods);
         return goodsMapper.mapToDTO(saved);
     }

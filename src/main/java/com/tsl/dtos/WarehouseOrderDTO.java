@@ -10,7 +10,6 @@ import java.util.List;
 
 @Getter
 @Setter
-
 public class WarehouseOrderDTO {
     private Long id;
     private Long warehouseId;
@@ -19,4 +18,5 @@ public class WarehouseOrderDTO {
     private LocalDate dateAdded;
     private LocalDate dateOfReturn;
     private Double totalCosts;
+    private Boolean isCompleted;
 }

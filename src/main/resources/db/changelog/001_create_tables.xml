@@ -661,6 +661,14 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="027" author="maciej-jankowski">
+        <addColumn tableName="warehouse_orders">
+            <column name="is_completed" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 
 
 </databaseChangeLog>
