@@ -14,14 +14,10 @@ import java.time.LocalDate;
 public class ForwardingOrderDTO {
     private Long id;
     private String orderNumber;
-    private LocalDate dateAdded;
-    private CargoDTO cargo;
+    private Long cargoId;
     private BigDecimal price;
     private String currency;
-    private String orderStatus;
-    private Boolean isInvoiced;
-    private ForwarderDTO forwarder;
-    private CarrierDTO carrier;
+    private Long carrierId;
     private String typeOfTruck;
     private String truckNumbers;
     private BigDecimal margin;
