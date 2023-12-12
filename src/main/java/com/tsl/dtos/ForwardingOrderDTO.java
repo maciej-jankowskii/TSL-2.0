@@ -1,13 +1,8 @@
 package com.tsl.dtos;
 
-import com.tsl.dtos.CargoDTO;
-import com.tsl.dtos.CarrierDTO;
-import com.tsl.dtos.ForwarderDTO;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Getter
 @Setter

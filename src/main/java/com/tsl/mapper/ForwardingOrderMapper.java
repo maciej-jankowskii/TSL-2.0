@@ -2,33 +2,27 @@ package com.tsl.mapper;
 
 import com.tsl.dtos.ForwardingOrderDTO;
 import com.tsl.enums.Currency;
-import com.tsl.enums.OrderStatus;
 import com.tsl.enums.TypeOfTruck;
 import com.tsl.exceptions.*;
 import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.Carrier;
-import com.tsl.model.employee.Forwarder;
 import com.tsl.model.order.ForwardingOrder;
 import com.tsl.repository.CargoRepository;
 import com.tsl.repository.CarrierRepository;
-import com.tsl.repository.ForwarderRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ForwardingOrderMapper {
     private final CargoRepository cargoRepository;
     private final CarrierRepository carrierRepository;
-    private final ForwarderRepository forwarderRepository;
 
-    public ForwardingOrderMapper(CargoRepository cargoRepository, CarrierRepository carrierRepository,
-                                 ForwarderRepository forwarderRepository) {
+    public ForwardingOrderMapper(CargoRepository cargoRepository, CarrierRepository carrierRepository) {
         this.cargoRepository = cargoRepository;
         this.carrierRepository = carrierRepository;
-        this.forwarderRepository = forwarderRepository;
     }
 
-    public ForwardingOrder mapToEntity(ForwardingOrderDTO dto){
-        if (dto == null){
+    public ForwardingOrder mapToEntity(ForwardingOrderDTO dto) {
+        if (dto == null) {
             throw new NullEntityException("Forwarder order data cannot be null");
         }
 
@@ -36,14 +30,14 @@ public class ForwardingOrderMapper {
         order.setId(dto.getId());
         order.setOrderNumber(dto.getOrderNumber());
         Cargo cargo = cargoRepository.findById(dto.getCargoId()).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
-        if (cargo.getAssignedToOrder()){
+        if (cargo.getAssignedToOrder()) {
             throw new CargoAlreadyAssignedException("Cargo is already assigned to another order");
         }
         order.setCargo(cargo);
         order.setPrice(dto.getPrice());
         Currency currency = cargo.getCurrency();
         String dtoCurrency = dto.getCurrency();
-        if (!currency.equals(Currency.valueOf(dtoCurrency))){
+        if (!currency.equals(Currency.valueOf(dtoCurrency))) {
             throw new CurrencyMismatchException("Currency mismatch");
         }
         order.setCurrency(Currency.valueOf(dtoCurrency));
@@ -55,8 +49,8 @@ public class ForwardingOrderMapper {
         return order;
     }
 
-    public ForwardingOrderDTO mapToDTO(ForwardingOrder order){
-        if (order == null){
+    public ForwardingOrderDTO mapToDTO(ForwardingOrder order) {
+        if (order == null) {
             throw new NullEntityException("Forwarding order cannot be null");
         }
         ForwardingOrderDTO dto = new ForwardingOrderDTO();
