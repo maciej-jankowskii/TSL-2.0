@@ -3,6 +3,8 @@ package com.tsl.service;
 import com.tsl.dtos.CarrierInvoiceDTO;
 import com.tsl.exceptions.CarrierNotFoundException;
 import com.tsl.exceptions.ForwardingOrderNotFoundException;
+import com.tsl.exceptions.InvoiceAlreadyPaidException;
+import com.tsl.exceptions.InvoiceNotFound;
 import com.tsl.mapper.CarrierInvoiceMapper;
 import com.tsl.model.contractor.Carrier;
 import com.tsl.model.invoice.CarrierInvoice;
@@ -51,6 +53,26 @@ public class CarrierInvoiceService {
 
         CarrierInvoice saved = carrierInvoiceRepository.save(invoice);
         return carrierInvoiceMapper.mapToDTO(saved);
+    }
+
+    @Transactional
+    public void markInvoiceAsPaid(Long invoiceId){
+        CarrierInvoice invoice = carrierInvoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFound("Invoice not found"));
+        if (invoice.getIsPaid()){
+            throw new InvoiceAlreadyPaidException("Invoice is already paid");
+        }
+        changeCarrierBalance(invoice);
+
+        invoice.setIsPaid(true);
+
+        carrierInvoiceRepository.save(invoice);
+    }
+
+    private static void changeCarrierBalance(CarrierInvoice invoice) {
+        Carrier carrier = invoice.getCarrier();
+        BigDecimal grossValue = invoice.getGrossValue();
+        BigDecimal balance = carrier.getBalance();
+        carrier.setBalance(balance.subtract(grossValue));
     }
 
     private void addAdditionalDataFroInvoice(CarrierInvoice invoice, ForwardingOrder order, Carrier carrier) {
