@@ -3,6 +3,8 @@ package com.tsl.service;
 import com.tsl.dtos.CustomerInvoiceDTO;
 import com.tsl.exceptions.CargoNotFoundException;
 import com.tsl.exceptions.CustomerNotFoundException;
+import com.tsl.exceptions.InvoiceAlreadyPaidException;
+import com.tsl.exceptions.InvoiceNotFound;
 import com.tsl.mapper.CustomerInvoiceMapper;
 import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.Customer;
@@ -52,6 +54,29 @@ public class CustomerInvoiceService {
 
         CustomerInvoice saved = customerInvoiceRepository.save(invoice);
         return customerInvoiceMapper.mapToDTO(saved);
+    }
+
+    @Transactional
+    public CustomerInvoiceDTO markInvoiceAsPaid(Long invoiceId){
+        CustomerInvoice invoice = customerInvoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFound("Invoice not found"));
+
+        if (invoice.getIsPaid()){
+            throw new InvoiceAlreadyPaidException("Invoice is already paid");
+        }
+
+        changeCustomerBalance(invoice);
+
+        invoice.setIsPaid(true);
+
+        CustomerInvoice saved = customerInvoiceRepository.save(invoice);
+        return customerInvoiceMapper.mapToDTO(saved);
+    }
+
+    private static void changeCustomerBalance(CustomerInvoice invoice) {
+        Customer customer = invoice.getCustomer();
+        BigDecimal balance = customer.getBalance();
+        BigDecimal grossValue = invoice.getGrossValue();
+        customer.setBalance(balance.subtract(grossValue));
     }
 
     private void addAdditionalDataFromInvoice(CustomerInvoice invoice, Cargo cargo, Customer customer) {

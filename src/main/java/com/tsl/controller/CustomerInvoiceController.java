@@ -37,4 +37,10 @@ public class CustomerInvoiceController {
                 .toUri();
         return ResponseEntity.created(uri).body(created);
     }
+
+    @PatchMapping("/{id}/paid")
+    public ResponseEntity<?> markInvoiceAsPaid(@PathVariable Long id){
+        customerInvoiceService.markInvoiceAsPaid(id);
+        return ResponseEntity.noContent().build();
+    }
 }
