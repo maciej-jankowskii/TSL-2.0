@@ -1,5 +1,6 @@
 package com.tsl.dtos;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,12 +11,13 @@ import java.time.LocalDate;
 @Setter
 public class CarrierInvoiceDTO {
     private Long id;
+    @NotBlank(message = "Invoice number cannot be null")
     private String invoiceNumber;
     private LocalDate invoiceDate;
     private LocalDate dueDate;
     private BigDecimal netValue;
     private BigDecimal grossValue;
     private Boolean isPaid;
-    private ForwardingOrderDTO orderDTO;
-    private CarrierDTO carrierDTO; // pomyslec o samych Id lub nazwach
+    private Long orderId;
+    private Long carrierId;
 }
