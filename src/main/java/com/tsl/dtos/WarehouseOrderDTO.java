@@ -1,8 +1,6 @@
 package com.tsl.dtos;
 
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,14 +11,13 @@ import java.util.List;
 @Setter
 public class WarehouseOrderDTO {
     private Long id;
-    @NotBlank(message = "Warehouse ID cannot be null")
+    @NotNull(message = "Warehouse ID cannot be null")
     private Long warehouseId;
-    @NotBlank(message = "Customer ID cannot be null")
+    @NotNull(message = "Customer ID cannot be null")
     private Long customerId;
-    @NotBlank(message = "Goods IDs cannot be null")
+    @NotEmpty(message = "Goods IDs cannot be null")
     private List<@Positive(message = "Goods ID must be a positive number") Long> goodsIds;
     private LocalDate dateAdded;
-    @NotBlank(message = "Date of Return cannot be null")
     @Future(message = "Date of Return must be in the future")
     private LocalDate dateOfReturn;
     private Double totalCosts;

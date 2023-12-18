@@ -23,12 +23,7 @@ public class WarehouseMapper {
         }
         Warehouse warehouse = new Warehouse();
         warehouse.setId(warehouseDTO.getId());
-        Address address = addressRepository.findById(warehouseDTO.getAddressId()).orElseThrow();
-        if (address == null){
-            throw new AddressNotFoundException("Address not found");
-        }
-        warehouse.setAddress(address);
-        warehouse.setTypeOfGoods(TypeOfGoods.valueOf(warehouseDTO.getTypeOfGoods())); // warto pomyślec o obsludze błędu gdy podany typ towaru nie bedzie odpowiadal zadnemu
+        warehouse.setTypeOfGoods(TypeOfGoods.valueOf(warehouseDTO.getTypeOfGoods()));
         warehouse.setCrane(warehouseDTO.getCrane());
         warehouse.setForklift(warehouseDTO.getForklift());
         warehouse.setAvailableArea(warehouseDTO.getAvailableArea());
