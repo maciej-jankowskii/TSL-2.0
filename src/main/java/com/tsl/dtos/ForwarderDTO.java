@@ -1,6 +1,5 @@
 package com.tsl.dtos;
 
-import com.tsl.dtos.AddressDTO;
 import lombok.Getter;
 import lombok.Setter;
 

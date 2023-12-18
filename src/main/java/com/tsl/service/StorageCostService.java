@@ -3,7 +3,6 @@ package com.tsl.service;
 import com.tsl.model.warehouse.Warehouse;
 import com.tsl.model.warehouse.goods.Goods;
 import com.tsl.model.warehouse.order.WarehouseOrder;
-import com.tsl.repository.WarehouseOrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
@@ -11,11 +10,6 @@ import java.util.List;
 
 @Service
 public class StorageCostService implements StorageCostCalculator{
-    private final WarehouseOrderRepository warehouseOrderRepository;
-
-    public StorageCostService(WarehouseOrderRepository warehouseOrderRepository) {
-        this.warehouseOrderRepository = warehouseOrderRepository;
-    }
 
     @Override
     public Double calculateStorageCosts(WarehouseOrder warehouseOrder) {
@@ -24,9 +18,7 @@ public class StorageCostService implements StorageCostCalculator{
         Long dayStored = ChronoUnit.DAYS.between(warehouseOrder.getDateAdded(), warehouseOrder.getDateOfReturn());
 
         Double requiredArea = getRequiredAreaOffAllGoodsInOrder(warehouseOrder);
-        Double totalCost = calculateFinalCost(requiredArea, dayStored, costPer100SquareMeters);
-
-        return totalCost;
+        return calculateFinalCost(requiredArea, dayStored, costPer100SquareMeters);
     }
 
     private Double calculateFinalCost(Double requiredArea, Long dayStored, Double costPer100SquareMeters) {
@@ -38,6 +30,5 @@ public class StorageCostService implements StorageCostCalculator{
         return goods.stream()
                 .mapToDouble(Goods::getRequiredArea)
                 .sum();
-
     }
 }

@@ -8,8 +8,6 @@ import com.tsl.mapper.WarehouseOrderMapper;
 import com.tsl.model.warehouse.Warehouse;
 import com.tsl.model.warehouse.goods.Goods;
 import com.tsl.model.warehouse.order.WarehouseOrder;
-import com.tsl.repository.CustomerRepository;
-import com.tsl.repository.GoodsRepository;
 import com.tsl.repository.WarehouseOrderRepository;
 import com.tsl.repository.WarehouseRepository;
 import org.springframework.stereotype.Service;
