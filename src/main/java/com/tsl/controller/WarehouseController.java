@@ -100,4 +100,10 @@ public class WarehouseController {
         return ResponseEntity.noContent().build();
 
     }
+
+    @GetMapping("/sorted")
+    public ResponseEntity<List<WarehouseDTO>> findAllWarehousesSortedBy(@RequestParam String sortBy){
+        List<WarehouseDTO> sortedWarehouses = warehouseService.findAllWarehousesSortedBy(sortBy);
+        return ResponseEntity.ok(sortedWarehouses);
+    }
 }

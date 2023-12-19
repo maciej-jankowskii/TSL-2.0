@@ -40,4 +40,8 @@ public class WarehouseService {
         Warehouse saved = warehouseRepository.save(warehouse);
         return warehouseMapper.mapToDTO(saved);
     }
+
+    public List<WarehouseDTO> findAllWarehousesSortedBy(String sortBy){
+        return warehouseRepository.findAllOrderBy(sortBy).stream().map(warehouseMapper::mapToDTO).collect(Collectors.toList());
+    }
 }
