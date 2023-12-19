@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({NullEntityException.class, CarrierNotFoundException.class, CustomerNotFoundException.class,
             AddressNotFoundException.class, CargoNotFoundException.class, ContactPersonNotFoundException.class,
             ForwarderNotFoundException.class, ForwardingOrderNotFoundException.class, GoodsNotFoundException.class,
-            WarehouseNotFoundException.class})
+            WarehouseNotFoundException.class, WarehouseOrderNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleEntityNotFoundExceptions(RuntimeException ex) {
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({CargoAlreadyAssignedException.class, InsufficientWarehouseSpaceException.class,
-            InvoiceAlreadyPaidException.class})
+            InvoiceAlreadyPaidException.class, WarehouseOrderIsAlreadyCompletedException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.CONFLICT)
     public String handleErrorsRelatedToConflicts(RuntimeException ex){

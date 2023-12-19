@@ -93,4 +93,11 @@ public class WarehouseController {
                 .toUri();
         return ResponseEntity.created(uri).body(created);
     }
+
+    @PatchMapping("orders/complete/{id}")
+    public ResponseEntity<?> markWarehouseOrderAsCompleted(@PathVariable Long id){
+        warehouseOrderService.markWarehouseOrderAsCompleted(id);
+        return ResponseEntity.noContent().build();
+
+    }
 }

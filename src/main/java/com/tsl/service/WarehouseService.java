@@ -40,6 +40,4 @@ public class WarehouseService {
         Warehouse saved = warehouseRepository.save(warehouse);
         return warehouseMapper.mapToDTO(saved);
     }
-
-
 }

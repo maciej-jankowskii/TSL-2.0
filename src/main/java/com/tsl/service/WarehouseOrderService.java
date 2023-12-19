@@ -4,6 +4,8 @@ import com.tsl.dtos.WarehouseOrderDTO;
 import com.tsl.enums.TypeOfGoods;
 import com.tsl.exceptions.IncompatibleGoodsTypeException;
 import com.tsl.exceptions.InsufficientWarehouseSpaceException;
+import com.tsl.exceptions.WarehouseOrderIsAlreadyCompletedException;
+import com.tsl.exceptions.WarehouseOrderNotFoundException;
 import com.tsl.mapper.WarehouseOrderMapper;
 import com.tsl.model.warehouse.Warehouse;
 import com.tsl.model.warehouse.goods.Goods;
@@ -54,6 +56,25 @@ public class WarehouseOrderService {
         warehouseRepository.save(warehouse);
         WarehouseOrder saved = warehouseOrderRepository.save(warehouseOrder);
         return warehouseOrderMapper.mapToDTO(saved);
+    }
+
+    @Transactional
+    public void markWarehouseOrderAsCompleted(Long warehouseOrderId){
+        WarehouseOrder order = warehouseOrderRepository.findById(warehouseOrderId).orElseThrow(() -> new WarehouseOrderNotFoundException("Warehouse order not found"));
+        if (order.getIsCompleted()){
+            throw new WarehouseOrderIsAlreadyCompletedException("Order is already completed");
+        }
+
+        updateWarehouseAvailableArea(order);
+
+        order.setIsCompleted(true);
+        warehouseOrderRepository.save(order);
+    }
+
+    private static void updateWarehouseAvailableArea(WarehouseOrder order) {
+        Warehouse warehouse = order.getWarehouse();
+        double requiredArea = order.getGoods().stream().mapToDouble(Goods::getRequiredArea).sum();
+        warehouse.setAvailableArea(warehouse.getAvailableArea() + requiredArea);
     }
 
     private static void changeAssignedToOrderOnGoodsEntity(List<Goods> goodsList) {
