@@ -106,4 +106,16 @@ public class WarehouseController {
         List<WarehouseDTO> sortedWarehouses = warehouseService.findAllWarehousesSortedBy(sortBy);
         return ResponseEntity.ok(sortedWarehouses);
     }
+
+    @GetMapping("/goods/sorted")
+    public ResponseEntity<List<GoodsDTO>> findAllGoodsSortedBy(@RequestParam String sortBy){
+        List<GoodsDTO> sortedGoods = goodsService.findAllGoodsSortedBY(sortBy);
+        return ResponseEntity.ok(sortedGoods);
+    }
+
+    @GetMapping("/orders/sorted")
+    public ResponseEntity<List<WarehouseOrderDTO>> findAllWarehouseOrdersSortedBy(@RequestParam String sortBy){
+        List<WarehouseOrderDTO> sortedOrders = warehouseOrderService.findAllWarehouseOrdersSortedBy(sortBy);
+        return ResponseEntity.ok(sortedOrders);
+    }
 }

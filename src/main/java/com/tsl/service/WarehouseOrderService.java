@@ -71,6 +71,10 @@ public class WarehouseOrderService {
         warehouseOrderRepository.save(order);
     }
 
+    public List<WarehouseOrderDTO> findAllWarehouseOrdersSortedBy(String sortBy){
+        return warehouseOrderRepository.findAllOrderBy(sortBy).stream().map(warehouseOrderMapper::mapToDTO).collect(Collectors.toList());
+    }
+
     private static void updateWarehouseAvailableArea(WarehouseOrder order) {
         Warehouse warehouse = order.getWarehouse();
         double requiredArea = order.getGoods().stream().mapToDouble(Goods::getRequiredArea).sum();

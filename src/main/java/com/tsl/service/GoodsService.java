@@ -41,5 +41,11 @@ public class GoodsService {
         return goodsMapper.mapToDTO(saved);
     }
 
+    public List<GoodsDTO> findAllGoodsSortedBY(String sortBy){
+        return goodsRepository.findAllOrderBy(sortBy).stream().map(goodsMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+
+
 
 }
