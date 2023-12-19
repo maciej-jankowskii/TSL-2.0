@@ -94,6 +94,15 @@ public class WarehouseController {
         return ResponseEntity.created(uri).body(created);
     }
 
+    @GetMapping("orders/not-completed")
+    public ResponseEntity<List<WarehouseOrderDTO>> findNotCompletedWarehouseOrders(){
+        List<WarehouseOrderDTO> allNotCompleted = warehouseOrderService.findAllNotCompletedWarehouseOrders();
+        if (allNotCompleted.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allNotCompleted);
+    }
+
     @PatchMapping("orders/complete/{id}")
     public ResponseEntity<?> markWarehouseOrderAsCompleted(@PathVariable Long id){
         warehouseOrderService.markWarehouseOrderAsCompleted(id);

@@ -21,4 +21,6 @@ public interface WarehouseOrderRepository extends CrudRepository<WarehouseOrder,
             "CASE WHEN :sortBy = 'totalCosts' THEN wo.totalCosts END ASC, " +
             "CASE WHEN :sortBy = 'isCompleted' THEN wo.isCompleted END ASC")
     List<WarehouseOrder> findAllOrderBy(@Param("sortBy") String sortBy);
+
+    List<WarehouseOrder> findByIsCompletedFalse();
 }

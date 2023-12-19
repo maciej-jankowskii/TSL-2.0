@@ -75,6 +75,12 @@ public class WarehouseOrderService {
         return warehouseOrderRepository.findAllOrderBy(sortBy).stream().map(warehouseOrderMapper::mapToDTO).collect(Collectors.toList());
     }
 
+    public List<WarehouseOrderDTO> findAllNotCompletedWarehouseOrders(){
+        return warehouseOrderRepository.findByIsCompletedFalse().stream().map(warehouseOrderMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+
+
     private static void updateWarehouseAvailableArea(WarehouseOrder order) {
         Warehouse warehouse = order.getWarehouse();
         double requiredArea = order.getGoods().stream().mapToDouble(Goods::getRequiredArea).sum();
