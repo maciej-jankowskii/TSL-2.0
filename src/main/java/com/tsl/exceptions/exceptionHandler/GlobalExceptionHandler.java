@@ -2,6 +2,8 @@ package com.tsl.exceptions.exceptionHandler;
 
 import com.tsl.exceptions.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.MailException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +36,20 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleErrorRelatedToInvalidRequest(RuntimeException ex){
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public String handleBadCredentialsException(BadCredentialsException ex){
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(MailException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleMailException(MailException ex){
         return ex.getMessage();
     }
 }

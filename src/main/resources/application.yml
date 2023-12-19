@@ -10,3 +10,14 @@ spring:
     show-sql: true
   liquibase:
     change-log: classpath:db/changelog/master.xml
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: testtslapp@gmail.com
+    password: msjt kgoc ypxq ahol
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
