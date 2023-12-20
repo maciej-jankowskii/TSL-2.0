@@ -1,5 +1,7 @@
 package com.tsl.exceptions.exceptionHandler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.tsl.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailException;
@@ -50,6 +52,13 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleMailException(MailException ex){
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler({JsonPatchException.class, JsonProcessingException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleJsonPatchException(Exception ex){
         return ex.getMessage();
     }
 }

@@ -2,6 +2,7 @@ package com.tsl.service;
 
 import com.tsl.dtos.WarehouseDTO;
 import com.tsl.exceptions.AddressNotFoundException;
+import com.tsl.exceptions.WarehouseNotFoundException;
 import com.tsl.mapper.WarehouseMapper;
 import com.tsl.model.address.Address;
 import com.tsl.model.warehouse.Warehouse;
@@ -30,6 +31,10 @@ public class WarehouseService {
         return warehouseRepository.findAll().stream().map(warehouseMapper::mapToDTO).collect(Collectors.toList());
     }
 
+    public WarehouseDTO findWarehouseById(Long id){
+        return warehouseRepository.findById(id).map(warehouseMapper::mapToDTO).orElseThrow(() -> new WarehouseNotFoundException("Warehouse not found"));
+    }
+
     @Transactional
     public WarehouseDTO addWarehouse(WarehouseDTO warehouseDTO){
         Warehouse warehouse = warehouseMapper.mapToEntity(warehouseDTO);
@@ -43,5 +48,11 @@ public class WarehouseService {
 
     public List<WarehouseDTO> findAllWarehousesSortedBy(String sortBy){
         return warehouseRepository.findAllOrderBy(sortBy).stream().map(warehouseMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateWarehouse(WarehouseDTO warehouseDTO) {
+        Warehouse warehouse = warehouseMapper.mapToEntity(warehouseDTO);
+        warehouseRepository.save(warehouse);
     }
 }
