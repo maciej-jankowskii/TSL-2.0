@@ -141,11 +141,28 @@ public class WarehouseController {
             throws JsonPatchException, JsonProcessingException {
         WarehouseDTO warehouseDTO = warehouseService.findWarehouseById(id);
 
-        applyPatchAndUpdate(warehouseDTO, patch);
+        applyPatchAndUpdateWarehouse(warehouseDTO, patch);
         return ResponseEntity.noContent().build();
     }
 
-    private void applyPatchAndUpdate(WarehouseDTO warehouseDTO, JsonMergePatch patch)
+    @PatchMapping("/goods/{id}")
+    public ResponseEntity<?> updateGoods(@PathVariable Long id, @RequestBody JsonMergePatch patch)
+            throws JsonPatchException, JsonProcessingException{
+        GoodsDTO goodsDTO = goodsService.findGoodsById(id);
+        applyPatchAndUpdateGoods(goodsDTO, patch);
+        return ResponseEntity.noContent().build();
+
+    }
+
+    private void applyPatchAndUpdateGoods(GoodsDTO goodsDTO, JsonMergePatch patch)
+        throws JsonPatchException, JsonProcessingException{
+        JsonNode goodsNode = objectMapper.valueToTree(goodsDTO);
+        JsonNode patchedGoods = patch.apply(goodsNode);
+        GoodsDTO patchedGoodsDTO = objectMapper.treeToValue(patchedGoods, GoodsDTO.class);
+        goodsService.updateGoods(patchedGoodsDTO);
+    }
+
+    private void applyPatchAndUpdateWarehouse(WarehouseDTO warehouseDTO, JsonMergePatch patch)
             throws JsonPatchException, JsonProcessingException {
         JsonNode warehouseNode = objectMapper.valueToTree(warehouseDTO);
         JsonNode patchedWarehouse = patch.apply(warehouseNode);

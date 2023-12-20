@@ -12,6 +12,8 @@ import com.tsl.model.warehouse.goods.Goods;
 import com.tsl.model.warehouse.order.WarehouseOrder;
 import com.tsl.repository.WarehouseOrderRepository;
 import com.tsl.repository.WarehouseRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
