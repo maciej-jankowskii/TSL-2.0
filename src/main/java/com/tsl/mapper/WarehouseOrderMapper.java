@@ -49,6 +49,9 @@ public class WarehouseOrderMapper {
         }
 
         order.setGoods(goodsList);
+        order.setIsCompleted(warehouseOrderDTO.getIsCompleted());
+        order.setDateAdded(warehouseOrderDTO.getDateAdded());
+        order.setTotalCosts(warehouseOrderDTO.getTotalCosts());
         return order;
     }
 

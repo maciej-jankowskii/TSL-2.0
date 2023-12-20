@@ -73,24 +73,20 @@ public class WarehouseOrderService {
     }
 
     @Transactional
-    public void updateWarehouseOrder(WarehouseOrderDTO warehouseOrderDTO){
-        checkingTryingToChangeIsCompletedValue(warehouseOrderDTO);
+    public void updateWarehouseOrder(WarehouseOrderDTO currentDTO, WarehouseOrderDTO updatedDTO){
+        WarehouseOrder order = warehouseOrderMapper.mapToEntity(updatedDTO);
+        checkingIsCompletedOrder(order);
 
-        WarehouseOrder order = warehouseOrderMapper.mapToEntity(warehouseOrderDTO);
-
-        checkingIsCompletedOrder(warehouseOrderDTO);
+        if (currentDTO.getIsCompleted() == true && updatedDTO.getIsCompleted() == false){
+            throw new CannotEditCompletedWarehouseOrder("Cannot change isCompleted value from true to false");
+        }
         warehouseOrderRepository.save(order);
     }
 
-    private static void checkingIsCompletedOrder(WarehouseOrderDTO order) {
+    private static void checkingIsCompletedOrder(WarehouseOrder order) {
         if (order.getIsCompleted()){
             throw new CannotEditCompletedWarehouseOrder("Cannot edit completed order.");
         }
-    }
-
-    private static void checkingTryingToChangeIsCompletedValue(WarehouseOrderDTO warehouseOrderDTO){
-        if (!warehouseOrderDTO.getIsCompleted()){
-                throw new CannotEditCompletedWarehouseOrder("Cannot change isCompleted to false for an completed order.");}
     }
 
     public List<WarehouseOrderDTO> findAllWarehouseOrdersSortedBy(String sortBy){

@@ -53,7 +53,7 @@ public class GoodsService {
     @Transactional
     public void updateGoods(GoodsDTO current, GoodsDTO updated){
         Goods goods = goodsMapper.mapToEntity(updated);
-        checkingAssignedToOrder(goods);
+        checkingIsAssignedToOrder(goods);
 
         if (current.getAssignedToOrder() == true && updated.getAssignedToOrder() == false){
             throw new CannotEditGoodsAssignedToOrderException("Cannot change assignedToOrder value from true to false");
@@ -62,7 +62,7 @@ public class GoodsService {
         goodsRepository.save(goods);
     }
 
-    private static void checkingAssignedToOrder(Goods goods) {
+    private static void checkingIsAssignedToOrder(Goods goods) {
         if (goods.getAssignedToOrder()){
             throw new CannotEditGoodsAssignedToOrderException("Cannot edit goods assigned to the order.");
         }

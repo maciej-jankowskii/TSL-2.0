@@ -184,7 +184,7 @@ public class WarehouseController {
         JsonNode orderNode = objectMapper.valueToTree(warehouseOrderDTO);
         JsonNode patchedOrder = patch.apply(orderNode);
         WarehouseOrderDTO patchedOrderDTO = objectMapper.treeToValue(patchedOrder, WarehouseOrderDTO.class);
-        warehouseOrderService.updateWarehouseOrder(patchedOrderDTO);
+        warehouseOrderService.updateWarehouseOrder(warehouseOrderDTO, patchedOrderDTO);
     }
 
 }
