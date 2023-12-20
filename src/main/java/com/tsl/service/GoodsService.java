@@ -51,34 +51,21 @@ public class GoodsService {
         return goodsRepository.findAllOrderBy(sortBy).stream().map(goodsMapper::mapToDTO).collect(Collectors.toList());
     }
     @Transactional
-    public void updateGoods(GoodsDTO goodsDTO){
-        checkingTryingToChangeValueAssignedToOrder(goodsDTO);
+    public void updateGoods(GoodsDTO current, GoodsDTO updated){
+        Goods goods = goodsMapper.mapToEntity(updated);
+        checkingAssignedToOrder(goods);
 
-        Goods goods = goodsMapper.mapToEntity(goodsDTO);
-
-        checkingAssignedToOrder(goodsDTO);
-        checkingLabelUnique(goodsDTO);
+        if (current.getAssignedToOrder() == true && updated.getAssignedToOrder() == false){
+            throw new CannotEditGoodsAssignedToOrderException("Cannot change assignedToOrder value from true to false");
+        }
 
         goodsRepository.save(goods);
     }
 
-    private static void checkingTryingToChangeValueAssignedToOrder(GoodsDTO goodsDTO) {
-        if (!goodsDTO.getAssignedToOrder()) {
-            throw new CannotEditGoodsAssignedToOrderException("Cannot change assignedToOrder to false for an item assigned to the order.");
+    private static void checkingAssignedToOrder(Goods goods) {
+        if (goods.getAssignedToOrder()){
+            throw new CannotEditGoodsAssignedToOrderException("Cannot edit goods assigned to the order.");
         }
     }
-
-    private void checkingLabelUnique(GoodsDTO goodsDTO) {
-        if (goodsRepository.existsByLabelAndAssignedToOrderFalse(goodsDTO.getLabel())){
-            throw new NonUniqueLabelsException("Label must be unique among unassigned goods");
-        }
-    }
-
-    private static void checkingAssignedToOrder(GoodsDTO goodsDTO) {
-        if (goodsDTO.getAssignedToOrder()){
-            throw new CannotEditGoodsAssignedToOrderException("Cannot edit the item assigned to the order.");
-        }
-    }
-
 
 }

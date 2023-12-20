@@ -168,7 +168,7 @@ public class WarehouseController {
         JsonNode goodsNode = objectMapper.valueToTree(goodsDTO);
         JsonNode patchedGoods = patch.apply(goodsNode);
         GoodsDTO patchedGoodsDTO = objectMapper.treeToValue(patchedGoods, GoodsDTO.class);
-        goodsService.updateGoods(patchedGoodsDTO);
+        goodsService.updateGoods(goodsDTO, patchedGoodsDTO);
     }
 
     private void applyPatchAndUpdateWarehouse(WarehouseDTO warehouseDTO, JsonMergePatch patch)
