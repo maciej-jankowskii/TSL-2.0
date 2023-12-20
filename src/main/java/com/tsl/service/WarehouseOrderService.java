@@ -2,18 +2,13 @@ package com.tsl.service;
 
 import com.tsl.dtos.WarehouseOrderDTO;
 import com.tsl.enums.TypeOfGoods;
-import com.tsl.exceptions.IncompatibleGoodsTypeException;
-import com.tsl.exceptions.InsufficientWarehouseSpaceException;
-import com.tsl.exceptions.WarehouseOrderIsAlreadyCompletedException;
-import com.tsl.exceptions.WarehouseOrderNotFoundException;
+import com.tsl.exceptions.*;
 import com.tsl.mapper.WarehouseOrderMapper;
 import com.tsl.model.warehouse.Warehouse;
 import com.tsl.model.warehouse.goods.Goods;
 import com.tsl.model.warehouse.order.WarehouseOrder;
 import com.tsl.repository.WarehouseOrderRepository;
 import com.tsl.repository.WarehouseRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +35,10 @@ public class WarehouseOrderService {
 
     public List<WarehouseOrderDTO> findAllWarehouseOrders() {
         return warehouseOrderRepository.findAll().stream().map(warehouseOrderMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public WarehouseOrderDTO findWarehouseOrder(Long id){
+        return warehouseOrderRepository.findById(id).map(warehouseOrderMapper::mapToDTO).orElseThrow(() -> new WarehouseOrderNotFoundException("Warehouse order not found"));
     }
 
     @Transactional
@@ -71,6 +70,27 @@ public class WarehouseOrderService {
 
         order.setIsCompleted(true);
         warehouseOrderRepository.save(order);
+    }
+
+    @Transactional
+    public void updateWarehouseOrder(WarehouseOrderDTO warehouseOrderDTO){
+        checkingTryingToChangeIsCompletedValue(warehouseOrderDTO);
+
+        WarehouseOrder order = warehouseOrderMapper.mapToEntity(warehouseOrderDTO);
+
+        checkingIsCompletedOrder(warehouseOrderDTO);
+        warehouseOrderRepository.save(order);
+    }
+
+    private static void checkingIsCompletedOrder(WarehouseOrderDTO order) {
+        if (order.getIsCompleted()){
+            throw new CannotEditCompletedWarehouseOrder("Cannot edit completed order.");
+        }
+    }
+
+    private static void checkingTryingToChangeIsCompletedValue(WarehouseOrderDTO warehouseOrderDTO){
+        if (!warehouseOrderDTO.getIsCompleted()){
+                throw new CannotEditCompletedWarehouseOrder("Cannot change isCompleted to false for an completed order.");}
     }
 
     public List<WarehouseOrderDTO> findAllWarehouseOrdersSortedBy(String sortBy){
