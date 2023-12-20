@@ -22,4 +22,5 @@ public class ForwarderDTO {
     private LocalDate contractExpiryDate;
     private Double extraPercentage;
     private BigDecimal totalMargin; // czy aby na pewno chcemy to pokazywac ?
+    private Double salaryBonus;
 }

@@ -692,4 +692,12 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="029" author="maciej-jankowski">
+        <addColumn tableName="forwarders">
+            <column name="salary_bonus" type="DOUBLE">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
