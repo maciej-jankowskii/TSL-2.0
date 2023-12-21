@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.management.relation.RoleNotFoundException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -27,7 +29,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({CargoAlreadyAssignedException.class, InsufficientWarehouseSpaceException.class,
-            InvoiceAlreadyPaidException.class, WarehouseOrderIsAlreadyCompletedException.class, DriverIsAlreadyAssignedToTruck.class})
+            InvoiceAlreadyPaidException.class, WarehouseOrderIsAlreadyCompletedException.class,
+            DriverIsAlreadyAssignedToTruck.class, EmailAddressIsTaken.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.CONFLICT)
     public String handleErrorsRelatedToConflicts(RuntimeException ex){
@@ -61,6 +64,13 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleJsonPatchException(Exception ex){
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleRoleNotFoundException(Exception ex){
         return ex.getMessage();
     }
 }
