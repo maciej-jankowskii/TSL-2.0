@@ -15,4 +15,6 @@
     <include file="../data/customers.sql" relativeToChangelogFile="true"/>
     <include file="../data/carriers.sql" relativeToChangelogFile="true"/>
     <include file="../data/warehouses.sql" relativeToChangelogFile="true"/>
+    <include file="../data/drivers.sql" relativeToChangelogFile="true"/>
+    <include file="../data/trucks.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
