@@ -31,7 +31,7 @@ public class Truck {
     private Boolean assignedToDriver;
     @OneToMany(mappedBy = "truck")
     private List<Driver> drivers = new ArrayList<>();
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "transport_planner_id")
     private TransportPlanner transportPlanner;
 

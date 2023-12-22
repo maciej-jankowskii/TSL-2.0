@@ -8,10 +8,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface TruckRepository extends CrudRepository<Truck, Long> {
 
     List<Truck> findAll();
+    Optional<Truck> findById(Long id);
 
     @Query("SELECT tr FROM Truck tr ORDER BY " +
             "CASE WHEN :sortBy = 'brand' THEN tr.brand END ASC, " +
