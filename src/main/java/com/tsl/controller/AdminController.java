@@ -42,7 +42,7 @@ public class AdminController {
     @PostMapping("/forwarders/register")
     public ResponseEntity<String> registerNewForwarder(@RequestBody @Valid ForwarderDTO forwarderDTO) throws RoleNotFoundException {
         String result = forwarderService.registerNewForwarder(forwarderDTO);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
 
     }
     @GetMapping("/planners")
@@ -57,7 +57,7 @@ public class AdminController {
     @PostMapping("/planners/register")
     public ResponseEntity<String> registerNewPlanner(@RequestBody @Valid TransportPlannerDTO plannerDTO) throws RoleNotFoundException {
         String result = transportPlannerService.registerNewTransportPlanner(plannerDTO);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @GetMapping("/accountants")
@@ -72,7 +72,7 @@ public class AdminController {
     @PostMapping("/accountants/register")
     public ResponseEntity<String> registerNewAccountant(@RequestBody @Valid AccountantDTO accountantDTO) throws RoleNotFoundException {
         String result = accountantService.registerNewAccountant(accountantDTO);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @GetMapping("/drivers")
@@ -87,7 +87,7 @@ public class AdminController {
     @PostMapping("/drivers/register")
     public ResponseEntity<String> registerNewDriver(@RequestBody @Valid DetailedDriverDTO driverDTO){
         String result = driverService.registerNewDriver(driverDTO);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @GetMapping("/warehouse-workers")
@@ -102,7 +102,7 @@ public class AdminController {
     @PostMapping("/warehouse-workers/register")
     public ResponseEntity<String> registerNewWarehouseWorker(@RequestBody @Valid WarehouseWorkerDTO dto){
         String result = warehouseWorkerService.registerNewWarehouseWorker(dto);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @GetMapping("/trucks")
@@ -117,6 +117,6 @@ public class AdminController {
     @PostMapping("/trucks")
     public ResponseEntity<String> addNewTruck(@RequestBody @Valid TruckDTO truckDTO){
         String result = truckService.addNewTruck(truckDTO);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 }
