@@ -1,13 +1,7 @@
 package com.tsl.controller;
 
-import com.tsl.dtos.AccountantDTO;
-import com.tsl.dtos.DetailedDriverDTO;
-import com.tsl.dtos.ForwarderDTO;
-import com.tsl.dtos.TransportPlannerDTO;
-import com.tsl.service.AccountantService;
-import com.tsl.service.DriverService;
-import com.tsl.service.ForwarderService;
-import com.tsl.service.TransportPlannerService;
+import com.tsl.dtos.*;
+import com.tsl.service.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +18,14 @@ public class AdminController {
     private final TransportPlannerService transportPlannerService;
     private final AccountantService accountantService;
     private final DriverService driverService;
+    private final WarehouseWorkerService warehouseWorkerService;
 
-    public AdminController(ForwarderService forwarderService, TransportPlannerService transportPlannerService, AccountantService accountantService, DriverService driverService) {
+    public AdminController(ForwarderService forwarderService, TransportPlannerService transportPlannerService, AccountantService accountantService, DriverService driverService, WarehouseWorkerService warehouseWorkerService) {
         this.forwarderService = forwarderService;
         this.transportPlannerService = transportPlannerService;
         this.accountantService = accountantService;
         this.driverService = driverService;
+        this.warehouseWorkerService = warehouseWorkerService;
     }
 
     @GetMapping("/forwarders")
@@ -89,6 +85,21 @@ public class AdminController {
     @PostMapping("/drivers/register")
     public ResponseEntity<String> registerNewDriver(@RequestBody @Valid DetailedDriverDTO driverDTO){
         String result = driverService.registerNewDriver(driverDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/warehouse-workers")
+    public ResponseEntity<List<WarehouseWorkerDTO>> findAllWarehouseWorkers(){
+        List<WarehouseWorkerDTO> allWarehouseWorkers = warehouseWorkerService.findAllWarehouseWorkers();
+        if (allWarehouseWorkers.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allWarehouseWorkers);
+    }
+
+    @PostMapping("/warehouse-workers/register")
+    public ResponseEntity<String> registerNewWarehouseWorker(@RequestBody @Valid WarehouseWorkerDTO dto){
+        String result = warehouseWorkerService.registerNewWarehouseWorker(dto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

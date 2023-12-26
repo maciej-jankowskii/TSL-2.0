@@ -18,6 +18,6 @@ public class WarehouseWorker extends User{
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
-    Boolean permissionsForklift;
-    Boolean permissionsCrane;
+    private Boolean permissionsForklift;
+    private Boolean permissionsCrane;
 }
