@@ -53,13 +53,13 @@ public class DriverMapper {
         dto.setTelephone(driver.getTelephone());
         dto.setDateOfEmployment(driver.getDateOfEmployment());
         dto.setFormOfEmployment(String.valueOf(driver.getFormOfEmployment()));
-        dto.setContractExpiryDate(dto.getContractExpiryDate());
-        dto.setDriverLicenceNumber(dto.getDriverLicenceNumber());
-        dto.setLicenceExpiryDate(dto.getLicenceExpiryDate());
-        dto.setWorkSystem(dto.getWorkSystem());
-        dto.setTruckId(dto.getTruckId());
-        dto.setAssignedToTruck(dto.getAssignedToTruck());
-        dto.setMainDriver(dto.getMainDriver());
+        dto.setContractExpiryDate(driver.getContractExpiryDate());
+        dto.setDriverLicenceNumber(driver.getDriverLicenceNumber());
+        dto.setLicenceExpiryDate(driver.getLicenceExpiryDate());
+        dto.setWorkSystem(driver.getWorkSystem());
+        dto.setTruckId(driver.getTruck().getId());
+        dto.setAssignedToTruck(driver.getAssignedToTruck());
+        dto.setMainDriver(driver.getMainDriver());
         return dto;
     }
 }
