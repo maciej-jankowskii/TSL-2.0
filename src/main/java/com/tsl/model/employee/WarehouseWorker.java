@@ -1,6 +1,9 @@
 package com.tsl.model.employee;
 
+import com.tsl.model.warehouse.Warehouse;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +15,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "warehouse_workers")
 public class WarehouseWorker extends User{
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id")
+    private Warehouse warehouse;
     Boolean permissionsForklift;
     Boolean permissionsCrane;
 }

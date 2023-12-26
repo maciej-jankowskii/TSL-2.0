@@ -700,4 +700,16 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="030" author="maciej-jankowski">
+        <addColumn tableName="warehouse_workers">
+            <column name="warehouse_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="warehouse_workers" baseColumnNames="warehouse_id"
+                                 constraintName="worker_warehouse"
+                                 referencedTableName="warehouses"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
 </databaseChangeLog>
