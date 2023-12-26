@@ -1,7 +1,10 @@
 package com.tsl.mapper;
 
 import com.tsl.dtos.TruckDTO;
+import com.tsl.enums.TypeOfTruck;
 import com.tsl.exceptions.NullEntityException;
+import com.tsl.exceptions.PlannerNotFoundException;
+import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.truck.Truck;
 import com.tsl.repository.TransportPlannerRepository;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,27 @@ public class TruckMapper {
     public TruckMapper(TransportPlannerRepository transportPlannerRepository) {
         this.transportPlannerRepository = transportPlannerRepository;
     }
+
+    public Truck mapToEntity(TruckDTO dto){
+        if (dto == null){
+            throw new NullEntityException("Truck data cannot be null");
+        }
+
+        Truck truck = new Truck();
+        truck.setId(dto.getId());
+        truck.setModel(dto.getModel());
+        truck.setBrand(dto.getBrand());
+        truck.setType(TypeOfTruck.valueOf(dto.getType()));
+        truck.setPlates(dto.getPlates());
+        truck.setTechnicalInspectionDate(dto.getTechnicalInspectionDate());
+        truck.setInsuranceDate(dto.getInsuranceDate());
+        truck.setAssignedToDriver(dto.getAssignedToDriver());
+        TransportPlanner planner = transportPlannerRepository.findById(dto.getTransportPlannerId()).orElseThrow(() -> new PlannerNotFoundException("Transport planner not found"));
+        truck.setTransportPlanner(planner);
+        return truck;
+    }
+
+
 
     public TruckDTO mapToDTO(Truck truck){
         if (truck == null){
@@ -28,7 +52,9 @@ public class TruckMapper {
         dto.setTechnicalInspectionDate(truck.getTechnicalInspectionDate());
         dto.setInsuranceDate(truck.getInsuranceDate());
         dto.setAssignedToDriver(truck.getAssignedToDriver());
-//        dto.setTransportPlannerId(truck.getTransportPlanner().getId());
+        if (truck.getTransportPlanner() != null) {
+            dto.setTransportPlannerId(truck.getTransportPlanner().getId());
+        }
         return dto;
     }
 }

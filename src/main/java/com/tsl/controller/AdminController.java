@@ -19,13 +19,15 @@ public class AdminController {
     private final AccountantService accountantService;
     private final DriverService driverService;
     private final WarehouseWorkerService warehouseWorkerService;
+    private final TruckService truckService;
 
-    public AdminController(ForwarderService forwarderService, TransportPlannerService transportPlannerService, AccountantService accountantService, DriverService driverService, WarehouseWorkerService warehouseWorkerService) {
+    public AdminController(ForwarderService forwarderService, TransportPlannerService transportPlannerService, AccountantService accountantService, DriverService driverService, WarehouseWorkerService warehouseWorkerService, TruckService truckService) {
         this.forwarderService = forwarderService;
         this.transportPlannerService = transportPlannerService;
         this.accountantService = accountantService;
         this.driverService = driverService;
         this.warehouseWorkerService = warehouseWorkerService;
+        this.truckService = truckService;
     }
 
     @GetMapping("/forwarders")
@@ -100,6 +102,21 @@ public class AdminController {
     @PostMapping("/warehouse-workers/register")
     public ResponseEntity<String> registerNewWarehouseWorker(@RequestBody @Valid WarehouseWorkerDTO dto){
         String result = warehouseWorkerService.registerNewWarehouseWorker(dto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/trucks")
+    public ResponseEntity<List<TruckDTO>> findAllTrucks(){
+        List<TruckDTO> allTrucks = truckService.findAllTrucks();
+        if (allTrucks.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allTrucks);
+    }
+
+    @PostMapping("/trucks")
+    public ResponseEntity<String> addNewTruck(@RequestBody @Valid TruckDTO truckDTO){
+        String result = truckService.addNewTruck(truckDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
