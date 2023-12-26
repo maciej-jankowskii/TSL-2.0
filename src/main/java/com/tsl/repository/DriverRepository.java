@@ -8,10 +8,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DriverRepository extends CrudRepository<Driver, Long> {
     List<Driver> findAll();
+    Optional<Driver> findById(Long id);
+    Boolean existsByEmail(String email);
 
     @Query("SELECT dr FROM Driver dr ORDER BY " +
             "CASE WHEN :sortBy = 'truck.id' THEN dr.truck.id END ASC," +

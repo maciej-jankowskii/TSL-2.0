@@ -1,9 +1,11 @@
 package com.tsl.controller;
 
 import com.tsl.dtos.AccountantDTO;
+import com.tsl.dtos.DetailedDriverDTO;
 import com.tsl.dtos.ForwarderDTO;
 import com.tsl.dtos.TransportPlannerDTO;
 import com.tsl.service.AccountantService;
+import com.tsl.service.DriverService;
 import com.tsl.service.ForwarderService;
 import com.tsl.service.TransportPlannerService;
 import jakarta.validation.Valid;
@@ -21,11 +23,13 @@ public class AdminController {
     private final ForwarderService forwarderService;
     private final TransportPlannerService transportPlannerService;
     private final AccountantService accountantService;
+    private final DriverService driverService;
 
-    public AdminController(ForwarderService forwarderService, TransportPlannerService transportPlannerService, AccountantService accountantService) {
+    public AdminController(ForwarderService forwarderService, TransportPlannerService transportPlannerService, AccountantService accountantService, DriverService driverService) {
         this.forwarderService = forwarderService;
         this.transportPlannerService = transportPlannerService;
         this.accountantService = accountantService;
+        this.driverService = driverService;
     }
 
     @GetMapping("/forwarders")
@@ -70,6 +74,21 @@ public class AdminController {
     @PostMapping("/accountants/register")
     public ResponseEntity<String> registerNewAccountant(@RequestBody @Valid AccountantDTO accountantDTO) throws RoleNotFoundException {
         String result = accountantService.registerNewAccountant(accountantDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/drivers")
+    public ResponseEntity<List<DetailedDriverDTO>> findAllDrivers(){
+        List<DetailedDriverDTO> allDrivers = driverService.findAllDriversWithAllInfo();
+        if (allDrivers.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allDrivers);
+    }
+
+    @PostMapping("/drivers/register")
+    public ResponseEntity<String> registerNewDriver(@RequestBody @Valid DetailedDriverDTO driverDTO){
+        String result = driverService.registerNewDriver(driverDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
