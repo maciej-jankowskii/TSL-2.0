@@ -1,7 +1,9 @@
 package com.tsl.controller;
 
+import com.tsl.dtos.AccountantDTO;
 import com.tsl.dtos.ForwarderDTO;
 import com.tsl.dtos.TransportPlannerDTO;
+import com.tsl.service.AccountantService;
 import com.tsl.service.ForwarderService;
 import com.tsl.service.TransportPlannerService;
 import jakarta.validation.Valid;
@@ -18,10 +20,12 @@ public class AdminController {
 
     private final ForwarderService forwarderService;
     private final TransportPlannerService transportPlannerService;
+    private final AccountantService accountantService;
 
-    public AdminController(ForwarderService forwarderService, TransportPlannerService transportPlannerService) {
+    public AdminController(ForwarderService forwarderService, TransportPlannerService transportPlannerService, AccountantService accountantService) {
         this.forwarderService = forwarderService;
         this.transportPlannerService = transportPlannerService;
+        this.accountantService = accountantService;
     }
 
     @GetMapping("/forwarders")
@@ -51,6 +55,21 @@ public class AdminController {
     @PostMapping("/planners/register")
     public ResponseEntity<String> registerNewPlanner(@RequestBody @Valid TransportPlannerDTO plannerDTO) throws RoleNotFoundException {
         String result = transportPlannerService.registerNewTransportPlanner(plannerDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/accountants")
+    public ResponseEntity<List<AccountantDTO>> findAllAccountants(){
+        List<AccountantDTO> allAccountants = accountantService.findAllAccountants();
+        if (allAccountants.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allAccountants);
+    }
+
+    @PostMapping("/accountants/register")
+    public ResponseEntity<String> registerNewAccountant(@RequestBody @Valid AccountantDTO accountantDTO) throws RoleNotFoundException {
+        String result = accountantService.registerNewAccountant(accountantDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
