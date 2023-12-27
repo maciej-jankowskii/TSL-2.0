@@ -23,7 +23,6 @@ public class TransportOrderDTO {
     private String currency;
     private String orderStatus;
     private Boolean isInvoiced;
-    @NotNull
     private Long transportPlannerId;
     private Long truckId;
 }

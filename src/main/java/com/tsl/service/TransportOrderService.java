@@ -50,25 +50,13 @@ public class TransportOrderService {
         TransportOrder order = transportOrderMapper.mapToEntity(dto);
         Cargo cargo = cargoRepository.findById(dto.getCargoId()).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
         TransportPlanner planner = getLoggedInUser();
+
         addAdditionalDataForEntities(order, cargo, planner);
-        Customer customer = cargo.getCustomer();
-        changeCustomerBalance(customer, order);
 
         TransportOrder saved = transportOrderRepository.save(order);
         return transportOrderMapper.mapToDTO(saved);
     }
 
-    private void changeCustomerBalance(Customer customer, TransportOrder order){
-        BigDecimal grossPrice = checkingGrossPrice(customer, order);
-        customer.setBalance(customer.getBalance().add(grossPrice));
-
-    }
-
-    private BigDecimal checkingGrossPrice(Customer customer, TransportOrder order) {
-        String vatNumber = customer.getVatNumber();
-        BigDecimal orderPrice = order.getPrice();
-        return vatCalculatorService.calculateGrossValue(orderPrice, vatNumber);
-    }
 
     private void addAdditionalDataForEntities(TransportOrder order, Cargo cargo, TransportPlanner planner) {
         order.setTransportPlanner(planner);
