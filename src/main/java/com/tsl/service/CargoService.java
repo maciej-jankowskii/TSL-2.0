@@ -1,8 +1,7 @@
 package com.tsl.service;
 
 import com.tsl.dtos.CargoDTO;
-import com.tsl.exceptions.CustomerNotFoundException;
-import com.tsl.exceptions.WrongLoadigDateException;
+import com.tsl.exceptions.*;
 import com.tsl.mapper.CargoMapper;
 import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.Customer;
@@ -38,12 +37,12 @@ public class CargoService {
         this.userRepository = userRepository;
     }
 
-    public List<CargoDTO> findAllCargos(){
+    public List<CargoDTO> findAllCargos() {
         return cargoRepository.findAll().stream().map(cargoMapper::mapToDTO).collect(Collectors.toList());
     }
 
     @Transactional
-    public CargoDTO addCargo(CargoDTO cargoDTO){
+    public CargoDTO addCargo(CargoDTO cargoDTO) {
         Customer customer = extractCustomerFromCargoDTO(cargoDTO);
         Cargo cargo = cargoMapper.mapToEntity(cargoDTO);
 
@@ -55,6 +54,40 @@ public class CargoService {
         Cargo saved = cargoRepository.save(cargo);
         return cargoMapper.mapToDTO(saved);
     }
+
+    public List<CargoDTO> findAllCargosSortedBy(String sortBy) {
+        return cargoRepository.findAllCargosBy(sortBy).stream().map(cargoMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public List<CargoDTO> findAllNotAssignedCargos() {
+        return cargoRepository.findAllByAssignedToOrderIsFalse().stream().map(cargoMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public List<CargoDTO> findAllNotInvoicedCargos() {
+        return cargoRepository.findAllByInvoicedFalse().stream().map(cargoMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public CargoDTO findCargoById(Long id) {
+        return cargoRepository.findById(id).map(cargoMapper::mapToDTO).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
+    }
+
+    @Transactional
+    public void updateCargo(CargoDTO currentDTO, CargoDTO updatedDTO) {
+        Cargo cargo = cargoMapper.mapToEntity(updatedDTO);
+        checkingIsAssignedCargo(cargo);
+
+        if (currentDTO.getInvoiced() == true && updatedDTO.getInvoiced() == false) {
+            throw new CannotEditCargo("Cannot change isInvoiced value from true to false");
+        }
+        cargoRepository.save(cargo);
+    }
+
+    private static void checkingIsAssignedCargo(Cargo cargo) {
+        if (cargo.getAssignedToOrder()) {
+            throw new CannotEditCargo("Cannot edit assigned cargo.");
+        }
+    }
+
     private void changeCustomerBalance(Customer customer, Cargo cargo) {
         BigDecimal price = checkingGrossPrice(customer, cargo);
         BigDecimal balance = customer.getBalance();
@@ -77,7 +110,7 @@ public class CargoService {
         customer.getCargos().add(cargo);
     }
 
-    private  User getLoggedInUser() {
+    private User getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
         return userRepository.findByEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -86,7 +119,7 @@ public class CargoService {
     private static void checkingLoadingData(Cargo cargo) {
         LocalDate loadingDate = cargo.getLoadingDate();
         LocalDate unloadingDate = cargo.getUnloadingDate();
-        if (unloadingDate != null && unloadingDate.isBefore(loadingDate)){
+        if (unloadingDate != null && unloadingDate.isBefore(loadingDate)) {
             throw new WrongLoadigDateException("The loading date cannot be later than the unloading date");
         }
     }
