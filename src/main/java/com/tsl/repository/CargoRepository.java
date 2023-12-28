@@ -1,7 +1,6 @@
 package com.tsl.repository;
 
 import com.tsl.model.cargo.Cargo;
-import com.tsl.model.warehouse.Warehouse;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

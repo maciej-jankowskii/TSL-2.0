@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/login").permitAll()
                 .requestMatchers("/contact/**").permitAll()
                 .requestMatchers("/warehouses/**", "/cargos/**").hasAnyRole("ADMIN", "FORWARDER", "PLANNER")
-
+                .requestMatchers("/customers/**", "/carriers/**").hasAnyRole("ADMIN", "FORWARDER", "PLANNER", "ACCOUNTANT")
 
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated());

@@ -1,8 +1,13 @@
 package com.tsl.service;
 
+import com.tsl.dtos.CargoDTO;
 import com.tsl.dtos.CustomerDTO;
 import com.tsl.enums.PaymentRating;
+import com.tsl.exceptions.CannotEditCargo;
+import com.tsl.exceptions.CargoNotFoundException;
+import com.tsl.exceptions.CustomerNotFoundException;
 import com.tsl.mapper.CustomerMapper;
+import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.ContactPerson;
 import com.tsl.model.contractor.Customer;
 import com.tsl.repository.CustomerRepository;
@@ -25,6 +30,21 @@ public class CustomerService {
 
     public List<CustomerDTO> findAllCustomers(){
         return customerRepository.findAll().stream().map(customerMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public List<CustomerDTO> findAllCustomersSortedBy(String sortBy) {
+        return customerRepository.findAllCustomersBy(sortBy).stream().map(customerMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public CustomerDTO findCustomerById(Long id) {
+        return customerRepository.findById(id).map(customerMapper::mapToDTO).orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
+    }
+
+    @Transactional
+    public void updateCustomer(CustomerDTO currentDTO, CustomerDTO updatedDTO) {
+        Customer customer = customerMapper.mapToEntity(updatedDTO);
+
+        customerRepository.save(customer);
     }
 
     @Transactional
