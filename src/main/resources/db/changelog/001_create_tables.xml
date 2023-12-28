@@ -712,4 +712,16 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="031" author="maciej-jankowski">
+        <addColumn tableName="cargos">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="cargos" baseColumnNames="user_id"
+                                 constraintName="cargo_user"
+                                 referencedTableName="employees"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
 </databaseChangeLog>

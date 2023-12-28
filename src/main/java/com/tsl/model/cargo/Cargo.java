@@ -2,6 +2,7 @@ package com.tsl.model.cargo;
 
 import com.tsl.enums.Currency;
 import com.tsl.model.contractor.Customer;
+import com.tsl.model.employee.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,4 +36,7 @@ public class Cargo {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
