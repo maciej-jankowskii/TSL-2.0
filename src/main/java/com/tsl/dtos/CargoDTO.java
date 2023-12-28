@@ -31,4 +31,5 @@ public class CargoDTO {
     private Boolean invoiced;
     @Positive(message = "Customer ID cannot be 0")
     private Long customerId;
+    private Long createdById;
 }

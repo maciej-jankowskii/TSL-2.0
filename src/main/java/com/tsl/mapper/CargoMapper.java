@@ -7,6 +7,7 @@ import com.tsl.exceptions.NullEntityException;
 import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.Customer;
 import com.tsl.repository.CustomerRepository;
+import com.tsl.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -62,6 +63,7 @@ public class CargoMapper {
         dto.setAssignedToOrder(cargo.getAssignedToOrder());
         dto.setInvoiced(cargo.getInvoiced());
         dto.setCustomerId(cargo.getCustomer().getId());
+        dto.setCreatedById(cargo.getUser().getId());
         return dto;
     }
 }
