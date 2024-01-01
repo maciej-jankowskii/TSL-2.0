@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface ForwarderOrderRepository extends CrudRepository<ForwardingOrder, Long> {
     Optional<ForwardingOrder> findById(Long id);
     List<ForwardingOrder> findAll();
+    List<ForwardingOrder> findAllByForwarder_Email(String email);
 }

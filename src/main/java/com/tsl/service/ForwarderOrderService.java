@@ -43,7 +43,11 @@ public class ForwarderOrderService {
     }
 
     public List<ForwardingOrderDTO> findAllForwardingOrders() {
-        return forwarderOrderRepository.findAll().stream().map(forwardingOrderMapper::mapToDTO).collect(Collectors.toList());
+        Forwarder forwarder = getLoggedInUser();
+        return forwarderOrderRepository.findAllByForwarder_Email(forwarder.getEmail())
+                .stream()
+                .map(forwardingOrderMapper::mapToDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional
