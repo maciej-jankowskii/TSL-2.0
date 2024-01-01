@@ -25,11 +25,11 @@ public class ForwardingOrderMapper {
         if (dto == null) {
             throw new NullEntityException("Forwarder order data cannot be null");
         }
-
         ForwardingOrder order = new ForwardingOrder();
         order.setId(dto.getId());
         order.setOrderNumber(dto.getOrderNumber());
         Cargo cargo = cargoRepository.findById(dto.getCargoId()).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
+
         if (cargo.getAssignedToOrder()) {
             throw new CargoAlreadyAssignedException("Cargo is already assigned to another order");
         }
@@ -37,6 +37,7 @@ public class ForwardingOrderMapper {
         order.setPrice(dto.getPrice());
         Currency currency = cargo.getCurrency();
         String dtoCurrency = dto.getCurrency();
+
         if (!currency.equals(Currency.valueOf(dtoCurrency))) {
             throw new CurrencyMismatchException("Currency mismatch");
         }
@@ -46,6 +47,7 @@ public class ForwardingOrderMapper {
         order.setTypeOfTruck(TypeOfTruck.valueOf(dto.getTypeOfTruck()));
         order.setTruckNumbers(dto.getTruckNumbers());
         order.setMargin(dto.getMargin());
+        order.setIsInvoiced(dto.getIsInvoiced());
         return order;
     }
 
@@ -63,6 +65,8 @@ public class ForwardingOrderMapper {
         dto.setTypeOfTruck(String.valueOf(order.getTypeOfTruck()));
         dto.setTruckNumbers(order.getTruckNumbers());
         dto.setMargin(order.getMargin());
+        dto.setIsInvoiced(order.getIsInvoiced());
+        dto.setForwarderId(order.getForwarder().getId());
         return dto;
     }
 }

@@ -16,4 +16,6 @@ public class ForwardingOrderDTO {
     private String typeOfTruck;
     private String truckNumbers;
     private BigDecimal margin;
+    private Boolean isInvoiced;
+    private Long forwarderId;
 }

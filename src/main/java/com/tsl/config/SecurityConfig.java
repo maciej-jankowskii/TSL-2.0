@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .requestMatchers("/contact/**").permitAll()
                 .requestMatchers("/warehouses/**", "/cargos/**").hasAnyRole("ADMIN", "FORWARDER", "PLANNER")
                 .requestMatchers("/customers/**", "/carriers/**").hasAnyRole("ADMIN", "FORWARDER", "PLANNER", "ACCOUNTANT")
-
+                .requestMatchers("/forwarding-orders").hasAnyRole("FORWARDER", "ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated());
 

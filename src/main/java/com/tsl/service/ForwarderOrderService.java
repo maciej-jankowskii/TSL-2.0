@@ -1,10 +1,9 @@
 package com.tsl.service;
 
+import com.tsl.dtos.CargoDTO;
 import com.tsl.dtos.ForwardingOrderDTO;
 import com.tsl.enums.OrderStatus;
-import com.tsl.exceptions.CargoNotFoundException;
-import com.tsl.exceptions.CarrierNotFoundException;
-import com.tsl.exceptions.ForwarderNotFoundException;
+import com.tsl.exceptions.*;
 import com.tsl.mapper.ForwardingOrderMapper;
 import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.Carrier;
@@ -48,6 +47,47 @@ public class ForwarderOrderService {
                 .stream()
                 .map(forwardingOrderMapper::mapToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public List<ForwardingOrderDTO> findAllForwardingOrdersSortedBy(Forwarder forwarder, String sortBy){
+        return forwarderOrderRepository.findAllForwardingOrdersBy(forwarder.getEmail(), sortBy)
+                .stream()
+                .map(forwardingOrderMapper::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public ForwardingOrderDTO findForwardingOrderById(Long id){
+        return forwarderOrderRepository.findById(id).map(forwardingOrderMapper::mapToDTO).orElseThrow(() -> new ForwardingOrderNotFoundException("Order not found"));
+    }
+
+    @Transactional
+    public void updateForwardingOrder(ForwardingOrderDTO currentDTO, ForwardingOrderDTO updatedDTO) {
+        Forwarder forwarder = getLoggedInUser();
+        ForwardingOrder order = forwardingOrderMapper.mapToEntity(updatedDTO);
+
+        validateForwarderOwnership(forwarder, order);
+        checkingInvoicingStatus(order);
+        checkingUnauthorizedValueChange(currentDTO, updatedDTO);
+
+        forwarderOrderRepository.save(order);
+    }
+
+    private static void validateForwarderOwnership(Forwarder forwarder, ForwardingOrder order) {
+        if (!order.getForwarder().getId().equals(forwarder.getId())){
+            throw new CannotEditForwardingOrder("You are not allowed to edit this forwarding order");
+        }
+    }
+
+    private static void checkingUnauthorizedValueChange(ForwardingOrderDTO currentDTO, ForwardingOrderDTO updatedDTO) {
+        if (currentDTO.getIsInvoiced() == true && updatedDTO.getIsInvoiced() == false) {
+            throw new CannotEditForwardingOrder("Cannot change isInvoiced value from true to false");
+        }
+    }
+
+    private static void checkingInvoicingStatus(ForwardingOrder order) {
+        if (order.getIsInvoiced()){
+            throw new CannotEditForwardingOrder("Cannot edit invoiced order");
+        }
     }
 
     @Transactional
