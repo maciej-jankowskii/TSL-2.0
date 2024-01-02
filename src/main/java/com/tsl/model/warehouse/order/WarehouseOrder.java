@@ -27,7 +27,7 @@ public class WarehouseOrder {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "warehouse_order_goods",
             joinColumns = @JoinColumn(name = "warehouse_order_id"),

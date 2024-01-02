@@ -16,9 +16,9 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "transport_planners")
 public class TransportPlanner extends User{
-    @OneToMany(mappedBy = "transportPlanner", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "transportPlanner", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Truck> companyTrucks = new ArrayList<>();
-    @OneToMany(mappedBy = "transportPlanner")
+    @OneToMany(mappedBy = "transportPlanner", fetch = FetchType.EAGER)
     private List<TransportOrder> transportOrders;
     private Double salaryBonus;
 }

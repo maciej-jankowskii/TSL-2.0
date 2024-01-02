@@ -30,8 +30,8 @@ public class Warehouse {
     private Boolean forklift;
     private Double costPer100SquareMeters;
     private Double availableArea;
-    @OneToMany(mappedBy = "warehouse")
+    @OneToMany(mappedBy = "warehouse", fetch = FetchType.EAGER)
     private List<WarehouseOrder> warehouseOrders = new ArrayList<>();
-    @OneToMany(mappedBy = "warehouse")
+    @OneToMany(mappedBy = "warehouse", fetch = FetchType.EAGER)
     private List<WarehouseWorker> warehouseWorkers = new ArrayList<>();
 }

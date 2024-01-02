@@ -64,7 +64,6 @@ public class ForwarderOrderService {
     public void updateForwardingOrder(ForwardingOrderDTO currentDTO, ForwardingOrderDTO updatedDTO) {
         Forwarder forwarder = getLoggedInUser();
         ForwardingOrder order = forwardingOrderMapper.mapToEntity(updatedDTO);
-
         validateForwarderOwnership(forwarder, order);
         checkingInvoicingStatus(order);
         checkingUnauthorizedValueChange(currentDTO, updatedDTO);
@@ -97,12 +96,19 @@ public class ForwarderOrderService {
         Carrier carrier = extractCarrierFromOrderDTO(forwardingOrderDTO);
         Forwarder forwarder = getLoggedInUser();
 
+        checkingIsCargoAvailable(cargo);
         addAdditionalDataForOrderAndCargo(order, cargo, forwarder);
         changeCarrierBalance(carrier, order);
 
         ForwardingOrder saved = forwarderOrderRepository.save(order);
         return forwardingOrderMapper.mapToDTO(saved);
 
+    }
+
+    private static void checkingIsCargoAvailable(Cargo cargo) {
+        if (cargo.getAssignedToOrder()) {
+            throw new CargoAlreadyAssignedException("Cargo is already assigned to another order");
+        }
     }
 
     private void changeCarrierBalance(Carrier carrier, ForwardingOrder order) {

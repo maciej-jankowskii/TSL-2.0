@@ -18,12 +18,12 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "customers")
 public class Customer extends Contractor {
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     private List<Cargo> cargos = new ArrayList<>();
     @Enumerated(EnumType.STRING)
     private PaymentRating paymentRating;
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     private List<WarehouseOrder> warehouseOrders = new ArrayList<>();
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     private List<CustomerInvoice> customerInvoices = new ArrayList<>();
 }

@@ -2,6 +2,7 @@ package com.tsl.model.employee;
 
 import com.tsl.model.order.ForwardingOrder;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.util.List;
 @Table(name = "forwarders")
 public class Forwarder extends User{
 
-    @OneToMany(mappedBy = "forwarder")
+    @OneToMany(mappedBy = "forwarder", fetch = FetchType.EAGER)
     private List<ForwardingOrder> forwardingOrders;
     private Double extraPercentage; //for example +20% above 3000 EUR per month
     private BigDecimal totalMargin;

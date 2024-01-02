@@ -3,6 +3,7 @@ package com.tsl.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -18,4 +19,6 @@ public class ForwardingOrderDTO {
     private BigDecimal margin;
     private Boolean isInvoiced;
     private Long forwarderId;
+    private LocalDate dateAdded;
+    private String orderStatus;
 }
