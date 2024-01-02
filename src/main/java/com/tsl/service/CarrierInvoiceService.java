@@ -1,11 +1,11 @@
 package com.tsl.service;
 
+import com.tsl.dtos.CargoDTO;
+import com.tsl.dtos.CarrierDTO;
 import com.tsl.dtos.CarrierInvoiceDTO;
-import com.tsl.exceptions.CarrierNotFoundException;
-import com.tsl.exceptions.ForwardingOrderNotFoundException;
-import com.tsl.exceptions.InvoiceAlreadyPaidException;
-import com.tsl.exceptions.InvoiceNotFound;
+import com.tsl.exceptions.*;
 import com.tsl.mapper.CarrierInvoiceMapper;
+import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.Carrier;
 import com.tsl.model.invoice.CarrierInvoice;
 import com.tsl.model.order.ForwardingOrder;
@@ -40,6 +40,10 @@ public class CarrierInvoiceService {
     public List<CarrierInvoiceDTO> findAll(){
         return carrierInvoiceRepository.findAll().stream().map(carrierInvoiceMapper::mapToDTO).collect(Collectors.toList());
     }
+
+    public CarrierInvoiceDTO findCarrierInvoiceById(Long id) {
+        return carrierInvoiceRepository.findById(id).map(carrierInvoiceMapper::mapToDTO).orElseThrow(() -> new InvoiceNotFound("Invoice not found"));
+    }
     
     @Transactional
     public CarrierInvoiceDTO addCarrierInvoice(CarrierInvoiceDTO carrierInvoiceDTO){
@@ -66,6 +70,32 @@ public class CarrierInvoiceService {
         invoice.setIsPaid(true);
 
         carrierInvoiceRepository.save(invoice);
+    }
+
+    @Transactional
+    public void updateCarrierInvoice(CarrierInvoiceDTO currentDTO, CarrierInvoiceDTO updatedDTO) {
+        CarrierInvoice carrierInvoice = carrierInvoiceMapper.mapToEntity(updatedDTO);
+
+        checkingPaidStatus(carrierInvoice);
+        checkingUnauthorizedValueChange(currentDTO, updatedDTO);
+
+        carrierInvoiceRepository.save(carrierInvoice);
+    }
+
+    private static void checkingUnauthorizedValueChange(CarrierInvoiceDTO currentDTO, CarrierInvoiceDTO updatedDTO) {
+        if (currentDTO.getIsPaid() == true && updatedDTO.getIsPaid() == false){
+            throw new CannotEditInvoice("Cannot change isPaid value from paid to false");
+        }
+    }
+
+    private static void checkingPaidStatus(CarrierInvoice carrierInvoice) {
+        if (carrierInvoice.getIsPaid()){
+            throw new CannotEditInvoice("Cannot edit carrier invoice because is paid.");
+        }
+    }
+
+    public List<CarrierInvoiceDTO> findAllCarrierInvoicesSortedBy(String sortBy) {
+        return carrierInvoiceRepository.findAllCarrierInvoicesBy(sortBy).stream().map(carrierInvoiceMapper::mapToDTO).collect(Collectors.toList());
     }
 
     private static void changeCarrierBalance(CarrierInvoice invoice) {

@@ -1,10 +1,7 @@
 package com.tsl.service;
 
 import com.tsl.dtos.CustomerInvoiceDTO;
-import com.tsl.exceptions.CargoNotFoundException;
-import com.tsl.exceptions.CustomerNotFoundException;
-import com.tsl.exceptions.InvoiceAlreadyPaidException;
-import com.tsl.exceptions.InvoiceNotFound;
+import com.tsl.exceptions.*;
 import com.tsl.mapper.CustomerInvoiceMapper;
 import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.Customer;
@@ -41,6 +38,9 @@ public class CustomerInvoiceService {
     public List<CustomerInvoiceDTO> findAllCustomerInvoices(){
         return customerInvoiceRepository.findAll().stream().map(customerInvoiceMapper::mapToDTO).collect(Collectors.toList());
     }
+    public CustomerInvoiceDTO findCustomerInvoiceById(Long id) {
+        return customerInvoiceRepository.findById(id).map(customerInvoiceMapper::mapToDTO).orElseThrow(() -> new InvoiceNotFound("Invoice not found"));
+    }
 
     @Transactional
     public CustomerInvoiceDTO addCustomerInvoice(CustomerInvoiceDTO customerInvoiceDTO){
@@ -71,6 +71,34 @@ public class CustomerInvoiceService {
         CustomerInvoice saved = customerInvoiceRepository.save(invoice);
         return customerInvoiceMapper.mapToDTO(saved);
     }
+
+    @Transactional
+    public void updateCustomerInvoice(CustomerInvoiceDTO currentDTO, CustomerInvoiceDTO updatedDTO) {
+        CustomerInvoice customerInvoice = customerInvoiceMapper.mapToEntity(updatedDTO);
+
+        checkingPaidStatus(customerInvoice);
+        checkingUnauthorizedValueChange(currentDTO, updatedDTO);
+
+        customerInvoiceRepository.save(customerInvoice);
+    }
+
+    private static void checkingUnauthorizedValueChange(CustomerInvoiceDTO currentDTO, CustomerInvoiceDTO updatedDTO) {
+        if (currentDTO.getIsPaid() == true && updatedDTO.getIsPaid() == false){
+            throw new CannotEditInvoice("Cannot change isPaid value from paid to false");
+        }
+    }
+
+    private static void checkingPaidStatus(CustomerInvoice customerInvoice) {
+        if (customerInvoice.getIsPaid()){
+            throw new CannotEditInvoice("Cannot edit customer invoice because is paid.");
+        }
+    }
+
+    public List<CustomerInvoiceDTO> findAllCustomerInvoicesSortedBy(String sortBy) {
+        return customerInvoiceRepository.findAllCustomerInvoicesBy(sortBy).stream().map(customerInvoiceMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+
 
     private static void changeCustomerBalance(CustomerInvoice invoice) {
         Customer customer = invoice.getCustomer();
