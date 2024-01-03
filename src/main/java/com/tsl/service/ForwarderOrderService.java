@@ -63,11 +63,34 @@ public class ForwarderOrderService {
     public void updateForwardingOrder(ForwardingOrderDTO currentDTO, ForwardingOrderDTO updatedDTO) {
         Forwarder forwarder = getLoggedInUser();
         ForwardingOrder order = forwardingOrderMapper.mapToEntity(updatedDTO);
+        
         validateForwarderOwnership(forwarder, order);
         checkingInvoicingStatus(order);
         checkingUnauthorizedValueChange(currentDTO, updatedDTO);
+        checkingOrderCancellation(updatedDTO, order);
 
         forwarderOrderRepository.save(order);
+    }
+    @Transactional
+    public void cancelForwardingOrder(Long id){
+        ForwardingOrder order = forwarderOrderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Forwarding order not found"));
+        order.setOrderStatus(OrderStatus.valueOf("CANCELLED"));
+
+        changeCarrierBalance(order);
+    }
+
+    private void changeCarrierBalance(ForwardingOrder order) {
+        Carrier carrier = order.getCarrier();
+        BigDecimal netValue = order.getPrice();
+        BigDecimal grossValue = vatCalculatorService.calculateGrossValue(netValue, carrier.getVatNumber());
+        carrier.setBalance(carrier.getBalance().subtract(grossValue));
+    }
+
+    private static void checkingOrderCancellation(ForwardingOrderDTO updatedDTO, ForwardingOrder order) {
+        if (updatedDTO.getOrderStatus().equals("CANCELLED")){
+            Carrier carrier = order.getCarrier();
+            carrier.setBalance(carrier.getBalance().subtract(order.getPrice()));
+        }
     }
 
     private static void validateForwarderOwnership(Forwarder forwarder, ForwardingOrder order) {

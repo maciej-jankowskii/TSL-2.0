@@ -70,6 +70,12 @@ public class ForwardingOrderController {
 
     }
 
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<?> cancelForwardingOrder(@PathVariable Long id) {
+        forwarderOrderService.cancelForwardingOrder(id);
+        return ResponseEntity.noContent().build();
+    }
+
     private void applyPatchAndUpdateOrder(ForwardingOrderDTO orderDTO, JsonMergePatch patch)
             throws JsonPatchException, JsonProcessingException {
         JsonNode orderNode = objectMapper.valueToTree(orderDTO);
