@@ -1,6 +1,7 @@
 package com.tsl.repository;
 
 import com.tsl.model.cargo.Cargo;
+import com.tsl.model.order.TransportOrder;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +29,5 @@ public interface CargoRepository extends CrudRepository<Cargo, Long> {
     List<Cargo> findAllByAssignedToOrderIsFalse();
 
     List<Cargo> findAllByInvoicedFalse();
+
 }

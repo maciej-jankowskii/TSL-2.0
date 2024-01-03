@@ -2,11 +2,9 @@ package com.tsl.service;
 
 import com.tsl.dtos.TransportOrderDTO;
 import com.tsl.enums.OrderStatus;
-import com.tsl.exceptions.CargoNotFoundException;
-import com.tsl.exceptions.PlannerNotFoundException;
+import com.tsl.exceptions.*;
 import com.tsl.mapper.TransportOrderMapper;
 import com.tsl.model.cargo.Cargo;
-import com.tsl.model.contractor.Customer;
 import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.order.TransportOrder;
 import com.tsl.repository.CargoRepository;
@@ -18,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +39,11 @@ public class TransportOrderService {
     }
 
     public List<TransportOrderDTO> findAllTransportOrders(){
-        return transportOrderRepository.findAll().stream().map(transportOrderMapper::mapToDTO).collect(Collectors.toList());
+        TransportPlanner planner = getLoggedInUser();
+        return transportOrderRepository.findAllByTransportPlannerEmail(planner.getEmail())
+                .stream()
+                .map(transportOrderMapper::mapToDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -51,10 +52,58 @@ public class TransportOrderService {
         Cargo cargo = cargoRepository.findById(dto.getCargoId()).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
         TransportPlanner planner = getLoggedInUser();
 
+        checkingIsCargoAvailable(cargo);
         addAdditionalDataForEntities(order, cargo, planner);
 
         TransportOrder saved = transportOrderRepository.save(order);
         return transportOrderMapper.mapToDTO(saved);
+    }
+
+    public List<TransportOrderDTO> findAllTransportOrdersSortedBy(TransportPlanner planner, String sortBy){
+        return transportOrderRepository.findAllTransportOrdersBy(planner.getEmail(), sortBy)
+                .stream()
+                .map(transportOrderMapper::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public TransportOrderDTO findTransportOrderById(Long id){
+        return transportOrderRepository.findById(id).map(transportOrderMapper::mapToDTO).orElseThrow(() -> new TransportOrderNotFoundException("Order not found"));
+    }
+
+    @Transactional
+    public void updateTransportOrder(TransportOrderDTO currentDTO, TransportOrderDTO updatedDTO) {
+        TransportPlanner planner = getLoggedInUser();
+        TransportOrder order = transportOrderMapper.mapToEntity(updatedDTO);
+
+        validateTransportPlannerOwnership(planner, order);
+        checkingInvoicingStatus(order);
+        checkingUnauthorizedValueChange(currentDTO, updatedDTO);
+
+        transportOrderRepository.save(order);
+    }
+
+    private static void checkingUnauthorizedValueChange(TransportOrderDTO currentDTO, TransportOrderDTO updatedDTO) {
+        if (currentDTO.getIsInvoiced() == true && updatedDTO.getIsInvoiced() == false) {
+            throw new CannotEditTransportOrder("Cannot change isInvoiced value from true to false");
+        }
+    }
+
+    private static void checkingInvoicingStatus(TransportOrder order) {
+        if (order.getIsInvoiced()){
+            throw new CannotEditTransportOrder("Cannot edit invoiced order");
+        }
+    }
+
+    private static void validateTransportPlannerOwnership(TransportPlanner planner, TransportOrder order) {
+        if (!order.getTransportPlanner().getId().equals(planner.getId())){
+            throw new CannotEditTransportOrder("You are not allowed to edit this transport order");
+        }
+    }
+
+    private static void checkingIsCargoAvailable(Cargo cargo) {
+        if (cargo.getAssignedToOrder()){
+            throw new CargoAlreadyAssignedException("Cargo is already assigned to the order");
+        }
     }
 
 

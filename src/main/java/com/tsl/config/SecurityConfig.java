@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .requestMatchers("/forwarding-orders").hasAnyRole("FORWARDER", "ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/invoices/**").hasAnyRole("ACCOUNTANT", "ADMIN")
+                .requestMatchers("/transport-orders").hasAnyRole("PLANNER", "ADMIN")
                 .anyRequest().authenticated());
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
