@@ -2,7 +2,7 @@ package com.tsl.mapper;
 
 import com.tsl.dtos.CarrierInvoiceDTO;
 import com.tsl.exceptions.CarrierNotFoundException;
-import com.tsl.exceptions.ForwardingOrderNotFoundException;
+import com.tsl.exceptions.OrderNotFoundException;
 import com.tsl.exceptions.NullEntityException;
 import com.tsl.model.contractor.Carrier;
 import com.tsl.model.invoice.CarrierInvoice;
@@ -34,7 +34,7 @@ public class CarrierInvoiceMapper {
         carrierInvoice.setNetValue(carrierInvoiceDTO.getNetValue());
         carrierInvoice.setGrossValue(carrierInvoiceDTO.getGrossValue());
         carrierInvoice.setIsPaid(carrierInvoiceDTO.getIsPaid());
-        ForwardingOrder order = forwarderOrderRepository.findById(carrierInvoiceDTO.getOrderId()).orElseThrow(() -> new ForwardingOrderNotFoundException("Order not found"));
+        ForwardingOrder order = forwarderOrderRepository.findById(carrierInvoiceDTO.getOrderId()).orElseThrow(() -> new OrderNotFoundException("Order not found"));
         carrierInvoice.setOrder(order);
         Carrier carrier = carrierRepository.findById(carrierInvoiceDTO.getCarrierId()).orElseThrow(() -> new CarrierNotFoundException("Carrier not found"));
         carrierInvoice.setCarrier(carrier);

@@ -67,7 +67,7 @@ public class TransportOrderService {
     }
 
     public TransportOrderDTO findTransportOrderById(Long id){
-        return transportOrderRepository.findById(id).map(transportOrderMapper::mapToDTO).orElseThrow(() -> new TransportOrderNotFoundException("Order not found"));
+        return transportOrderRepository.findById(id).map(transportOrderMapper::mapToDTO).orElseThrow(() -> new OrderNotFoundException("Order not found"));
     }
 
     @Transactional
@@ -84,19 +84,19 @@ public class TransportOrderService {
 
     private static void checkingUnauthorizedValueChange(TransportOrderDTO currentDTO, TransportOrderDTO updatedDTO) {
         if (currentDTO.getIsInvoiced() == true && updatedDTO.getIsInvoiced() == false) {
-            throw new CannotEditTransportOrder("Cannot change isInvoiced value from true to false");
+            throw new CannotEditEntityException("Cannot change isInvoiced value from true to false");
         }
     }
 
     private static void checkingInvoicingStatus(TransportOrder order) {
         if (order.getIsInvoiced()){
-            throw new CannotEditTransportOrder("Cannot edit invoiced order");
+            throw new CannotEditEntityException("Cannot edit invoiced order");
         }
     }
 
     private static void validateTransportPlannerOwnership(TransportPlanner planner, TransportOrder order) {
         if (!order.getTransportPlanner().getId().equals(planner.getId())){
-            throw new CannotEditTransportOrder("You are not allowed to edit this transport order");
+            throw new CannotEditEntityException("You are not allowed to edit this transport order");
         }
     }
 

@@ -1,11 +1,8 @@
 package com.tsl.service;
 
-import com.tsl.dtos.CargoDTO;
-import com.tsl.dtos.CarrierDTO;
 import com.tsl.dtos.CarrierInvoiceDTO;
 import com.tsl.exceptions.*;
 import com.tsl.mapper.CarrierInvoiceMapper;
-import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.Carrier;
 import com.tsl.model.invoice.CarrierInvoice;
 import com.tsl.model.order.ForwardingOrder;
@@ -84,13 +81,13 @@ public class CarrierInvoiceService {
 
     private static void checkingUnauthorizedValueChange(CarrierInvoiceDTO currentDTO, CarrierInvoiceDTO updatedDTO) {
         if (currentDTO.getIsPaid() == true && updatedDTO.getIsPaid() == false){
-            throw new CannotEditInvoice("Cannot change isPaid value from paid to false");
+            throw new CannotEditEntityException("Cannot change isPaid value from paid to false");
         }
     }
 
     private static void checkingPaidStatus(CarrierInvoice carrierInvoice) {
         if (carrierInvoice.getIsPaid()){
-            throw new CannotEditInvoice("Cannot edit carrier invoice because is paid.");
+            throw new CannotEditEntityException("Cannot edit carrier invoice because is paid.");
         }
     }
 
@@ -130,7 +127,7 @@ public class CarrierInvoiceService {
 
     private ForwardingOrder extractOrderFromInvoice(CarrierInvoiceDTO carrierInvoiceDTO) {
         Long orderId = carrierInvoiceDTO.getOrderId();
-        return forwarderOrderRepository.findById(orderId).orElseThrow(() -> new ForwardingOrderNotFoundException("Order not found"));
+        return forwarderOrderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found"));
     }
 
 

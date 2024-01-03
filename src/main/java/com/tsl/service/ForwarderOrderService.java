@@ -1,6 +1,5 @@
 package com.tsl.service;
 
-import com.tsl.dtos.CargoDTO;
 import com.tsl.dtos.ForwardingOrderDTO;
 import com.tsl.enums.OrderStatus;
 import com.tsl.exceptions.*;
@@ -57,7 +56,7 @@ public class ForwarderOrderService {
     }
 
     public ForwardingOrderDTO findForwardingOrderById(Long id){
-        return forwarderOrderRepository.findById(id).map(forwardingOrderMapper::mapToDTO).orElseThrow(() -> new ForwardingOrderNotFoundException("Order not found"));
+        return forwarderOrderRepository.findById(id).map(forwardingOrderMapper::mapToDTO).orElseThrow(() -> new OrderNotFoundException("Order not found"));
     }
 
     @Transactional
@@ -73,19 +72,19 @@ public class ForwarderOrderService {
 
     private static void validateForwarderOwnership(Forwarder forwarder, ForwardingOrder order) {
         if (!order.getForwarder().getId().equals(forwarder.getId())){
-            throw new CannotEditForwardingOrder("You are not allowed to edit this forwarding order");
+            throw new CannotEditEntityException("You are not allowed to edit this forwarding order");
         }
     }
 
     private static void checkingUnauthorizedValueChange(ForwardingOrderDTO currentDTO, ForwardingOrderDTO updatedDTO) {
         if (currentDTO.getIsInvoiced() == true && updatedDTO.getIsInvoiced() == false) {
-            throw new CannotEditForwardingOrder("Cannot change isInvoiced value from true to false");
+            throw new CannotEditEntityException("Cannot change isInvoiced value from true to false");
         }
     }
 
     private static void checkingInvoicingStatus(ForwardingOrder order) {
         if (order.getIsInvoiced()){
-            throw new CannotEditForwardingOrder("Cannot edit invoiced order");
+            throw new CannotEditEntityException("Cannot edit invoiced order");
         }
     }
 

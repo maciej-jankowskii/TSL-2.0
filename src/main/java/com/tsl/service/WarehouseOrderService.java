@@ -78,14 +78,14 @@ public class WarehouseOrderService {
         checkingIsCompletedOrder(order);
 
         if (currentDTO.getIsCompleted() == true && updatedDTO.getIsCompleted() == false){
-            throw new CannotEditCompletedWarehouseOrder("Cannot change isCompleted value from true to false");
+            throw new CannotEditEntityException("Cannot change isCompleted value from true to false");
         }
         warehouseOrderRepository.save(order);
     }
 
     private static void checkingIsCompletedOrder(WarehouseOrder order) {
         if (order.getIsCompleted()){
-            throw new CannotEditCompletedWarehouseOrder("Cannot edit completed order.");
+            throw new CannotEditEntityException("Cannot edit completed order.");
         }
     }
 

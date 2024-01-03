@@ -77,14 +77,14 @@ public class CargoService {
         checkingIsAssignedCargo(cargo);
 
         if (currentDTO.getInvoiced() == true && updatedDTO.getInvoiced() == false) {
-            throw new CannotEditCargo("Cannot change isInvoiced value from true to false");
+            throw new CannotEditEntityException("Cannot change isInvoiced value from true to false");
         }
         cargoRepository.save(cargo);
     }
 
     private static void checkingIsAssignedCargo(Cargo cargo) {
         if (cargo.getAssignedToOrder()) {
-            throw new CannotEditCargo("Cannot edit assigned cargo.");
+            throw new CannotEditEntityException("Cannot edit assigned cargo.");
         }
     }
 

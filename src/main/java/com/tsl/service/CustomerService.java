@@ -1,13 +1,9 @@
 package com.tsl.service;
 
-import com.tsl.dtos.CargoDTO;
 import com.tsl.dtos.CustomerDTO;
 import com.tsl.enums.PaymentRating;
-import com.tsl.exceptions.CannotEditCargo;
-import com.tsl.exceptions.CargoNotFoundException;
 import com.tsl.exceptions.CustomerNotFoundException;
 import com.tsl.mapper.CustomerMapper;
-import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.ContactPerson;
 import com.tsl.model.contractor.Customer;
 import com.tsl.repository.CustomerRepository;

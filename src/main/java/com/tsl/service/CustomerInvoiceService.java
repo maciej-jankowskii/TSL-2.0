@@ -84,13 +84,13 @@ public class CustomerInvoiceService {
 
     private static void checkingUnauthorizedValueChange(CustomerInvoiceDTO currentDTO, CustomerInvoiceDTO updatedDTO) {
         if (currentDTO.getIsPaid() == true && updatedDTO.getIsPaid() == false){
-            throw new CannotEditInvoice("Cannot change isPaid value from paid to false");
+            throw new CannotEditEntityException("Cannot change isPaid value from paid to false");
         }
     }
 
     private static void checkingPaidStatus(CustomerInvoice customerInvoice) {
         if (customerInvoice.getIsPaid()){
-            throw new CannotEditInvoice("Cannot edit customer invoice because is paid.");
+            throw new CannotEditEntityException("Cannot edit customer invoice because is paid.");
         }
     }
 
