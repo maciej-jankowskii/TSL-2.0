@@ -1,6 +1,8 @@
 package com.tsl.service;
 
 import com.tsl.dtos.WarehouseOrderInvoiceDTO;
+import com.tsl.exceptions.CannotEditEntityException;
+import com.tsl.exceptions.InvoiceAlreadyPaidException;
 import com.tsl.exceptions.InvoiceNotFoundException;
 import com.tsl.exceptions.OrderNotFoundException;
 import com.tsl.mapper.WarehouseOrderInvoiceMapper;
@@ -40,6 +42,10 @@ public class WarehouseOrderInvoiceService {
         return warehouseOrderInvoiceRepository.findById(id).map(warehouseOrderInvoiceMapper::mapToDTO).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
     }
 
+    public List<WarehouseOrderInvoiceDTO> findAllWarehouseInvoicesSortedBy(String sortBy) {
+        return warehouseOrderInvoiceRepository.findAllWarehouseInvoicesBy(sortBy).stream().map(warehouseOrderInvoiceMapper::mapToDTO).collect(Collectors.toList());
+    }
+
     @Transactional
     public WarehouseOrderInvoiceDTO addWarehouseInvoice(WarehouseOrderInvoiceDTO invoiceDTO){
         WarehouseOrderInvoice invoice = warehouseOrderInvoiceMapper.mapToEntity(invoiceDTO);
@@ -55,6 +61,52 @@ public class WarehouseOrderInvoiceService {
 
         WarehouseOrderInvoice saved = warehouseOrderInvoiceRepository.save(invoice);
         return warehouseOrderInvoiceMapper.mapToDTO(saved);
+    }
+
+    @Transactional
+    public WarehouseOrderInvoiceDTO markInvoiceAsPaid(Long invoiceId){
+        WarehouseOrderInvoice invoice = warehouseOrderInvoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
+
+        checkingIsPaidInvoice(invoice);
+        changeCustomerBalance(invoice);
+
+        WarehouseOrderInvoice saved = warehouseOrderInvoiceRepository.save(invoice);
+        return warehouseOrderInvoiceMapper.mapToDTO(saved);
+    }
+
+    @Transactional
+    public void updateWarehouseInvoice(WarehouseOrderInvoiceDTO currentDTO, WarehouseOrderInvoiceDTO updatedDTO) {
+        WarehouseOrderInvoice invoice = warehouseOrderInvoiceMapper.mapToEntity(updatedDTO);
+
+        checkingPaidStatus(invoice);
+        checkingUnauthorizedValueChange(currentDTO, updatedDTO);
+
+        warehouseOrderInvoiceRepository.save(invoice);
+    }
+
+    private static void checkingUnauthorizedValueChange(WarehouseOrderInvoiceDTO currentDTO, WarehouseOrderInvoiceDTO updatedDTO) {
+        if (currentDTO.getIsPaid() == true && updatedDTO.getIsPaid() == false){
+            throw new CannotEditEntityException("Cannot change isPaid value from paid to false");
+        }
+    }
+    private static void checkingPaidStatus(WarehouseOrderInvoice invoice) {
+        if (invoice.getIsPaid()){
+            throw new CannotEditEntityException("Cannot edit customer invoice because is paid.");
+        }
+    }
+
+    private static void checkingIsPaidInvoice(WarehouseOrderInvoice invoice) {
+        if (invoice.getIsPaid()){
+            throw new InvoiceAlreadyPaidException("Invoice is already paid");
+        }
+        invoice.setIsPaid(true);
+    }
+
+    private static void changeCustomerBalance(WarehouseOrderInvoice invoice) {
+        Customer customer = invoice.getWarehouseOrder().getCustomer();
+        BigDecimal balance = customer.getBalance();
+        BigDecimal grossValue = invoice.getGrossValue();
+        customer.setBalance(balance.subtract(grossValue));
     }
 
     private static void addAdditionalDataForInvoiceAndCustomer(WarehouseOrderInvoice invoice, WarehouseOrder order, Customer customer, BigDecimal grossValue) {

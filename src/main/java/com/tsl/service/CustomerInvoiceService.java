@@ -60,16 +60,18 @@ public class CustomerInvoiceService {
     public CustomerInvoiceDTO markInvoiceAsPaid(Long invoiceId){
         CustomerInvoice invoice = customerInvoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
 
-        if (invoice.getIsPaid()){
-            throw new InvoiceAlreadyPaidException("Invoice is already paid");
-        }
-
+        checkingIsPaidInvoice(invoice);
         changeCustomerBalance(invoice);
-
-        invoice.setIsPaid(true);
 
         CustomerInvoice saved = customerInvoiceRepository.save(invoice);
         return customerInvoiceMapper.mapToDTO(saved);
+    }
+
+    private static void checkingIsPaidInvoice(CustomerInvoice invoice) {
+        if (invoice.getIsPaid()){
+            throw new InvoiceAlreadyPaidException("Invoice is already paid");
+        }
+        invoice.setIsPaid(true);
     }
 
     @Transactional

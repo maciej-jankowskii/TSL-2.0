@@ -39,16 +39,16 @@ public class InvoiceController {
      */
 
     @GetMapping("/carrier")
-    public ResponseEntity<List<CarrierInvoiceDTO>> findAllCarrierInvoices(){
+    public ResponseEntity<List<CarrierInvoiceDTO>> findAllCarrierInvoices() {
         List<CarrierInvoiceDTO> allInvoices = carrierInvoiceService.findAll();
-        if (allInvoices.isEmpty()){
+        if (allInvoices.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(allInvoices);
     }
 
     @PostMapping("/carrier")
-    public ResponseEntity<CarrierInvoiceDTO> addInvoiceFromCarrier(@RequestBody @Valid CarrierInvoiceDTO dto){
+    public ResponseEntity<CarrierInvoiceDTO> addInvoiceFromCarrier(@RequestBody @Valid CarrierInvoiceDTO dto) {
         CarrierInvoiceDTO created = carrierInvoiceService.addCarrierInvoice(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{/id}")
@@ -58,7 +58,7 @@ public class InvoiceController {
     }
 
     @PatchMapping("/carrier/{id}/paid")
-    public ResponseEntity<?> markCarrierInvoiceAsPaid(@PathVariable Long id){
+    public ResponseEntity<?> markCarrierInvoiceAsPaid(@PathVariable Long id) {
         carrierInvoiceService.markInvoiceAsPaid(id);
         return ResponseEntity.noContent().build();
     }
@@ -91,15 +91,16 @@ public class InvoiceController {
      */
 
     @GetMapping("/customer")
-    public ResponseEntity<List<CustomerInvoiceDTO>> findAllCustomerInvoices(){
+    public ResponseEntity<List<CustomerInvoiceDTO>> findAllCustomerInvoices() {
         List<CustomerInvoiceDTO> allCustomerInvoices = customerInvoiceService.findAllCustomerInvoices();
-        if (allCustomerInvoices.isEmpty()){
+        if (allCustomerInvoices.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(allCustomerInvoices);
     }
+
     @PostMapping("/customer")
-    public ResponseEntity<CustomerInvoiceDTO> addInvoiceForCustomer(@RequestBody @Valid CustomerInvoiceDTO customerInvoiceDTO){
+    public ResponseEntity<CustomerInvoiceDTO> addInvoiceForCustomer(@RequestBody @Valid CustomerInvoiceDTO customerInvoiceDTO) {
         CustomerInvoiceDTO created = customerInvoiceService.addCustomerInvoice(customerInvoiceDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{/id}")
@@ -109,7 +110,7 @@ public class InvoiceController {
     }
 
     @PatchMapping("/customer/{id}/paid")
-    public ResponseEntity<?> markCustomerInvoiceAsPaid(@PathVariable Long id){
+    public ResponseEntity<?> markCustomerInvoiceAsPaid(@PathVariable Long id) {
         customerInvoiceService.markInvoiceAsPaid(id);
         return ResponseEntity.noContent().build();
     }
@@ -142,16 +143,16 @@ public class InvoiceController {
      */
 
     @GetMapping("/warehouse-order")
-    public ResponseEntity<List<WarehouseOrderInvoiceDTO>> findAllWarehouseInvoices(){
+    public ResponseEntity<List<WarehouseOrderInvoiceDTO>> findAllWarehouseInvoices() {
         List<WarehouseOrderInvoiceDTO> allInvoices = warehouseOrderInvoiceService.findAllWarehouseInvoices();
-        if (allInvoices.isEmpty()){
+        if (allInvoices.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(allInvoices);
     }
 
     @PostMapping("/warehouse-order")
-    public ResponseEntity<WarehouseOrderInvoiceDTO> addWarehouseInvoice(@RequestBody @Valid WarehouseOrderInvoiceDTO dto){
+    public ResponseEntity<WarehouseOrderInvoiceDTO> addWarehouseInvoice(@RequestBody @Valid WarehouseOrderInvoiceDTO dto) {
         WarehouseOrderInvoiceDTO created = warehouseOrderInvoiceService.addWarehouseInvoice(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{/id}")
@@ -160,6 +161,31 @@ public class InvoiceController {
         return ResponseEntity.created(uri).body(created);
     }
 
+    @PatchMapping("/warehouse-order/{id}/paid")
+    public ResponseEntity<?> markWarehouseInvoiceAsPaid(@PathVariable Long id) {
+        warehouseOrderInvoiceService.markInvoiceAsPaid(id);
+        return ResponseEntity.noContent().build();
+    }
 
+    @GetMapping("/warehouse-order/sorted")
+    public ResponseEntity<List<WarehouseOrderInvoiceDTO>> findAllWarehouseInvoicesSortedBy(@RequestParam String sortBy) {
+        List<WarehouseOrderInvoiceDTO> sortedWarehouseInvoices = warehouseOrderInvoiceService.findAllWarehouseInvoicesSortedBy(sortBy);
+        return ResponseEntity.ok(sortedWarehouseInvoices);
+    }
 
+    @PatchMapping("/warehouse-order/{id}")
+    public ResponseEntity<?> updateWarehouseInvoice(@PathVariable Long id, @RequestBody JsonMergePatch patch)
+            throws JsonPatchException, JsonProcessingException {
+        WarehouseOrderInvoiceDTO invoiceDTO = warehouseOrderInvoiceService.findWarehouseInvoiceById(id);
+        applyPatchAndUpdateWarehouseInvoice(invoiceDTO, patch);
+        return ResponseEntity.noContent().build();
+    }
+
+    private void applyPatchAndUpdateWarehouseInvoice(WarehouseOrderInvoiceDTO invoiceDTO, JsonMergePatch patch)
+            throws JsonPatchException, JsonProcessingException {
+        JsonNode invoiceNode = objectMapper.valueToTree(invoiceDTO);
+        JsonNode patchedInvoice = patch.apply(invoiceNode);
+        WarehouseOrderInvoiceDTO patchedInvoiceDTO = objectMapper.treeToValue(patchedInvoice, WarehouseOrderInvoiceDTO.class);
+        warehouseOrderInvoiceService.updateWarehouseInvoice(invoiceDTO, patchedInvoiceDTO);
+    }
 }
