@@ -30,10 +30,4 @@ public class DriverController {
         List<DriverDTO> allDrivers = driverService.findAllDriverSortedBy(sortBy);
         return ResponseEntity.ok(allDrivers);
     }
-
-    @PostMapping("/{driverId}/assignTruck/{truckId}")
-    public ResponseEntity<?> assignTruckToDriver(@PathVariable Long driverId, @PathVariable Long truckId){
-        driverService.assignTruckToDriver(driverId, truckId);
-        return ResponseEntity.noContent().build();
-    }
 }

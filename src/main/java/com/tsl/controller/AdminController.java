@@ -42,7 +42,7 @@ public class AdminController {
     }
 
     /***
-     Handling requests related to find and register new Employees and new Trucks
+     Handling requests related to find and register new Employees and new Trucks and assign Driver to Truck
      */
 
     @GetMapping("/forwarders")
@@ -134,6 +134,12 @@ public class AdminController {
     public ResponseEntity<String> addNewTruck(@RequestBody @Valid TruckDTO truckDTO) {
         String result = truckService.addNewTruck(truckDTO);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/driver/{driverId}/assignTruck/{truckId}")
+    public ResponseEntity<?> assignTruckToDriver(@PathVariable Long driverId, @PathVariable Long truckId){
+        driverService.assignTruckToDriver(driverId, truckId);
+        return ResponseEntity.noContent().build();
     }
 
     /***
