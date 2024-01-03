@@ -5,11 +5,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
-import com.tsl.dtos.CargoDTO;
 import com.tsl.dtos.CarrierInvoiceDTO;
 import com.tsl.dtos.CustomerInvoiceDTO;
+import com.tsl.dtos.WarehouseOrderInvoiceDTO;
 import com.tsl.service.CarrierInvoiceService;
 import com.tsl.service.CustomerInvoiceService;
+import com.tsl.service.WarehouseOrderInvoiceService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +25,13 @@ public class InvoiceController {
     private final CarrierInvoiceService carrierInvoiceService;
     private final CustomerInvoiceService customerInvoiceService;
     private final ObjectMapper objectMapper;
+    private final WarehouseOrderInvoiceService warehouseOrderInvoiceService;
 
-    public InvoiceController(CarrierInvoiceService carrierInvoiceService, CustomerInvoiceService customerInvoiceService, ObjectMapper objectMapper) {
+    public InvoiceController(CarrierInvoiceService carrierInvoiceService, CustomerInvoiceService customerInvoiceService, ObjectMapper objectMapper, WarehouseOrderInvoiceService warehouseOrderInvoiceService) {
         this.carrierInvoiceService = carrierInvoiceService;
         this.customerInvoiceService = customerInvoiceService;
         this.objectMapper = objectMapper;
+        this.warehouseOrderInvoiceService = warehouseOrderInvoiceService;
     }
 
     /***
@@ -133,4 +136,30 @@ public class InvoiceController {
         CustomerInvoiceDTO patchedInvoiceDTO = objectMapper.treeToValue(patchedInvoice, CustomerInvoiceDTO.class);
         customerInvoiceService.updateCustomerInvoice(invoiceDTO, patchedInvoiceDTO);
     }
+
+    /***
+     Handling requests related to Warehouse order invoices
+     */
+
+    @GetMapping("/warehouse-order")
+    public ResponseEntity<List<WarehouseOrderInvoiceDTO>> findAllWarehouseInvoices(){
+        List<WarehouseOrderInvoiceDTO> allInvoices = warehouseOrderInvoiceService.findAllWarehouseInvoices();
+        if (allInvoices.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allInvoices);
+    }
+
+    @PostMapping("/warehouse-order")
+    public ResponseEntity<WarehouseOrderInvoiceDTO> addWarehouseInvoice(@RequestBody @Valid WarehouseOrderInvoiceDTO dto){
+        WarehouseOrderInvoiceDTO created = warehouseOrderInvoiceService.addWarehouseInvoice(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("{/id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(created);
+    }
+
+
+
 }

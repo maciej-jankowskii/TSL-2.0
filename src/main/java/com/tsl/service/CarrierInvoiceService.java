@@ -39,7 +39,7 @@ public class CarrierInvoiceService {
     }
 
     public CarrierInvoiceDTO findCarrierInvoiceById(Long id) {
-        return carrierInvoiceRepository.findById(id).map(carrierInvoiceMapper::mapToDTO).orElseThrow(() -> new InvoiceNotFound("Invoice not found"));
+        return carrierInvoiceRepository.findById(id).map(carrierInvoiceMapper::mapToDTO).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
     }
     
     @Transactional
@@ -58,7 +58,7 @@ public class CarrierInvoiceService {
 
     @Transactional
     public void markInvoiceAsPaid(Long invoiceId){
-        CarrierInvoice invoice = carrierInvoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFound("Invoice not found"));
+        CarrierInvoice invoice = carrierInvoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
         if (invoice.getIsPaid()){
             throw new InvoiceAlreadyPaidException("Invoice is already paid");
         }

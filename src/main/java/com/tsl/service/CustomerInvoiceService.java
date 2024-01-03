@@ -39,7 +39,7 @@ public class CustomerInvoiceService {
         return customerInvoiceRepository.findAll().stream().map(customerInvoiceMapper::mapToDTO).collect(Collectors.toList());
     }
     public CustomerInvoiceDTO findCustomerInvoiceById(Long id) {
-        return customerInvoiceRepository.findById(id).map(customerInvoiceMapper::mapToDTO).orElseThrow(() -> new InvoiceNotFound("Invoice not found"));
+        return customerInvoiceRepository.findById(id).map(customerInvoiceMapper::mapToDTO).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
     }
 
     @Transactional
@@ -58,7 +58,7 @@ public class CustomerInvoiceService {
 
     @Transactional
     public CustomerInvoiceDTO markInvoiceAsPaid(Long invoiceId){
-        CustomerInvoice invoice = customerInvoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFound("Invoice not found"));
+        CustomerInvoice invoice = customerInvoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
 
         if (invoice.getIsPaid()){
             throw new InvoiceAlreadyPaidException("Invoice is already paid");
