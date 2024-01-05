@@ -35,9 +35,14 @@ public class WarehouseOrderInvoiceService {
         this.vatCalculatorService = vatCalculatorService;
     }
 
-    public List<WarehouseOrderInvoiceDTO> findAllWarehouseInvoices(){
+    /***
+     Finding methods
+     */
+
+    public List<WarehouseOrderInvoiceDTO> findAllWarehouseInvoices() {
         return warehouseOrderInvoiceRepository.findAll().stream().map(warehouseOrderInvoiceMapper::mapToDTO).collect(Collectors.toList());
     }
+
     public WarehouseOrderInvoiceDTO findWarehouseInvoiceById(Long id) {
         return warehouseOrderInvoiceRepository.findById(id).map(warehouseOrderInvoiceMapper::mapToDTO).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
     }
@@ -46,8 +51,12 @@ public class WarehouseOrderInvoiceService {
         return warehouseOrderInvoiceRepository.findAllWarehouseInvoicesBy(sortBy).stream().map(warehouseOrderInvoiceMapper::mapToDTO).collect(Collectors.toList());
     }
 
+    /***
+     Create and update methods
+     */
+
     @Transactional
-    public WarehouseOrderInvoiceDTO addWarehouseInvoice(WarehouseOrderInvoiceDTO invoiceDTO){
+    public WarehouseOrderInvoiceDTO addWarehouseInvoice(WarehouseOrderInvoiceDTO invoiceDTO) {
         WarehouseOrderInvoice invoice = warehouseOrderInvoiceMapper.mapToEntity(invoiceDTO);
 
         WarehouseOrder order = extractOrderFromInvoice(invoiceDTO);
@@ -64,7 +73,7 @@ public class WarehouseOrderInvoiceService {
     }
 
     @Transactional
-    public WarehouseOrderInvoiceDTO markInvoiceAsPaid(Long invoiceId){
+    public WarehouseOrderInvoiceDTO markInvoiceAsPaid(Long invoiceId) {
         WarehouseOrderInvoice invoice = warehouseOrderInvoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
 
         checkingIsPaidInvoice(invoice);
@@ -84,19 +93,24 @@ public class WarehouseOrderInvoiceService {
         warehouseOrderInvoiceRepository.save(invoice);
     }
 
+    /***
+     Helper methods
+     */
+
     private static void checkingUnauthorizedValueChange(WarehouseOrderInvoiceDTO currentDTO, WarehouseOrderInvoiceDTO updatedDTO) {
-        if (currentDTO.getIsPaid() == true && updatedDTO.getIsPaid() == false){
+        if (currentDTO.getIsPaid() == true && updatedDTO.getIsPaid() == false) {
             throw new CannotEditEntityException("Cannot change isPaid value from paid to false");
         }
     }
+
     private static void checkingPaidStatus(WarehouseOrderInvoice invoice) {
-        if (invoice.getIsPaid()){
+        if (invoice.getIsPaid()) {
             throw new CannotEditEntityException("Cannot edit customer invoice because is paid.");
         }
     }
 
     private static void checkingIsPaidInvoice(WarehouseOrderInvoice invoice) {
-        if (invoice.getIsPaid()){
+        if (invoice.getIsPaid()) {
             throw new InvoiceAlreadyPaidException("Invoice is already paid");
         }
         invoice.setIsPaid(true);
@@ -125,7 +139,7 @@ public class WarehouseOrderInvoiceService {
 
     private static Customer extractCustomerFromOrder(WarehouseOrder order) {
         Customer customer = order.getCustomer();
-        if (customer == null){
+        if (customer == null) {
             throw new EntityNotFoundException("Customer not found");
         }
         return customer;

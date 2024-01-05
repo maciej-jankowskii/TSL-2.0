@@ -21,12 +21,12 @@ public class ContactPersonService {
         this.contactPersonMapper = contactPersonMapper;
     }
 
-    public List<ContactPersonDTO> findAllContactPersons(){
+    public List<ContactPersonDTO> findAllContactPersons() {
         return contactPersonRepository.findAll().stream().map(contactPersonMapper::mapToDTO).collect(Collectors.toList());
     }
 
     @Transactional
-    public ContactPersonDTO addContactPerson(ContactPersonDTO contactPersonDTO){
+    public ContactPersonDTO addContactPerson(ContactPersonDTO contactPersonDTO) {
         ContactPerson contactPerson = contactPersonMapper.mapToEntity(contactPersonDTO);
         ContactPerson saved = contactPersonRepository.save(contactPerson);
         return contactPersonMapper.mapToDTO(saved);

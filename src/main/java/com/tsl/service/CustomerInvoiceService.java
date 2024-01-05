@@ -35,14 +35,23 @@ public class CustomerInvoiceService {
         this.vatCalculatorService = vatCalculatorService;
     }
 
-    public List<CustomerInvoiceDTO> findAllCustomerInvoices(){
+    /***
+     Finding methods
+     */
+
+    public List<CustomerInvoiceDTO> findAllCustomerInvoices() {
         return customerInvoiceRepository.findAll().stream().map(customerInvoiceMapper::mapToDTO).collect(Collectors.toList());
     }
+
     public CustomerInvoiceDTO findCustomerInvoiceById(Long id) {
         return customerInvoiceRepository.findById(id).map(customerInvoiceMapper::mapToDTO).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
     }
 
-    public List<CustomerInvoiceDTO> findAllOverdueInvoices(){
+    public List<CustomerInvoiceDTO> findAllCustomerInvoicesSortedBy(String sortBy) {
+        return customerInvoiceRepository.findAllCustomerInvoicesBy(sortBy).stream().map(customerInvoiceMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public List<CustomerInvoiceDTO> findAllOverdueInvoices() {
         LocalDate currentDate = LocalDate.now();
         List<CustomerInvoice> allInvoices = customerInvoiceRepository.findAll();
 
@@ -52,8 +61,12 @@ public class CustomerInvoiceService {
                 .collect(Collectors.toList());
     }
 
+    /***
+     Create and update methods
+     */
+
     @Transactional
-    public CustomerInvoiceDTO addCustomerInvoice(CustomerInvoiceDTO customerInvoiceDTO){
+    public CustomerInvoiceDTO addCustomerInvoice(CustomerInvoiceDTO customerInvoiceDTO) {
         CustomerInvoice invoice = customerInvoiceMapper.mapToEntity(customerInvoiceDTO);
 
         Customer customer = extractCustomerFromInvoice(customerInvoiceDTO);
@@ -67,7 +80,7 @@ public class CustomerInvoiceService {
     }
 
     @Transactional
-    public CustomerInvoiceDTO markInvoiceAsPaid(Long invoiceId){
+    public CustomerInvoiceDTO markInvoiceAsPaid(Long invoiceId) {
         CustomerInvoice invoice = customerInvoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
 
         checkingIsPaidInvoice(invoice);
@@ -75,13 +88,6 @@ public class CustomerInvoiceService {
 
         CustomerInvoice saved = customerInvoiceRepository.save(invoice);
         return customerInvoiceMapper.mapToDTO(saved);
-    }
-
-    private static void checkingIsPaidInvoice(CustomerInvoice invoice) {
-        if (invoice.getIsPaid()){
-            throw new InvoiceAlreadyPaidException("Invoice is already paid");
-        }
-        invoice.setIsPaid(true);
     }
 
     @Transactional
@@ -94,23 +100,28 @@ public class CustomerInvoiceService {
         customerInvoiceRepository.save(customerInvoice);
     }
 
+    /***
+     Helper methods
+     */
+
     private static void checkingUnauthorizedValueChange(CustomerInvoiceDTO currentDTO, CustomerInvoiceDTO updatedDTO) {
-        if (currentDTO.getIsPaid() == true && updatedDTO.getIsPaid() == false){
+        if (currentDTO.getIsPaid() == true && updatedDTO.getIsPaid() == false) {
             throw new CannotEditEntityException("Cannot change isPaid value from paid to false");
         }
     }
 
     private static void checkingPaidStatus(CustomerInvoice customerInvoice) {
-        if (customerInvoice.getIsPaid()){
+        if (customerInvoice.getIsPaid()) {
             throw new CannotEditEntityException("Cannot edit customer invoice because is paid.");
         }
     }
 
-    public List<CustomerInvoiceDTO> findAllCustomerInvoicesSortedBy(String sortBy) {
-        return customerInvoiceRepository.findAllCustomerInvoicesBy(sortBy).stream().map(customerInvoiceMapper::mapToDTO).collect(Collectors.toList());
+    private static void checkingIsPaidInvoice(CustomerInvoice invoice) {
+        if (invoice.getIsPaid()) {
+            throw new InvoiceAlreadyPaidException("Invoice is already paid");
+        }
+        invoice.setIsPaid(true);
     }
-
-
 
     private static void changeCustomerBalance(CustomerInvoice invoice) {
         Customer customer = invoice.getCustomer();
@@ -131,7 +142,6 @@ public class CustomerInvoiceService {
         BigDecimal grossValue = vatCalculatorService.calculateGrossValue(cargo.getPrice(), customer.getVatNumber());
         invoice.setGrossValue(grossValue);
         invoice.setIsPaid(false);
-
     }
 
     private static void changeInvoicingStatusForCargo(Cargo cargo) {

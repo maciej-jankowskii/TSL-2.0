@@ -47,6 +47,12 @@ public class InvoiceController {
         return ResponseEntity.ok(allInvoices);
     }
 
+    @GetMapping("/carrier/sorted")
+    public ResponseEntity<List<CarrierInvoiceDTO>> findAllCarrierInvoicesSortedBy(@RequestParam String sortBy) {
+        List<CarrierInvoiceDTO> sortedCarrierInvoices = carrierInvoiceService.findAllCarrierInvoicesSortedBy(sortBy);
+        return ResponseEntity.ok(sortedCarrierInvoices);
+    }
+
     @PostMapping("/carrier")
     public ResponseEntity<CarrierInvoiceDTO> addInvoiceFromCarrier(@RequestBody @Valid CarrierInvoiceDTO dto) {
         CarrierInvoiceDTO created = carrierInvoiceService.addCarrierInvoice(dto);
@@ -63,12 +69,6 @@ public class InvoiceController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/carrier/sorted")
-    public ResponseEntity<List<CarrierInvoiceDTO>> findAllCarrierInvoicesSortedBy(@RequestParam String sortBy) {
-        List<CarrierInvoiceDTO> sortedCarrierInvoices = carrierInvoiceService.findAllCarrierInvoicesSortedBy(sortBy);
-        return ResponseEntity.ok(sortedCarrierInvoices);
-    }
-
     @PatchMapping("/carrier/{id}")
     public ResponseEntity<?> updateCarrierInvoice(@PathVariable Long id, @RequestBody JsonMergePatch patch)
             throws JsonPatchException, JsonProcessingException {
@@ -76,14 +76,6 @@ public class InvoiceController {
         applyPatchAndUpdateCarrierInvoice(invoiceDTO, patch);
         return ResponseEntity.noContent().build();
 
-    }
-
-    private void applyPatchAndUpdateCarrierInvoice(CarrierInvoiceDTO invoiceDTO, JsonMergePatch patch)
-            throws JsonPatchException, JsonProcessingException {
-        JsonNode invoiceNode = objectMapper.valueToTree(invoiceDTO);
-        JsonNode patchedInvoice = patch.apply(invoiceNode);
-        CarrierInvoiceDTO patchedInvoiceDTO = objectMapper.treeToValue(patchedInvoice, CarrierInvoiceDTO.class);
-        carrierInvoiceService.updateCarrierInvoice(invoiceDTO, patchedInvoiceDTO);
     }
 
     /***
@@ -99,10 +91,16 @@ public class InvoiceController {
         return ResponseEntity.ok(allCustomerInvoices);
     }
 
+    @GetMapping("/customer/sorted")
+    public ResponseEntity<List<CustomerInvoiceDTO>> findAllCustomerInvoicesSortedBy(@RequestParam String sortBy) {
+        List<CustomerInvoiceDTO> sortedCustomerInvoices = customerInvoiceService.findAllCustomerInvoicesSortedBy(sortBy);
+        return ResponseEntity.ok(sortedCustomerInvoices);
+    }
+
     @GetMapping("/customer/debt-collection")
-    public ResponseEntity<List<CustomerInvoiceDTO>> findAllOverdueInvoices(){
+    public ResponseEntity<List<CustomerInvoiceDTO>> findAllOverdueInvoices() {
         List<CustomerInvoiceDTO> allInvoices = customerInvoiceService.findAllOverdueInvoices();
-        if (allInvoices.isEmpty()){
+        if (allInvoices.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(allInvoices);
@@ -124,12 +122,6 @@ public class InvoiceController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/customer/sorted")
-    public ResponseEntity<List<CustomerInvoiceDTO>> findAllCustomerInvoicesSortedBy(@RequestParam String sortBy) {
-        List<CustomerInvoiceDTO> sortedCustomerInvoices = customerInvoiceService.findAllCustomerInvoicesSortedBy(sortBy);
-        return ResponseEntity.ok(sortedCustomerInvoices);
-    }
-
     @PatchMapping("/customer/{id}")
     public ResponseEntity<?> updateCustomerInvoice(@PathVariable Long id, @RequestBody JsonMergePatch patch)
             throws JsonPatchException, JsonProcessingException {
@@ -137,14 +129,6 @@ public class InvoiceController {
         applyPatchAndUpdateCustomerInvoice(invoiceDTO, patch);
         return ResponseEntity.noContent().build();
 
-    }
-
-    private void applyPatchAndUpdateCustomerInvoice(CustomerInvoiceDTO invoiceDTO, JsonMergePatch patch)
-            throws JsonPatchException, JsonProcessingException {
-        JsonNode invoiceNode = objectMapper.valueToTree(invoiceDTO);
-        JsonNode patchedInvoice = patch.apply(invoiceNode);
-        CustomerInvoiceDTO patchedInvoiceDTO = objectMapper.treeToValue(patchedInvoice, CustomerInvoiceDTO.class);
-        customerInvoiceService.updateCustomerInvoice(invoiceDTO, patchedInvoiceDTO);
     }
 
     /***
@@ -158,6 +142,12 @@ public class InvoiceController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(allInvoices);
+    }
+
+    @GetMapping("/warehouse-order/sorted")
+    public ResponseEntity<List<WarehouseOrderInvoiceDTO>> findAllWarehouseInvoicesSortedBy(@RequestParam String sortBy) {
+        List<WarehouseOrderInvoiceDTO> sortedWarehouseInvoices = warehouseOrderInvoiceService.findAllWarehouseInvoicesSortedBy(sortBy);
+        return ResponseEntity.ok(sortedWarehouseInvoices);
     }
 
     @PostMapping("/warehouse-order")
@@ -176,12 +166,6 @@ public class InvoiceController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/warehouse-order/sorted")
-    public ResponseEntity<List<WarehouseOrderInvoiceDTO>> findAllWarehouseInvoicesSortedBy(@RequestParam String sortBy) {
-        List<WarehouseOrderInvoiceDTO> sortedWarehouseInvoices = warehouseOrderInvoiceService.findAllWarehouseInvoicesSortedBy(sortBy);
-        return ResponseEntity.ok(sortedWarehouseInvoices);
-    }
-
     @PatchMapping("/warehouse-order/{id}")
     public ResponseEntity<?> updateWarehouseInvoice(@PathVariable Long id, @RequestBody JsonMergePatch patch)
             throws JsonPatchException, JsonProcessingException {
@@ -190,11 +174,31 @@ public class InvoiceController {
         return ResponseEntity.noContent().build();
     }
 
+    /***
+     Helper methods for updating
+     */
+
+    private void applyPatchAndUpdateCarrierInvoice(CarrierInvoiceDTO invoiceDTO, JsonMergePatch patch)
+            throws JsonPatchException, JsonProcessingException {
+        JsonNode invoiceNode = objectMapper.valueToTree(invoiceDTO);
+        JsonNode patchedInvoice = patch.apply(invoiceNode);
+        CarrierInvoiceDTO patchedInvoiceDTO = objectMapper.treeToValue(patchedInvoice, CarrierInvoiceDTO.class);
+        carrierInvoiceService.updateCarrierInvoice(invoiceDTO, patchedInvoiceDTO);
+    }
+
     private void applyPatchAndUpdateWarehouseInvoice(WarehouseOrderInvoiceDTO invoiceDTO, JsonMergePatch patch)
             throws JsonPatchException, JsonProcessingException {
         JsonNode invoiceNode = objectMapper.valueToTree(invoiceDTO);
         JsonNode patchedInvoice = patch.apply(invoiceNode);
         WarehouseOrderInvoiceDTO patchedInvoiceDTO = objectMapper.treeToValue(patchedInvoice, WarehouseOrderInvoiceDTO.class);
         warehouseOrderInvoiceService.updateWarehouseInvoice(invoiceDTO, patchedInvoiceDTO);
+    }
+
+    private void applyPatchAndUpdateCustomerInvoice(CustomerInvoiceDTO invoiceDTO, JsonMergePatch patch)
+            throws JsonPatchException, JsonProcessingException {
+        JsonNode invoiceNode = objectMapper.valueToTree(invoiceDTO);
+        JsonNode patchedInvoice = patch.apply(invoiceNode);
+        CustomerInvoiceDTO patchedInvoiceDTO = objectMapper.treeToValue(patchedInvoice, CustomerInvoiceDTO.class);
+        customerInvoiceService.updateCustomerInvoice(invoiceDTO, patchedInvoiceDTO);
     }
 }

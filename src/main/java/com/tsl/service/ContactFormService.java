@@ -20,6 +20,7 @@ public class ContactFormService implements EmailContactForm {
         this.javaMailSender = javaMailSender;
         this.contactFromRepository = contactFromRepository;
     }
+
     @Override
     @Transactional
     public String sendEmail(ContactForm contactForm) throws MailException {
@@ -31,12 +32,16 @@ public class ContactFormService implements EmailContactForm {
         return "Message sent successfully.";
     }
 
+    /**
+     * Helper methods for send email method
+     */
+
     private static SimpleMailMessage sendEmailMessage(ContactForm contactForm) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("testtslapp@gmail.com");
         message.setTo("testtslapp@gmail.com");
         message.setSubject(contactForm.getSubject());
-        message.setText("Wiadomość od: "  + contactForm.getEmail() + "\n" + "Treść: " + contactForm.getMessage());
+        message.setText("Wiadomość od: " + contactForm.getEmail() + "\n" + "Treść: " + contactForm.getMessage());
         return message;
     }
 

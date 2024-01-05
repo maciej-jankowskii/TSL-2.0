@@ -19,17 +19,21 @@ public class AddressController {
         this.addressService = addressService;
     }
 
+    /***
+     Handling requests related to reading and creating address
+     */
+
     @GetMapping
-    public ResponseEntity<List<AddressDTO>> findAllAddresses(){
+    public ResponseEntity<List<AddressDTO>> findAllAddresses() {
         List<AddressDTO> allAddresses = addressService.findAllAddresses();
-        if (allAddresses.isEmpty()){
+        if (allAddresses.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(allAddresses);
     }
 
     @PostMapping
-    public ResponseEntity<AddressDTO> createAddress(@RequestBody @Valid AddressDTO addressDTO){
+    public ResponseEntity<AddressDTO> createAddress(@RequestBody @Valid AddressDTO addressDTO) {
         AddressDTO created = addressService.createAddress(addressDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
                 .path("/{id}")

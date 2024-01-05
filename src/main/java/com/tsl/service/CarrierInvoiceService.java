@@ -33,17 +33,29 @@ public class CarrierInvoiceService {
         this.forwarderOrderRepository = forwarderOrderRepository;
         this.carrierRepository = carrierRepository;
     }
-    
-    public List<CarrierInvoiceDTO> findAll(){
+
+    /***
+     Finding methods
+     */
+
+    public List<CarrierInvoiceDTO> findAll() {
         return carrierInvoiceRepository.findAll().stream().map(carrierInvoiceMapper::mapToDTO).collect(Collectors.toList());
     }
 
     public CarrierInvoiceDTO findCarrierInvoiceById(Long id) {
         return carrierInvoiceRepository.findById(id).map(carrierInvoiceMapper::mapToDTO).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
     }
-    
+
+    public List<CarrierInvoiceDTO> findAllCarrierInvoicesSortedBy(String sortBy) {
+        return carrierInvoiceRepository.findAllCarrierInvoicesBy(sortBy).stream().map(carrierInvoiceMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    /***
+     Create and update methods
+     */
+
     @Transactional
-    public CarrierInvoiceDTO addCarrierInvoice(CarrierInvoiceDTO carrierInvoiceDTO){
+    public CarrierInvoiceDTO addCarrierInvoice(CarrierInvoiceDTO carrierInvoiceDTO) {
         CarrierInvoice invoice = carrierInvoiceMapper.mapToEntity(carrierInvoiceDTO);
 
         ForwardingOrder order = extractOrderFromInvoice(carrierInvoiceDTO);
@@ -57,9 +69,9 @@ public class CarrierInvoiceService {
     }
 
     @Transactional
-    public void markInvoiceAsPaid(Long invoiceId){
+    public void markInvoiceAsPaid(Long invoiceId) {
         CarrierInvoice invoice = carrierInvoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
-        if (invoice.getIsPaid()){
+        if (invoice.getIsPaid()) {
             throw new InvoiceAlreadyPaidException("Invoice is already paid");
         }
         changeCarrierBalance(invoice);
@@ -79,20 +91,20 @@ public class CarrierInvoiceService {
         carrierInvoiceRepository.save(carrierInvoice);
     }
 
+    /***
+     Helper methods
+     */
+
     private static void checkingUnauthorizedValueChange(CarrierInvoiceDTO currentDTO, CarrierInvoiceDTO updatedDTO) {
-        if (currentDTO.getIsPaid() == true && updatedDTO.getIsPaid() == false){
+        if (currentDTO.getIsPaid() == true && updatedDTO.getIsPaid() == false) {
             throw new CannotEditEntityException("Cannot change isPaid value from paid to false");
         }
     }
 
     private static void checkingPaidStatus(CarrierInvoice carrierInvoice) {
-        if (carrierInvoice.getIsPaid()){
+        if (carrierInvoice.getIsPaid()) {
             throw new CannotEditEntityException("Cannot edit carrier invoice because is paid.");
         }
-    }
-
-    public List<CarrierInvoiceDTO> findAllCarrierInvoicesSortedBy(String sortBy) {
-        return carrierInvoiceRepository.findAllCarrierInvoicesBy(sortBy).stream().map(carrierInvoiceMapper::mapToDTO).collect(Collectors.toList());
     }
 
     private static void changeCarrierBalance(CarrierInvoice invoice) {

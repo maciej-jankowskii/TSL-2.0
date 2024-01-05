@@ -19,17 +19,21 @@ public class ContactPersonController {
         this.contactPersonService = contactPersonService;
     }
 
+    /***
+     Handling requests related to reading and adding contact persons
+     */
+
     @GetMapping
-    public ResponseEntity<List<ContactPersonDTO>> findAllContactPersons(){
+    public ResponseEntity<List<ContactPersonDTO>> findAllContactPersons() {
         List<ContactPersonDTO> allContactPersons = contactPersonService.findAllContactPersons();
-        if (allContactPersons.isEmpty()){
+        if (allContactPersons.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(allContactPersons);
     }
 
     @PostMapping
-    public ResponseEntity<ContactPersonDTO> addContactPerson(@RequestBody @Valid ContactPersonDTO contactPersonDTO){
+    public ResponseEntity<ContactPersonDTO> addContactPerson(@RequestBody @Valid ContactPersonDTO contactPersonDTO) {
         ContactPersonDTO created = contactPersonService.addContactPerson(contactPersonDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{/id}")

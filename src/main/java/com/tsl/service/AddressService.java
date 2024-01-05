@@ -21,12 +21,12 @@ public class AddressService {
         this.addressMapper = addressMapper;
     }
 
-    public List<AddressDTO> findAllAddresses(){
+    public List<AddressDTO> findAllAddresses() {
         return addressRepository.findAll().stream().map(addressMapper::mapToDTO).collect(Collectors.toList());
     }
 
     @Transactional
-    public AddressDTO createAddress(AddressDTO addressDTO){
+    public AddressDTO createAddress(AddressDTO addressDTO) {
         Address address = addressMapper.mapToEntity(addressDTO);
         Address saved = addressRepository.save(address);
         return addressMapper.mapToDTO(saved);
