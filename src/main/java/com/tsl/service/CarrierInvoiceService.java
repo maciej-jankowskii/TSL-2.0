@@ -61,7 +61,6 @@ public class CarrierInvoiceService {
         ForwardingOrder order = extractOrderFromInvoice(carrierInvoiceDTO);
         Carrier carrier = extractCarrierFromInvoice(carrierInvoiceDTO);
 
-        changeInvoicingStatusForOrder(order);
         addAdditionalDataFroInvoice(invoice, order, carrier);
 
         CarrierInvoice saved = carrierInvoiceRepository.save(invoice);
@@ -126,10 +125,6 @@ public class CarrierInvoiceService {
         BigDecimal grossValue = vatCalculatorService.calculateGrossValue(order.getPrice(), carrier.getVatNumber());
         invoice.setGrossValue(grossValue);
         invoice.setIsPaid(false);
-    }
-
-    private static void changeInvoicingStatusForOrder(ForwardingOrder order) {
-        order.setIsInvoiced(true);
     }
 
     private Carrier extractCarrierFromInvoice(CarrierInvoiceDTO carrierInvoiceDTO) {
