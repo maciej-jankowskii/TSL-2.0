@@ -100,6 +100,12 @@ public class WarehouseController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/goods/{id}")
+    ResponseEntity<?> deleteGoods(@PathVariable Long id) {
+        goodsService.deleteGoods(id);
+        return ResponseEntity.noContent().build();
+    }
+
     /***
      Handling requests related to WarehouseOrder Entities
      */

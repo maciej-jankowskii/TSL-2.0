@@ -1,6 +1,7 @@
 package com.tsl.service;
 
 import com.tsl.dtos.GoodsDTO;
+import com.tsl.exceptions.CannotDeleteEntityException;
 import com.tsl.exceptions.CannotEditGoodsAssignedToOrderException;
 import com.tsl.exceptions.GoodsNotFoundException;
 import com.tsl.exceptions.NonUniqueLabelsException;
@@ -60,6 +61,14 @@ public class GoodsService {
         }
 
         goodsRepository.save(goods);
+    }
+
+    public void deleteGoods(Long id) {
+        Goods goods = goodsRepository.findById(id).orElseThrow(() -> new GoodsNotFoundException("Goods not found"));
+        if (goods.getAssignedToOrder()){
+            throw new CannotDeleteEntityException("Cannot delete goods because goods are assigned to order");
+        }
+        goodsRepository.deleteById(id);
     }
 
     private static void checkingIsAssignedToOrder(Goods goods) {
