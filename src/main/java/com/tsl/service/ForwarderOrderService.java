@@ -74,6 +74,7 @@ public class ForwarderOrderService {
         Carrier carrier = extractCarrierFromOrderDTO(forwardingOrderDTO);
         Forwarder forwarder = getLoggedInUser();
 
+        checkingActualInsuranceAndLicence(carrier);
         checkingIsCargoAvailable(cargo);
         addAdditionalDataForOrderAndCargo(order, cargo, forwarder);
         changeCarrierBalance(carrier, order);
@@ -146,6 +147,14 @@ public class ForwarderOrderService {
         String vatNumber = carrier.getVatNumber();
         BigDecimal orderPrice = order.getPrice();
         return vatCalculatorService.calculateGrossValue(orderPrice, vatNumber);
+    }
+
+    private static void checkingActualInsuranceAndLicence(Carrier carrier) {
+        LocalDate insuranceExpirationDate = carrier.getInsuranceExpirationDate();
+        LocalDate licenceExpirationDate = carrier.getLicenceExpirationDate();
+        if (insuranceExpirationDate.isAfter(LocalDate.now()) || licenceExpirationDate.isAfter(LocalDate.now())){
+            throw new CarrierFailsRequirements("Carrier doesnt have actual insurance or licence");
+        }
     }
 
     /**
