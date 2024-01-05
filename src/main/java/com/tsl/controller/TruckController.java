@@ -20,6 +20,9 @@ public class TruckController {
         this.truckService = truckService;
     }
 
+    /***
+     Handling requests related to reading trucks
+     */
     @GetMapping
     public ResponseEntity<List<TruckDTO>> findAllTrucks(){
         List<TruckDTO> allTrucks = truckService.findAllTrucks();

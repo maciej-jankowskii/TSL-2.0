@@ -33,23 +33,17 @@ public class TransportOrderController {
         this.objectMapper = objectMapper;
     }
 
+    /***
+     Handling requests related to reading, adding, updating transport orders
+     */
+
     @GetMapping
-    public ResponseEntity<List<TransportOrderDTO>> findAllTransportOrders(){
+    public ResponseEntity<List<TransportOrderDTO>> findAllTransportOrders() {
         List<TransportOrderDTO> allOrders = transportOrderService.findAllTransportOrders();
-        if (allOrders.isEmpty()){
+        if (allOrders.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(allOrders);
-    }
-
-    @PostMapping
-    public ResponseEntity<TransportOrderDTO> addTransportOrder(@RequestBody @Valid TransportOrderDTO transportOrderDTO){
-        TransportOrderDTO created = transportOrderService.addTransportOrder(transportOrderDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("{/id}")
-                .buildAndExpand(created.getId())
-                .toUri();
-        return ResponseEntity.created(uri).body(created);
     }
 
     @GetMapping("/sorted")
@@ -57,6 +51,16 @@ public class TransportOrderController {
         TransportPlanner planner = getLoggedInUser();
         List<TransportOrderDTO> sortedOrders = transportOrderService.findAllTransportOrdersSortedBy(planner, sortBy);
         return ResponseEntity.ok(sortedOrders);
+    }
+
+    @PostMapping
+    public ResponseEntity<TransportOrderDTO> addTransportOrder(@RequestBody @Valid TransportOrderDTO transportOrderDTO) {
+        TransportOrderDTO created = transportOrderService.addTransportOrder(transportOrderDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("{/id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(created);
     }
 
     @PatchMapping("/{id}")
@@ -74,6 +78,10 @@ public class TransportOrderController {
         return ResponseEntity.noContent().build();
     }
 
+    /***
+     Helper methods
+     */
+
     private void applyPatchAndUpdateOrder(TransportOrderDTO orderDTO, JsonMergePatch patch)
             throws JsonPatchException, JsonProcessingException {
         JsonNode orderNode = objectMapper.valueToTree(orderDTO);
@@ -81,7 +89,6 @@ public class TransportOrderController {
         TransportOrderDTO patchedOrderDTO = objectMapper.treeToValue(patchedOrder, TransportOrderDTO.class);
         transportOrderService.updateTransportOrder(orderDTO, patchedOrderDTO);
     }
-
 
     private TransportPlanner getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

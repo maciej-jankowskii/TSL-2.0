@@ -31,15 +31,34 @@ public class TruckService {
         this.salaryBonusCalculator = salaryBonusCalculator;
     }
 
-    public List<TruckDTO> findAllTrucks(){
+    /**
+     * Finding methods
+     */
+
+    public List<TruckDTO> findAllTrucks() {
         return truckRepository.findAll().stream().map(truckMapper::mapToDTO).collect(Collectors.toList());
     }
-    public List<TruckDTO> findAllTruckSortedBy(String sortBy){
+
+    public List<TruckDTO> findAllTruckSortedBy(String sortBy) {
         return truckRepository.findAllTrucksBy(sortBy).stream().map(truckMapper::mapToDTO).collect(Collectors.toList());
     }
 
     public TruckDTO findTruckById(Long id) {
         return truckRepository.findById(id).map(truckMapper::mapToDTO).orElseThrow(() -> new TruckNotFoundException("Truck not found"));
+    }
+
+    /**
+     * Create, update and delete methods
+     */
+
+    @Transactional
+    public String addNewTruck(TruckDTO truckDTO) {
+        Truck truck = truckMapper.mapToEntity(truckDTO);
+        truckRepository.save(truck);
+
+        updateTransportPlannerSalaryBonus(truckDTO);
+
+        return "Truck added successfully!";
     }
 
     @Transactional
@@ -50,23 +69,15 @@ public class TruckService {
 
     public void deleteTruck(Long id) {
         Truck truck = truckRepository.findById(id).orElseThrow(() -> new TruckNotFoundException("Truck not found"));
-        if (truck.getAssignedToDriver()){
+        if (truck.getAssignedToDriver()) {
             throw new CannotDeleteEntityException("Cannot delete a truck because the truck has a driver assigned to it.");
         }
         truckRepository.deleteById(id);
     }
 
-    @Transactional
-    public String addNewTruck(TruckDTO truckDTO){
-        Truck truck = truckMapper.mapToEntity(truckDTO);
-        truckRepository.save(truck);
-
-        updateTransportPlannerSalaryBonus(truckDTO);
-
-        return "Truck added successfully!";
-
-    }
-
+    /**
+     * Helper methods
+     */
     private void updateTransportPlannerSalaryBonus(TruckDTO truckDTO) {
         if (truckDTO.getTransportPlannerId() != null) {
             TransportPlanner planner = transportPlannerRepository.findById(truckDTO.getTransportPlannerId()).orElseThrow(() -> new PlannerNotFoundException("Transport planner not found"));
