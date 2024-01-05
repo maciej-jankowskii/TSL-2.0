@@ -2,10 +2,12 @@ package com.tsl.service;
 
 import com.tsl.dtos.WarehouseDTO;
 import com.tsl.exceptions.AddressNotFoundException;
+import com.tsl.exceptions.CannotDeleteEntityException;
 import com.tsl.exceptions.WarehouseNotFoundException;
 import com.tsl.mapper.WarehouseMapper;
 import com.tsl.model.address.Address;
 import com.tsl.model.warehouse.Warehouse;
+import com.tsl.model.warehouse.order.WarehouseOrder;
 import com.tsl.repository.AddressRepository;
 import com.tsl.repository.WarehouseRepository;
 import org.springframework.stereotype.Service;
@@ -55,5 +57,27 @@ public class WarehouseService {
     public void updateWarehouse(WarehouseDTO warehouseDTO) {
         Warehouse warehouse = warehouseMapper.mapToEntity(warehouseDTO);
         warehouseRepository.save(warehouse);
+    }
+
+    public void deleteWarehouse(Long id) {
+        Warehouse warehouse = warehouseRepository.findById(id).orElseThrow(() -> new WarehouseNotFoundException("Warehouse not found"));
+        List<WarehouseOrder> list = warehouse.getWarehouseOrders().stream().filter(order -> !order.getIsCompleted()).collect(Collectors.toList());
+
+        checkingNotCompletedWarehouseOrders(list);
+        checkingWarehouseEmployees(warehouse);
+
+        warehouseRepository.deleteById(id);
+    }
+
+    private static void checkingWarehouseEmployees(Warehouse warehouse) {
+        if (!warehouse.getWarehouseWorkers().isEmpty()){
+            throw new CannotDeleteEntityException("Cannot delete Warehouse because warehouse has employees");
+        }
+    }
+
+    private static void checkingNotCompletedWarehouseOrders(List<WarehouseOrder> list) {
+        if (!list.isEmpty()){
+            throw new CannotDeleteEntityException("Cannot delete warehouse because warehouse has not completed orders");
+        }
     }
 }

@@ -42,6 +42,16 @@ public class CustomerInvoiceService {
         return customerInvoiceRepository.findById(id).map(customerInvoiceMapper::mapToDTO).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found"));
     }
 
+    public List<CustomerInvoiceDTO> findAllOverdueInvoices(){
+        LocalDate currentDate = LocalDate.now();
+        List<CustomerInvoice> allInvoices = customerInvoiceRepository.findAll();
+
+        return allInvoices.stream()
+                .filter(invoice -> invoice.getDueDate().isBefore(currentDate) && !invoice.getIsPaid())
+                .map(customerInvoiceMapper::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public CustomerInvoiceDTO addCustomerInvoice(CustomerInvoiceDTO customerInvoiceDTO){
         CustomerInvoice invoice = customerInvoiceMapper.mapToEntity(customerInvoiceDTO);

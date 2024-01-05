@@ -1,9 +1,13 @@
 package com.tsl.service;
 
 import com.tsl.dtos.AccountantDTO;
+import com.tsl.dtos.TransportPlannerDTO;
+import com.tsl.exceptions.AccountantNotFoundException;
 import com.tsl.exceptions.EmailAddressIsTaken;
+import com.tsl.exceptions.PlannerNotFoundException;
 import com.tsl.mapper.AccountantMapper;
 import com.tsl.model.employee.Accountant;
+import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.role.EmployeeRole;
 import com.tsl.repository.AccountantRepository;
 import com.tsl.repository.EmployeeRoleRepository;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.relation.RoleNotFoundException;
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +37,20 @@ public class AccountantService {
 
     public List<AccountantDTO> findAllAccountants(){
         return accountantRepository.findAll().stream().map(accountantMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public AccountantDTO findAccountantById(Long id) {
+        return accountantRepository.findById(id).map(accountantMapper::mapToDTO).orElseThrow(() -> new AccountantNotFoundException("Accountant not found"));
+    }
+
+    @Transactional
+    public void updateAccountant(AccountantDTO accountantDTO) {
+        Accountant accountant = accountantMapper.mapToEntity(accountantDTO);
+        accountantRepository.save(accountant);
+    }
+
+    public void deleteAccountant(Long id) {
+        accountantRepository.deleteById(id);
     }
     @Transactional
     public String registerNewAccountant(AccountantDTO accountantDTO) throws RoleNotFoundException {

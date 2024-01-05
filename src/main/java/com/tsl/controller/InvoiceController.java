@@ -99,6 +99,15 @@ public class InvoiceController {
         return ResponseEntity.ok(allCustomerInvoices);
     }
 
+    @GetMapping("/customer/debt-collection")
+    public ResponseEntity<List<CustomerInvoiceDTO>> findAllOverdueInvoices(){
+        List<CustomerInvoiceDTO> allInvoices = customerInvoiceService.findAllOverdueInvoices();
+        if (allInvoices.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allInvoices);
+    }
+
     @PostMapping("/customer")
     public ResponseEntity<CustomerInvoiceDTO> addInvoiceForCustomer(@RequestBody @Valid CustomerInvoiceDTO customerInvoiceDTO) {
         CustomerInvoiceDTO created = customerInvoiceService.addCustomerInvoice(customerInvoiceDTO);

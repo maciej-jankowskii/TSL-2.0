@@ -1,8 +1,13 @@
 package com.tsl.service;
 
+import com.tsl.dtos.CargoDTO;
 import com.tsl.dtos.ForwarderDTO;
+import com.tsl.exceptions.CannotEditEntityException;
+import com.tsl.exceptions.CargoNotFoundException;
 import com.tsl.exceptions.EmailAddressIsTaken;
+import com.tsl.exceptions.ForwarderNotFoundException;
 import com.tsl.mapper.ForwarderMapper;
+import com.tsl.model.cargo.Cargo;
 import com.tsl.model.employee.Forwarder;
 import com.tsl.model.role.EmployeeRole;
 import com.tsl.repository.EmployeeRoleRepository;
@@ -34,6 +39,20 @@ public class ForwarderService {
 
     public List<ForwarderDTO> findAllForwarders(){
         return forwarderRepository.findAll().stream().map(forwarderMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public ForwarderDTO findForwarderById(Long id) {
+        return forwarderRepository.findById(id).map(forwarderMapper::mapToDTO).orElseThrow(() -> new ForwarderNotFoundException("Forwarder not found"));
+    }
+
+    @Transactional
+    public void updateForwarder(ForwarderDTO forwarderDTO) {
+        Forwarder forwarder = forwarderMapper.mapToEntity(forwarderDTO);
+        forwarderRepository.save(forwarder);
+    }
+
+    public void deleteForwarder(Long id) {
+        forwarderRepository.deleteById(id);
     }
 
     @Transactional

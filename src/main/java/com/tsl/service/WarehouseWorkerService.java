@@ -1,7 +1,11 @@
 package com.tsl.service;
 
+import com.tsl.dtos.TransportPlannerDTO;
 import com.tsl.dtos.WarehouseWorkerDTO;
+import com.tsl.exceptions.PlannerNotFoundException;
+import com.tsl.exceptions.WarehouseWorkerNotFoundException;
 import com.tsl.mapper.WarehouseWorkerMapper;
+import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.employee.WarehouseWorker;
 import com.tsl.repository.WarehouseWorkerRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +30,20 @@ public class WarehouseWorkerService {
 
     public List<WarehouseWorkerDTO> findAllWarehouseWorkers(){
         return warehouseWorkerRepository.findAll().stream().map(warehouseWorkerMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public WarehouseWorkerDTO findWarehouseWorkerById(Long id) {
+        return warehouseWorkerRepository.findById(id).map(warehouseWorkerMapper::mapToDTO).orElseThrow(() -> new WarehouseWorkerNotFoundException("Warehouse worker not found"));
+    }
+
+    @Transactional
+    public void updateWarehouseWorker(WarehouseWorkerDTO warehouseWorkerDTO) {
+        WarehouseWorker worker = warehouseWorkerMapper.mapToEntity(warehouseWorkerDTO);
+        warehouseWorkerRepository.save(worker);
+    }
+
+    public void deleteWarehouseWorker(Long id) {
+        warehouseWorkerRepository.deleteById(id);
     }
 
     @Transactional

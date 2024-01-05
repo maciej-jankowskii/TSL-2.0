@@ -1,9 +1,13 @@
 package com.tsl.service;
 
+import com.tsl.dtos.ForwarderDTO;
 import com.tsl.dtos.TransportPlannerDTO;
 import com.tsl.exceptions.EmailAddressIsTaken;
+import com.tsl.exceptions.ForwarderNotFoundException;
 import com.tsl.exceptions.NoTrucksException;
+import com.tsl.exceptions.PlannerNotFoundException;
 import com.tsl.mapper.TransportPlannerMapper;
+import com.tsl.model.employee.Forwarder;
 import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.role.EmployeeRole;
 import com.tsl.model.truck.Truck;
@@ -40,6 +44,20 @@ public class TransportPlannerService {
 
     public List<TransportPlannerDTO> findAllTransportPlanners(){
         return transportPlannerRepository.findAll().stream().map(transportPlannerMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public TransportPlannerDTO findPlannerById(Long id) {
+        return transportPlannerRepository.findById(id).map(transportPlannerMapper::mapToDTO).orElseThrow(() -> new PlannerNotFoundException("Transport planner not found"));
+    }
+
+    @Transactional
+    public void updatePlanner(TransportPlannerDTO plannerDTO) {
+        TransportPlanner planner = transportPlannerMapper.mapToEntity(plannerDTO);
+        transportPlannerRepository.save(planner);
+    }
+
+    public void deletePlanner(Long id) {
+        transportPlannerRepository.deleteById(id);
     }
 
     @Transactional

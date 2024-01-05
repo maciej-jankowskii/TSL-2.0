@@ -21,7 +21,8 @@ public class GlobalExceptionHandler {
             AddressNotFoundException.class, CargoNotFoundException.class, ContactPersonNotFoundException.class,
             ForwarderNotFoundException.class, OrderNotFoundException.class, GoodsNotFoundException.class,
             WarehouseNotFoundException.class, WarehouseOrderNotFoundException.class, TruckNotFoundException.class,
-            DriverNotFoundException.class, PlannerNotFoundException.class})
+            DriverNotFoundException.class, PlannerNotFoundException.class, AccountantNotFoundException.class,
+            WarehouseWorkerNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleEntityNotFoundExceptions(RuntimeException ex) {
@@ -40,7 +41,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({CurrencyMismatchException.class, IncompatibleGoodsTypeException.class,
             NoGoodsSelectedException.class, NonUniqueLabelsException.class, WrongLoadigDateException.class,
             CannotEditGoodsAssignedToOrderException.class, NoTrucksException.class,
-            CannotEditEntityException.class})
+            CannotEditEntityException.class, CannotDeleteEntityException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleErrorRelatedToInvalidRequest(RuntimeException ex){
