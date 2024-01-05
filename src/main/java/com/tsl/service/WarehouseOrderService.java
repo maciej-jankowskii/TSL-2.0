@@ -33,13 +33,29 @@ public class WarehouseOrderService {
         this.storageCostService = storageCostService;
     }
 
+    /**
+     * Finding methods
+     */
+
     public List<WarehouseOrderDTO> findAllWarehouseOrders() {
         return warehouseOrderRepository.findAll().stream().map(warehouseOrderMapper::mapToDTO).collect(Collectors.toList());
     }
 
-    public WarehouseOrderDTO findWarehouseOrder(Long id){
+    public WarehouseOrderDTO findWarehouseOrder(Long id) {
         return warehouseOrderRepository.findById(id).map(warehouseOrderMapper::mapToDTO).orElseThrow(() -> new WarehouseOrderNotFoundException("Warehouse order not found"));
     }
+
+    public List<WarehouseOrderDTO> findAllWarehouseOrdersSortedBy(String sortBy) {
+        return warehouseOrderRepository.findAllOrderBy(sortBy).stream().map(warehouseOrderMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public List<WarehouseOrderDTO> findAllNotCompletedWarehouseOrders() {
+        return warehouseOrderRepository.findByIsCompletedFalse().stream().map(warehouseOrderMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    /**
+     Create, update, delete methods
+     */
 
     @Transactional
     public WarehouseOrderDTO addWarehouseOrder(WarehouseOrderDTO warehouseOrderDTO) {
@@ -60,9 +76,9 @@ public class WarehouseOrderService {
     }
 
     @Transactional
-    public void markWarehouseOrderAsCompleted(Long warehouseOrderId){
+    public void markWarehouseOrderAsCompleted(Long warehouseOrderId) {
         WarehouseOrder order = warehouseOrderRepository.findById(warehouseOrderId).orElseThrow(() -> new WarehouseOrderNotFoundException("Warehouse order not found"));
-        if (order.getIsCompleted()){
+        if (order.getIsCompleted()) {
             throw new WarehouseOrderIsAlreadyCompletedException("Order is already completed");
         }
 
@@ -73,30 +89,25 @@ public class WarehouseOrderService {
     }
 
     @Transactional
-    public void updateWarehouseOrder(WarehouseOrderDTO currentDTO, WarehouseOrderDTO updatedDTO){
+    public void updateWarehouseOrder(WarehouseOrderDTO currentDTO, WarehouseOrderDTO updatedDTO) {
         WarehouseOrder order = warehouseOrderMapper.mapToEntity(updatedDTO);
         checkingIsCompletedOrder(order);
 
-        if (currentDTO.getIsCompleted() == true && updatedDTO.getIsCompleted() == false){
+        if (currentDTO.getIsCompleted() == true && updatedDTO.getIsCompleted() == false) {
             throw new CannotEditEntityException("Cannot change isCompleted value from true to false");
         }
         warehouseOrderRepository.save(order);
     }
 
+    /**
+     * Helper methods
+     */
+
     private static void checkingIsCompletedOrder(WarehouseOrder order) {
-        if (order.getIsCompleted()){
+        if (order.getIsCompleted()) {
             throw new CannotEditEntityException("Cannot edit completed order.");
         }
     }
-
-    public List<WarehouseOrderDTO> findAllWarehouseOrdersSortedBy(String sortBy){
-        return warehouseOrderRepository.findAllOrderBy(sortBy).stream().map(warehouseOrderMapper::mapToDTO).collect(Collectors.toList());
-    }
-
-    public List<WarehouseOrderDTO> findAllNotCompletedWarehouseOrders(){
-        return warehouseOrderRepository.findByIsCompletedFalse().stream().map(warehouseOrderMapper::mapToDTO).collect(Collectors.toList());
-    }
-
 
 
     private static void updateWarehouseAvailableArea(WarehouseOrder order) {
@@ -112,7 +123,7 @@ public class WarehouseOrderService {
     }
 
     private static void checkingRequiredArea(Warehouse warehouse, Double sum) {
-        if (warehouse.getAvailableArea() < sum){
+        if (warehouse.getAvailableArea() < sum) {
             throw new InsufficientWarehouseSpaceException("Not enough space in the warehouse");
         } else {
             warehouse.setAvailableArea(warehouse.getAvailableArea() - sum);

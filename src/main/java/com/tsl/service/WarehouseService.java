@@ -30,16 +30,28 @@ public class WarehouseService {
         this.addressRepository = addressRepository;
     }
 
-    public List<WarehouseDTO> findAllWarehouses(){
+    /**
+     Finding methods
+     */
+
+    public List<WarehouseDTO> findAllWarehouses() {
         return warehouseRepository.findAll().stream().map(warehouseMapper::mapToDTO).collect(Collectors.toList());
     }
 
-    public WarehouseDTO findWarehouseById(Long id){
+    public WarehouseDTO findWarehouseById(Long id) {
         return warehouseRepository.findById(id).map(warehouseMapper::mapToDTO).orElseThrow(() -> new WarehouseNotFoundException("Warehouse not found"));
     }
 
+    public List<WarehouseDTO> findAllWarehousesSortedBy(String sortBy) {
+        return warehouseRepository.findAllOrderBy(sortBy).stream().map(warehouseMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    /**
+     * Create, update, delete methods
+     */
+
     @Transactional
-    public WarehouseDTO addWarehouse(WarehouseDTO warehouseDTO){
+    public WarehouseDTO addWarehouse(WarehouseDTO warehouseDTO) {
         Warehouse warehouse = warehouseMapper.mapToEntity(warehouseDTO);
 
         Address address = addressRepository.findById(warehouseDTO.getAddressId()).orElseThrow(() -> new AddressNotFoundException("Address not found"));
@@ -47,10 +59,6 @@ public class WarehouseService {
 
         Warehouse saved = warehouseRepository.save(warehouse);
         return warehouseMapper.mapToDTO(saved);
-    }
-
-    public List<WarehouseDTO> findAllWarehousesSortedBy(String sortBy){
-        return warehouseRepository.findAllOrderBy(sortBy).stream().map(warehouseMapper::mapToDTO).collect(Collectors.toList());
     }
 
     @Transactional
@@ -69,14 +77,18 @@ public class WarehouseService {
         warehouseRepository.deleteById(id);
     }
 
+    /**
+     * Helper methods
+     */
+
     private static void checkingWarehouseEmployees(Warehouse warehouse) {
-        if (!warehouse.getWarehouseWorkers().isEmpty()){
+        if (!warehouse.getWarehouseWorkers().isEmpty()) {
             throw new CannotDeleteEntityException("Cannot delete Warehouse because warehouse has employees");
         }
     }
 
     private static void checkingNotCompletedWarehouseOrders(List<WarehouseOrder> list) {
-        if (!list.isEmpty()){
+        if (!list.isEmpty()) {
             throw new CannotDeleteEntityException("Cannot delete warehouse because warehouse has not completed orders");
         }
     }
