@@ -3,7 +3,7 @@ package com.tsl.service;
 import com.tsl.dtos.DetailedDriverDTO;
 import com.tsl.dtos.DriverDTO;
 import com.tsl.exceptions.DriverIsAlreadyAssignedToTruck;
-import com.tsl.exceptions.DriverNotFoundException;
+import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.exceptions.TruckNotFoundException;
 import com.tsl.mapper.DetailedDriverMapper;
 import com.tsl.mapper.DriverMapper;
@@ -49,7 +49,7 @@ public class DriverService {
     }
 
     public DetailedDriverDTO findDriverById(Long id) {
-        return driverRepository.findById(id).map(detailedDriverMapper::mapToDTO).orElseThrow(() -> new DriverNotFoundException("Driver not found"));
+        return driverRepository.findById(id).map(detailedDriverMapper::mapToDTO).orElseThrow(() -> new EmployeeNotFoundException("Driver not found"));
     }
 
     /**
@@ -66,7 +66,7 @@ public class DriverService {
 
     @Transactional
     public void assignTruckToDriver(Long driverId, Long truckId) {
-        Driver driver = driverRepository.findById(driverId).orElseThrow(() -> new DriverNotFoundException("Driver not found"));
+        Driver driver = driverRepository.findById(driverId).orElseThrow(() -> new EmployeeNotFoundException("Driver not found"));
         Truck truck = truckRepository.findById(truckId).orElseThrow(() -> new TruckNotFoundException("Truck not found"));
 
         checkAssignToTruck(driver);

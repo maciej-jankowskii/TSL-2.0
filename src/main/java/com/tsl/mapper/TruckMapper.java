@@ -2,8 +2,8 @@ package com.tsl.mapper;
 
 import com.tsl.dtos.TruckDTO;
 import com.tsl.enums.TypeOfTruck;
+import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.exceptions.NullEntityException;
-import com.tsl.exceptions.PlannerNotFoundException;
 import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.truck.Truck;
 import com.tsl.repository.TransportPlannerRepository;
@@ -31,7 +31,7 @@ public class TruckMapper {
         truck.setTechnicalInspectionDate(dto.getTechnicalInspectionDate());
         truck.setInsuranceDate(dto.getInsuranceDate());
         truck.setAssignedToDriver(dto.getAssignedToDriver());
-        TransportPlanner planner = transportPlannerRepository.findById(dto.getTransportPlannerId()).orElseThrow(() -> new PlannerNotFoundException("Transport planner not found"));
+        TransportPlanner planner = transportPlannerRepository.findById(dto.getTransportPlannerId()).orElseThrow(() -> new EmployeeNotFoundException("Transport planner not found"));
         truck.setTransportPlanner(planner);
         return truck;
     }

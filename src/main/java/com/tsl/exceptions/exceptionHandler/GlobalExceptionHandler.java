@@ -19,10 +19,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({NullEntityException.class, CarrierNotFoundException.class, CustomerNotFoundException.class,
             AddressNotFoundException.class, CargoNotFoundException.class, ContactPersonNotFoundException.class,
-            ForwarderNotFoundException.class, OrderNotFoundException.class, GoodsNotFoundException.class,
+            OrderNotFoundException.class, GoodsNotFoundException.class,
             WarehouseNotFoundException.class, WarehouseOrderNotFoundException.class, TruckNotFoundException.class,
-            DriverNotFoundException.class, PlannerNotFoundException.class, AccountantNotFoundException.class,
-            WarehouseWorkerNotFoundException.class})
+            EmployeeNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleEntityNotFoundExceptions(RuntimeException ex) {

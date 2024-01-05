@@ -1,13 +1,10 @@
 package com.tsl.service;
 
 import com.tsl.dtos.AccountantDTO;
-import com.tsl.dtos.TransportPlannerDTO;
-import com.tsl.exceptions.AccountantNotFoundException;
 import com.tsl.exceptions.EmailAddressIsTaken;
-import com.tsl.exceptions.PlannerNotFoundException;
+import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.mapper.AccountantMapper;
 import com.tsl.model.employee.Accountant;
-import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.role.EmployeeRole;
 import com.tsl.repository.AccountantRepository;
 import com.tsl.repository.EmployeeRoleRepository;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.relation.RoleNotFoundException;
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +36,7 @@ public class AccountantService {
     }
 
     public AccountantDTO findAccountantById(Long id) {
-        return accountantRepository.findById(id).map(accountantMapper::mapToDTO).orElseThrow(() -> new AccountantNotFoundException("Accountant not found"));
+        return accountantRepository.findById(id).map(accountantMapper::mapToDTO).orElseThrow(() -> new EmployeeNotFoundException("Accountant not found"));
     }
 
     @Transactional

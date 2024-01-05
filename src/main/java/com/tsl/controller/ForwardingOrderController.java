@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import com.tsl.dtos.ForwardingOrderDTO;
-import com.tsl.exceptions.ForwarderNotFoundException;
+import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.model.employee.Forwarder;
 import com.tsl.repository.ForwarderRepository;
 import com.tsl.service.ForwarderOrderService;
@@ -95,6 +95,6 @@ public class ForwardingOrderController {
     private Forwarder getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
-        return forwarderRepository.findByEmail(userEmail).orElseThrow(() -> new ForwarderNotFoundException("Forwarder not found"));
+        return forwarderRepository.findByEmail(userEmail).orElseThrow(() -> new EmployeeNotFoundException("Forwarder not found"));
     }
 }

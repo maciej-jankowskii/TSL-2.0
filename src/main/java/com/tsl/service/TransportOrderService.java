@@ -112,7 +112,7 @@ public class TransportOrderService {
     private TransportPlanner getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
-        return transportPlannerRepository.findByEmail(userEmail).orElseThrow(() -> new PlannerNotFoundException("Transport planner not found"));
+        return transportPlannerRepository.findByEmail(userEmail).orElseThrow(() -> new EmployeeNotFoundException("Transport planner not found"));
     }
 
     /**

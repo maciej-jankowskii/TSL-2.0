@@ -51,7 +51,7 @@ public class TransportOrderMapper {
         }
         order.setCurrency(Currency.valueOf(dtoCurrency));
         order.setIsInvoiced(dto.getIsInvoiced());
-        TransportPlanner planner = transportPlannerRepository.findById(dto.getTransportPlannerId()).orElseThrow(() -> new PlannerNotFoundException("Transport planner not found"));
+        TransportPlanner planner = transportPlannerRepository.findById(dto.getTransportPlannerId()).orElseThrow(() -> new EmployeeNotFoundException("Transport planner not found"));
         order.setTransportPlanner(planner);
         Truck truck = truckRepository.findById(dto.getTruckId()).orElseThrow(() -> new TruckNotFoundException("Truck not found"));
         order.setTruck(truck);

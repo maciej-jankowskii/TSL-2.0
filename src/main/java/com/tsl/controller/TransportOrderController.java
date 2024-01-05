@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import com.tsl.dtos.TransportOrderDTO;
-import com.tsl.exceptions.PlannerNotFoundException;
+import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.model.employee.TransportPlanner;
 import com.tsl.repository.TransportPlannerRepository;
 import com.tsl.service.TransportOrderService;
@@ -93,6 +93,6 @@ public class TransportOrderController {
     private TransportPlanner getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
-        return transportPlannerRepository.findByEmail(userEmail).orElseThrow(() -> new PlannerNotFoundException("Transport planner not found"));
+        return transportPlannerRepository.findByEmail(userEmail).orElseThrow(() -> new EmployeeNotFoundException("Transport planner not found"));
     }
 }

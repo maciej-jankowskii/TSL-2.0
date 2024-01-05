@@ -188,6 +188,6 @@ public class ForwarderOrderService {
     private Forwarder getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
-        return forwarderRepository.findByEmail(userEmail).orElseThrow(() -> new ForwarderNotFoundException("Forwarder not found"));
+        return forwarderRepository.findByEmail(userEmail).orElseThrow(() -> new EmployeeNotFoundException("Forwarder not found"));
     }
 }

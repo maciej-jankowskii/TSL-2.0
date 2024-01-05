@@ -2,10 +2,7 @@ package com.tsl.service;
 
 import com.tsl.dtos.CargoDTO;
 import com.tsl.dtos.ForwarderDTO;
-import com.tsl.exceptions.CannotEditEntityException;
-import com.tsl.exceptions.CargoNotFoundException;
-import com.tsl.exceptions.EmailAddressIsTaken;
-import com.tsl.exceptions.ForwarderNotFoundException;
+import com.tsl.exceptions.*;
 import com.tsl.mapper.ForwarderMapper;
 import com.tsl.model.cargo.Cargo;
 import com.tsl.model.employee.Forwarder;
@@ -42,7 +39,7 @@ public class ForwarderService {
     }
 
     public ForwarderDTO findForwarderById(Long id) {
-        return forwarderRepository.findById(id).map(forwarderMapper::mapToDTO).orElseThrow(() -> new ForwarderNotFoundException("Forwarder not found"));
+        return forwarderRepository.findById(id).map(forwarderMapper::mapToDTO).orElseThrow(() -> new EmployeeNotFoundException("Forwarder not found"));
     }
 
     @Transactional

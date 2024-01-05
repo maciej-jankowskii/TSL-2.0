@@ -2,10 +2,7 @@ package com.tsl.service;
 
 import com.tsl.dtos.TransportPlannerDTO;
 import com.tsl.dtos.TruckDTO;
-import com.tsl.exceptions.CannotDeleteEntityException;
-import com.tsl.exceptions.CannotEditEntityException;
-import com.tsl.exceptions.PlannerNotFoundException;
-import com.tsl.exceptions.TruckNotFoundException;
+import com.tsl.exceptions.*;
 import com.tsl.mapper.TruckMapper;
 import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.truck.Truck;
@@ -80,7 +77,7 @@ public class TruckService {
      */
     private void updateTransportPlannerSalaryBonus(TruckDTO truckDTO) {
         if (truckDTO.getTransportPlannerId() != null) {
-            TransportPlanner planner = transportPlannerRepository.findById(truckDTO.getTransportPlannerId()).orElseThrow(() -> new PlannerNotFoundException("Transport planner not found"));
+            TransportPlanner planner = transportPlannerRepository.findById(truckDTO.getTransportPlannerId()).orElseThrow(() -> new EmployeeNotFoundException("Transport planner not found"));
             planner.setSalaryBonus(salaryBonusCalculator.calculateSalaryBonusForPlanners(planner));
             transportPlannerRepository.save(planner);
         }
