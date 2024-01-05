@@ -125,7 +125,7 @@ public class TransportOrderService {
         LocalDate insuranceDate = truck.getInsuranceDate();
         LocalDate technicalInspectionDate = truck.getTechnicalInspectionDate();
 
-        if (insuranceDate.isAfter(LocalDate.now()) || technicalInspectionDate.isAfter(LocalDate.now())) {
+        if (insuranceDate.isBefore(LocalDate.now()) || technicalInspectionDate.isBefore(LocalDate.now())) {
             throw new TruckFailsRequirementsException("Truck does not have current technical inspections or current insurance");
         }
     }

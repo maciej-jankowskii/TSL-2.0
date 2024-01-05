@@ -152,7 +152,7 @@ public class ForwarderOrderService {
     private static void checkingActualInsuranceAndLicence(Carrier carrier) {
         LocalDate insuranceExpirationDate = carrier.getInsuranceExpirationDate();
         LocalDate licenceExpirationDate = carrier.getLicenceExpirationDate();
-        if (insuranceExpirationDate.isAfter(LocalDate.now()) || licenceExpirationDate.isAfter(LocalDate.now())){
+        if (insuranceExpirationDate.isBefore(LocalDate.now()) || licenceExpirationDate.isBefore(LocalDate.now())){
             throw new CarrierFailsRequirements("Carrier doesnt have actual insurance or licence");
         }
     }

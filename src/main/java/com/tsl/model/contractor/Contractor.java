@@ -2,6 +2,7 @@ package com.tsl.model.contractor;
 
 import com.tsl.model.address.Address;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

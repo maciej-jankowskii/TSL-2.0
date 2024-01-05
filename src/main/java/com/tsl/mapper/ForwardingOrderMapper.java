@@ -50,9 +50,6 @@ public class ForwardingOrderMapper {
         order.setMargin(dto.getMargin());
         order.setIsInvoiced(dto.getIsInvoiced());
         order.setDateAdded(dto.getDateAdded());
-        order.setOrderStatus(OrderStatus.valueOf(dto.getOrderStatus()));
-        Forwarder forwarder = forwarderRepository.findById(dto.getForwarderId()).orElseThrow(() -> new EmployeeNotFoundException("Forwarder not found"));
-        order.setForwarder(forwarder);
         return order;
     }
 
