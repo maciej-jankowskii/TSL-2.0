@@ -1,14 +1,13 @@
 package com.tsl.service;
 
-import com.tsl.dtos.CargoDTO;
 import com.tsl.dtos.ForwarderDTO;
 import com.tsl.exceptions.*;
 import com.tsl.mapper.ForwarderMapper;
-import com.tsl.model.cargo.Cargo;
 import com.tsl.model.employee.Forwarder;
 import com.tsl.model.role.EmployeeRole;
 import com.tsl.repository.EmployeeRoleRepository;
 import com.tsl.repository.ForwarderRepository;
+import com.tsl.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,12 +25,14 @@ public class ForwarderService {
     private final ForwarderMapper forwarderMapper;
     private final PasswordEncoder passwordEncoder;
     private final EmployeeRoleRepository employeeRoleRepository;
+    private final UserRepository userRepository;
 
-    public ForwarderService(ForwarderRepository forwarderRepository, ForwarderMapper forwarderMapper, PasswordEncoder passwordEncoder, EmployeeRoleRepository employeeRoleRepository) {
+    public ForwarderService(ForwarderRepository forwarderRepository, ForwarderMapper forwarderMapper, PasswordEncoder passwordEncoder, EmployeeRoleRepository employeeRoleRepository, UserRepository userRepository) {
         this.forwarderRepository = forwarderRepository;
         this.forwarderMapper = forwarderMapper;
         this.passwordEncoder = passwordEncoder;
         this.employeeRoleRepository = employeeRoleRepository;
+        this.userRepository = userRepository;
     }
 
     public List<ForwarderDTO> findAllForwarders(){
@@ -65,7 +66,7 @@ public class ForwarderService {
     }
 
     private void checkingAvailabilityOfEmail(ForwarderDTO forwarderDTO) {
-        if (forwarderRepository.existsByEmail(forwarderDTO.getEmail())){
+        if (userRepository.existsByEmail(forwarderDTO.getEmail())){
             throw new EmailAddressIsTaken("Email address is already taken");
         }
     }

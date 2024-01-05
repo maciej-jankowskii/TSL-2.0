@@ -8,6 +8,7 @@ import com.tsl.model.employee.Accountant;
 import com.tsl.model.role.EmployeeRole;
 import com.tsl.repository.AccountantRepository;
 import com.tsl.repository.EmployeeRoleRepository;
+import com.tsl.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +24,14 @@ public class AccountantService {
     private final AccountantRepository accountantRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmployeeRoleRepository employeeRoleRepository;
+    private final UserRepository userRepository;
 
-    public AccountantService(AccountantMapper accountantMapper, AccountantRepository accountantRepository, PasswordEncoder passwordEncoder, EmployeeRoleRepository employeeRoleRepository) {
+    public AccountantService(AccountantMapper accountantMapper, AccountantRepository accountantRepository, PasswordEncoder passwordEncoder, EmployeeRoleRepository employeeRoleRepository, UserRepository userRepository) {
         this.accountantMapper = accountantMapper;
         this.accountantRepository = accountantRepository;
         this.passwordEncoder = passwordEncoder;
         this.employeeRoleRepository = employeeRoleRepository;
+        this.userRepository = userRepository;
     }
 
     public List<AccountantDTO> findAllAccountants(){
@@ -66,7 +69,7 @@ public class AccountantService {
     }
 
     private void checkingAvailabilityOfEmail(AccountantDTO accountantDTO) {
-        if (accountantRepository.existsByEmail(accountantDTO.getEmail())){
+        if (userRepository.existsByEmail(accountantDTO.getEmail())){
             throw new EmailAddressIsTaken("Email address is already taken");
         }
     }

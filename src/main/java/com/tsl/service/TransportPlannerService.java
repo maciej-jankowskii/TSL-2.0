@@ -9,7 +9,7 @@ import com.tsl.model.role.EmployeeRole;
 import com.tsl.model.truck.Truck;
 import com.tsl.repository.EmployeeRoleRepository;
 import com.tsl.repository.TransportPlannerRepository;
-import com.tsl.repository.TruckRepository;
+import com.tsl.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,15 +26,15 @@ public class TransportPlannerService {
     private final TransportPlannerMapper transportPlannerMapper;
     private final PasswordEncoder passwordEncoder;
     private final SalaryBonusCalculator salaryBonusCalculator;
-    private final TruckRepository truckRepository;
+    private final UserRepository userRepository;
     private final EmployeeRoleRepository employeeRoleRepository;
 
-    public TransportPlannerService(TransportPlannerRepository transportPlannerRepository, TransportPlannerMapper transportPlannerMapper, PasswordEncoder passwordEncoder, SalaryBonusCalculator salaryBonusCalculator, TruckRepository truckRepository, EmployeeRoleRepository employeeRoleRepository) {
+    public TransportPlannerService(TransportPlannerRepository transportPlannerRepository, TransportPlannerMapper transportPlannerMapper, PasswordEncoder passwordEncoder, SalaryBonusCalculator salaryBonusCalculator, UserRepository userRepository, EmployeeRoleRepository employeeRoleRepository) {
         this.transportPlannerRepository = transportPlannerRepository;
         this.transportPlannerMapper = transportPlannerMapper;
         this.passwordEncoder = passwordEncoder;
         this.salaryBonusCalculator = salaryBonusCalculator;
-        this.truckRepository = truckRepository;
+        this.userRepository = userRepository;
         this.employeeRoleRepository = employeeRoleRepository;
     }
 
@@ -83,7 +83,7 @@ public class TransportPlannerService {
 
 
     private void checkingAvailabilityOfEmail(TransportPlannerDTO transportPlanner) {
-        if (transportPlannerRepository.existsByEmail(transportPlanner.getEmail())){
+        if (userRepository.existsByEmail(transportPlanner.getEmail())){
             throw new EmailAddressIsTaken("Email address is already taken");
         }
     }
