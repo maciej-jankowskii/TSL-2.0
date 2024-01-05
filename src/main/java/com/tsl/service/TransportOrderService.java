@@ -7,6 +7,7 @@ import com.tsl.mapper.TransportOrderMapper;
 import com.tsl.model.cargo.Cargo;
 import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.order.TransportOrder;
+import com.tsl.model.truck.Truck;
 import com.tsl.repository.CargoRepository;
 import com.tsl.repository.TransportOrderRepository;
 import com.tsl.repository.TransportPlannerRepository;
@@ -66,6 +67,11 @@ public class TransportOrderService {
         Cargo cargo = cargoRepository.findById(dto.getCargoId()).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
         TransportPlanner planner = getLoggedInUser();
 
+        Truck truck = order.getTruck();
+
+        checkingDriverOnTruck(truck);
+        checkingActualInsuranceAndTechnicalInspection(truck);
+
         checkingIsCargoAvailable(cargo);
         addAdditionalDataForEntities(order, cargo, planner);
 
@@ -113,6 +119,21 @@ public class TransportOrderService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
         return transportPlannerRepository.findByEmail(userEmail).orElseThrow(() -> new EmployeeNotFoundException("Transport planner not found"));
+    }
+
+    private static void checkingActualInsuranceAndTechnicalInspection(Truck truck) {
+        LocalDate insuranceDate = truck.getInsuranceDate();
+        LocalDate technicalInspectionDate = truck.getTechnicalInspectionDate();
+
+        if (insuranceDate.isAfter(LocalDate.now()) || technicalInspectionDate.isAfter(LocalDate.now())) {
+            throw new TruckFailsRequirementsException("Truck does not have current technical inspections or current insurance");
+        }
+    }
+
+    private static void checkingDriverOnTruck(Truck truck) {
+        if (!truck.getAssignedToDriver()) {
+            throw new NoDriverOnTheTruckException("No driver on this truck");
+        }
     }
 
     /**

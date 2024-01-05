@@ -40,7 +40,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({CurrencyMismatchException.class, IncompatibleGoodsTypeException.class,
             NoGoodsSelectedException.class, NonUniqueLabelsException.class, WrongLoadigDateException.class,
             CannotEditGoodsAssignedToOrderException.class, NoTrucksException.class,
-            CannotEditEntityException.class, CannotDeleteEntityException.class})
+            CannotEditEntityException.class, CannotDeleteEntityException.class, NoDriverOnTheTruckException.class,
+            TruckFailsRequirementsException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleErrorRelatedToInvalidRequest(RuntimeException ex){
