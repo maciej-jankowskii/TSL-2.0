@@ -34,6 +34,10 @@ public class ForwardingOrderController {
         this.objectMapper = objectMapper;
     }
 
+    /***
+     Handling requests related to reading, adding, updating forwarding orders
+     */
+
     @GetMapping
     public ResponseEntity<List<ForwardingOrderDTO>> findAllForwardingOrders(){
         List<ForwardingOrderDTO> allForwardingOrders = forwarderOrderService.findAllForwardingOrders();
@@ -44,6 +48,13 @@ public class ForwardingOrderController {
         return ResponseEntity.ok(allForwardingOrders);
     }
 
+    @GetMapping("/sorted")
+    public ResponseEntity<List<ForwardingOrderDTO>> findAllForwardingOrdersSortedBy(@RequestParam String sortBy) {
+        Forwarder forwarder = getLoggedInUser();
+        List<ForwardingOrderDTO> sortedOrders = forwarderOrderService.findAllForwardingOrdersSortedBy(forwarder, sortBy);
+        return ResponseEntity.ok(sortedOrders);
+    }
+
     @PostMapping
     public ResponseEntity<ForwardingOrderDTO> addForwardingOrder(@RequestBody @Valid ForwardingOrderDTO forwardingOrderDTO){
         ForwardingOrderDTO created = forwarderOrderService.addForwardingOrder(forwardingOrderDTO);
@@ -52,13 +63,6 @@ public class ForwardingOrderController {
                 .buildAndExpand(created.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(created);
-    }
-
-    @GetMapping("/sorted")
-    public ResponseEntity<List<ForwardingOrderDTO>> findAllForwardingOrdersSortedBy(@RequestParam String sortBy) {
-        Forwarder forwarder = getLoggedInUser();
-        List<ForwardingOrderDTO> sortedOrders = forwarderOrderService.findAllForwardingOrdersSortedBy(forwarder, sortBy);
-        return ResponseEntity.ok(sortedOrders);
     }
 
     @PatchMapping("/{id}")
@@ -75,6 +79,10 @@ public class ForwardingOrderController {
         forwarderOrderService.cancelForwardingOrder(id);
         return ResponseEntity.noContent().build();
     }
+
+    /***
+     Helper methods
+     */
 
     private void applyPatchAndUpdateOrder(ForwardingOrderDTO orderDTO, JsonMergePatch patch)
             throws JsonPatchException, JsonProcessingException {

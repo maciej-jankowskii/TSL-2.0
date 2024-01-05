@@ -37,22 +37,12 @@ public class CargoService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Finding methods
+     */
+
     public List<CargoDTO> findAllCargos() {
         return cargoRepository.findAll().stream().map(cargoMapper::mapToDTO).collect(Collectors.toList());
-    }
-
-    @Transactional
-    public CargoDTO addCargo(CargoDTO cargoDTO) {
-        Customer customer = extractCustomerFromCargoDTO(cargoDTO);
-        Cargo cargo = cargoMapper.mapToEntity(cargoDTO);
-
-        addAdditionalDataForCargo(cargo, customer);
-        checkingLoadingData(cargo);
-        changeCustomerBalance(customer, cargo);
-
-        customerRepository.save(customer);
-        Cargo saved = cargoRepository.save(cargo);
-        return cargoMapper.mapToDTO(saved);
     }
 
     public List<CargoDTO> findAllCargosSortedBy(String sortBy) {
@@ -71,6 +61,25 @@ public class CargoService {
         return cargoRepository.findById(id).map(cargoMapper::mapToDTO).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
     }
 
+    /**
+     * Create, update, delete methods
+     */
+
+    @Transactional
+    public CargoDTO addCargo(CargoDTO cargoDTO) {
+        Customer customer = extractCustomerFromCargoDTO(cargoDTO);
+        Cargo cargo = cargoMapper.mapToEntity(cargoDTO);
+
+        addAdditionalDataForCargo(cargo, customer);
+        checkingLoadingData(cargo);
+        changeCustomerBalance(customer, cargo);
+
+        customerRepository.save(customer);
+        Cargo saved = cargoRepository.save(cargo);
+        return cargoMapper.mapToDTO(saved);
+    }
+
+
     @Transactional
     public void updateCargo(CargoDTO currentDTO, CargoDTO updatedDTO) {
         Cargo cargo = cargoMapper.mapToEntity(updatedDTO);
@@ -80,6 +89,27 @@ public class CargoService {
             throw new CannotEditEntityException("Cannot change isInvoiced value from true to false");
         }
         cargoRepository.save(cargo);
+    }
+
+    @Transactional
+    public void deleteCargo(Long id) {
+        Cargo cargo = cargoRepository.findById(id).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
+
+        Customer customer = cargo.getCustomer();
+
+        changeCustomerBalanceAfterDeleteCargo(cargo, customer);
+
+        cargoRepository.deleteById(id);
+    }
+
+    /**
+     * Helper methods
+     */
+
+    private void changeCustomerBalanceAfterDeleteCargo(Cargo cargo, Customer customer) {
+        BigDecimal price = checkingGrossPrice(customer, cargo);
+        BigDecimal balance = customer.getBalance();
+        customer.setBalance(balance.subtract(price));
     }
 
     private static void checkingIsAssignedCargo(Cargo cargo) {
@@ -128,6 +158,5 @@ public class CargoService {
         Long customerId = cargoDTO.getCustomerId();
         return customerRepository.findById(customerId).orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
     }
-
 
 }

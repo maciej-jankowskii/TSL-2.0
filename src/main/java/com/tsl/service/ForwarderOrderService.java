@@ -40,6 +40,10 @@ public class ForwarderOrderService {
         this.vatCalculatorService = vatCalculatorService;
     }
 
+    /**
+     * Finding methods
+     */
+
     public List<ForwardingOrderDTO> findAllForwardingOrders() {
         Forwarder forwarder = getLoggedInUser();
         return forwarderOrderRepository.findAllByForwarder_Email(forwarder.getEmail())
@@ -48,68 +52,20 @@ public class ForwarderOrderService {
                 .collect(Collectors.toList());
     }
 
-    public List<ForwardingOrderDTO> findAllForwardingOrdersSortedBy(Forwarder forwarder, String sortBy){
+    public List<ForwardingOrderDTO> findAllForwardingOrdersSortedBy(Forwarder forwarder, String sortBy) {
         return forwarderOrderRepository.findAllForwardingOrdersBy(forwarder.getEmail(), sortBy)
                 .stream()
                 .map(forwardingOrderMapper::mapToDTO)
                 .collect(Collectors.toList());
     }
 
-    public ForwardingOrderDTO findForwardingOrderById(Long id){
+    public ForwardingOrderDTO findForwardingOrderById(Long id) {
         return forwarderOrderRepository.findById(id).map(forwardingOrderMapper::mapToDTO).orElseThrow(() -> new OrderNotFoundException("Order not found"));
     }
 
-    @Transactional
-    public void updateForwardingOrder(ForwardingOrderDTO currentDTO, ForwardingOrderDTO updatedDTO) {
-        Forwarder forwarder = getLoggedInUser();
-        ForwardingOrder order = forwardingOrderMapper.mapToEntity(updatedDTO);
-        
-        validateForwarderOwnership(forwarder, order);
-        checkingInvoicingStatus(order);
-        checkingUnauthorizedValueChange(currentDTO, updatedDTO);
-        checkingOrderCancellation(updatedDTO, order);
-
-        forwarderOrderRepository.save(order);
-    }
-    @Transactional
-    public void cancelForwardingOrder(Long id){
-        ForwardingOrder order = forwarderOrderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Forwarding order not found"));
-        order.setOrderStatus(OrderStatus.valueOf("CANCELLED"));
-
-        changeCarrierBalance(order);
-    }
-
-    private void changeCarrierBalance(ForwardingOrder order) {
-        Carrier carrier = order.getCarrier();
-        BigDecimal netValue = order.getPrice();
-        BigDecimal grossValue = vatCalculatorService.calculateGrossValue(netValue, carrier.getVatNumber());
-        carrier.setBalance(carrier.getBalance().subtract(grossValue));
-    }
-
-    private static void checkingOrderCancellation(ForwardingOrderDTO updatedDTO, ForwardingOrder order) {
-        if (updatedDTO.getOrderStatus().equals("CANCELLED")){
-            Carrier carrier = order.getCarrier();
-            carrier.setBalance(carrier.getBalance().subtract(order.getPrice()));
-        }
-    }
-
-    private static void validateForwarderOwnership(Forwarder forwarder, ForwardingOrder order) {
-        if (!order.getForwarder().getId().equals(forwarder.getId())){
-            throw new CannotEditEntityException("You are not allowed to edit this forwarding order");
-        }
-    }
-
-    private static void checkingUnauthorizedValueChange(ForwardingOrderDTO currentDTO, ForwardingOrderDTO updatedDTO) {
-        if (currentDTO.getIsInvoiced() == true && updatedDTO.getIsInvoiced() == false) {
-            throw new CannotEditEntityException("Cannot change isInvoiced value from true to false");
-        }
-    }
-
-    private static void checkingInvoicingStatus(ForwardingOrder order) {
-        if (order.getIsInvoiced()){
-            throw new CannotEditEntityException("Cannot edit invoiced order");
-        }
-    }
+    /**
+     * Creare, update methods
+     */
 
     @Transactional
     public ForwardingOrderDTO addForwardingOrder(ForwardingOrderDTO forwardingOrderDTO) {
@@ -127,21 +83,45 @@ public class ForwarderOrderService {
 
     }
 
+    @Transactional
+    public void updateForwardingOrder(ForwardingOrderDTO currentDTO, ForwardingOrderDTO updatedDTO) {
+        Forwarder forwarder = getLoggedInUser();
+        ForwardingOrder order = forwardingOrderMapper.mapToEntity(updatedDTO);
+
+        validateForwarderOwnership(forwarder, order);
+        checkingInvoicingStatus(order);
+        checkingUnauthorizedValueChange(currentDTO, updatedDTO);
+        checkingOrderCancellation(updatedDTO, order);
+
+        forwarderOrderRepository.save(order);
+    }
+
+    @Transactional
+    public void cancelForwardingOrder(Long id) {
+        ForwardingOrder order = forwarderOrderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Forwarding order not found"));
+        order.setOrderStatus(OrderStatus.valueOf("CANCELLED"));
+
+        changeCarrierBalance(order);
+    }
+
+    /**
+     * Helper methods for add new order
+     */
+
+    private Carrier extractCarrierFromOrderDTO(ForwardingOrderDTO forwardingOrderDTO) {
+        Long carrierId = forwardingOrderDTO.getCarrierId();
+        return carrierRepository.findById(carrierId).orElseThrow(() -> new CarrierNotFoundException("Carrier not found"));
+    }
+
+    private Cargo extractCargoFromOrderDTO(ForwardingOrderDTO forwardingOrderDTO) {
+        Long cargoId = forwardingOrderDTO.getCargoId();
+        return cargoRepository.findById(cargoId).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
+    }
+
     private static void checkingIsCargoAvailable(Cargo cargo) {
         if (cargo.getAssignedToOrder()) {
             throw new CargoAlreadyAssignedException("Cargo is already assigned to another order");
         }
-    }
-
-    private void changeCarrierBalance(Carrier carrier, ForwardingOrder order) {
-        BigDecimal grossPrice = checkingGrossPrice(carrier, order);
-        carrier.setBalance(carrier.getBalance().add(grossPrice));
-    }
-
-    private BigDecimal checkingGrossPrice(Carrier carrier, ForwardingOrder order) {
-        String vatNumber = carrier.getVatNumber();
-        BigDecimal orderPrice = order.getPrice();
-        return vatCalculatorService.calculateGrossValue(orderPrice, vatNumber);
     }
 
     private static void addAdditionalDataForOrderAndCargo(ForwardingOrder order, Cargo cargo, Forwarder forwarder) {
@@ -157,14 +137,52 @@ public class ForwarderOrderService {
         cargo.setAssignedToOrder(true);
     }
 
-    private Carrier extractCarrierFromOrderDTO(ForwardingOrderDTO forwardingOrderDTO) {
-        Long carrierId = forwardingOrderDTO.getCarrierId();
-        return carrierRepository.findById(carrierId).orElseThrow(() -> new CarrierNotFoundException("Carrier not found"));
+    private void changeCarrierBalance(Carrier carrier, ForwardingOrder order) {
+        BigDecimal grossPrice = checkingGrossPrice(carrier, order);
+        carrier.setBalance(carrier.getBalance().add(grossPrice));
     }
 
-    private Cargo extractCargoFromOrderDTO(ForwardingOrderDTO forwardingOrderDTO) {
-        Long cargoId = forwardingOrderDTO.getCargoId();
-        return cargoRepository.findById(cargoId).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
+    private BigDecimal checkingGrossPrice(Carrier carrier, ForwardingOrder order) {
+        String vatNumber = carrier.getVatNumber();
+        BigDecimal orderPrice = order.getPrice();
+        return vatCalculatorService.calculateGrossValue(orderPrice, vatNumber);
+    }
+
+    /**
+     * Helper methods for update order
+     */
+
+
+    private static void validateForwarderOwnership(Forwarder forwarder, ForwardingOrder order) {
+        if (!order.getForwarder().getId().equals(forwarder.getId())) {
+            throw new CannotEditEntityException("You are not allowed to edit this forwarding order");
+        }
+    }
+
+    private static void checkingUnauthorizedValueChange(ForwardingOrderDTO currentDTO, ForwardingOrderDTO updatedDTO) {
+        if (currentDTO.getIsInvoiced() == true && updatedDTO.getIsInvoiced() == false) {
+            throw new CannotEditEntityException("Cannot change isInvoiced value from true to false");
+        }
+    }
+
+    private static void checkingInvoicingStatus(ForwardingOrder order) {
+        if (order.getIsInvoiced()) {
+            throw new CannotEditEntityException("Cannot edit invoiced order");
+        }
+    }
+
+    private void changeCarrierBalance(ForwardingOrder order) {
+        Carrier carrier = order.getCarrier();
+        BigDecimal netValue = order.getPrice();
+        BigDecimal grossValue = vatCalculatorService.calculateGrossValue(netValue, carrier.getVatNumber());
+        carrier.setBalance(carrier.getBalance().subtract(grossValue));
+    }
+
+    private static void checkingOrderCancellation(ForwardingOrderDTO updatedDTO, ForwardingOrder order) {
+        if (updatedDTO.getOrderStatus().equals("CANCELLED")) {
+            Carrier carrier = order.getCarrier();
+            carrier.setBalance(carrier.getBalance().subtract(order.getPrice()));
+        }
     }
 
     private Forwarder getLoggedInUser() {

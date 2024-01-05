@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
-import com.tsl.dtos.CargoDTO;
 import com.tsl.dtos.CustomerDTO;
 import com.tsl.service.CustomerService;
 import jakarta.validation.Valid;
@@ -22,22 +21,27 @@ public class CustomerController {
 
     private final CustomerService customerService;
     private final ObjectMapper objectMapper;
+
     public CustomerController(CustomerService customerService, ObjectMapper objectMapper) {
         this.customerService = customerService;
         this.objectMapper = objectMapper;
     }
 
+    /***
+     Handling requests related to reading, adding, updating customers
+     */
+
     @GetMapping
-    public ResponseEntity<List<CustomerDTO>> findAllCustomers(){
+    public ResponseEntity<List<CustomerDTO>> findAllCustomers() {
         List<CustomerDTO> allCustomers = customerService.findAllCustomers();
-        if (allCustomers.isEmpty()){
+        if (allCustomers.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(allCustomers);
     }
 
     @PostMapping
-    public ResponseEntity<CustomerDTO> addCustomer(@RequestBody @Valid CustomerDTO customerDTO){
+    public ResponseEntity<CustomerDTO> addCustomer(@RequestBody @Valid CustomerDTO customerDTO) {
         CustomerDTO created = customerService.addCustomer(customerDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{/id}")
@@ -61,11 +65,15 @@ public class CustomerController {
 
     }
 
+    /***
+     Helper methods for updates
+     */
+
     private void applyPatchAndUpdateCustomer(CustomerDTO customerDTO, JsonMergePatch patch)
             throws JsonPatchException, JsonProcessingException {
         JsonNode customerNode = objectMapper.valueToTree(customerDTO);
         JsonNode patchedCustomer = patch.apply(customerNode);
         CustomerDTO patchedCustomerDTO = objectMapper.treeToValue(patchedCustomer, CustomerDTO.class);
-        customerService.updateCustomer(customerDTO, patchedCustomerDTO);
+        customerService.updateCustomer(patchedCustomerDTO);
     }
 }

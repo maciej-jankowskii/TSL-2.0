@@ -24,6 +24,10 @@ public class CarrierService {
         this.carrierMapper = carrierMapper;
     }
 
+    /**
+     * Finding methods
+     */
+
     public List<CarrierDTO> findAllCarriers() {
         return carrierRepository.findAll().stream().map(carrierMapper::mapToDTO).collect(Collectors.toList());
     }
@@ -35,6 +39,10 @@ public class CarrierService {
     public CarrierDTO findCarrierById(Long id) {
         return carrierRepository.findById(id).map(carrierMapper::mapToDTO).orElseThrow(() -> new CarrierNotFoundException("Carrier not found"));
     }
+
+    /**
+     * Create, update methods
+     */
 
     @Transactional
     public CarrierDTO addCarrier(CarrierDTO carrierDTO) {
@@ -48,11 +56,15 @@ public class CarrierService {
     }
 
     @Transactional
-    public void updateCarrier(CarrierDTO currentDTO, CarrierDTO updatedDTO) {
-        Carrier carrier = carrierMapper.mapToEntity(updatedDTO);
+    public void updateCarrier(CarrierDTO carrierDTO) {
+        Carrier carrier = carrierMapper.mapToEntity(carrierDTO);
 
         carrierRepository.save(carrier);
     }
+
+    /**
+     * Helper methods
+     */
 
     private static void addAdditionalDataForContactPerson(Carrier carrier) {
         List<ContactPerson> contactPersons = carrier.getContactPersons();

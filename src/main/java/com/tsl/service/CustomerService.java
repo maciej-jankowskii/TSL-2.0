@@ -24,7 +24,11 @@ public class CustomerService {
         this.customerMapper = customerMapper;
     }
 
-    public List<CustomerDTO> findAllCustomers(){
+    /**
+     * Finding methods
+     */
+
+    public List<CustomerDTO> findAllCustomers() {
         return customerRepository.findAll().stream().map(customerMapper::mapToDTO).collect(Collectors.toList());
     }
 
@@ -36,15 +40,12 @@ public class CustomerService {
         return customerRepository.findById(id).map(customerMapper::mapToDTO).orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
     }
 
-    @Transactional
-    public void updateCustomer(CustomerDTO currentDTO, CustomerDTO updatedDTO) {
-        Customer customer = customerMapper.mapToEntity(updatedDTO);
-
-        customerRepository.save(customer);
-    }
+    /**
+     * Create, update methods
+     */
 
     @Transactional
-    public CustomerDTO addCustomer(CustomerDTO customerDTO){
+    public CustomerDTO addCustomer(CustomerDTO customerDTO) {
         Customer customer = customerMapper.mapToEntity(customerDTO);
 
         addAdditionalDataForCustomer(customer);
@@ -54,9 +55,20 @@ public class CustomerService {
         return customerMapper.mapToDTO(saved);
     }
 
+    @Transactional
+    public void updateCustomer(CustomerDTO customerDTO) {
+        Customer customer = customerMapper.mapToEntity(customerDTO);
+
+        customerRepository.save(customer);
+    }
+
+    /**
+     * Helper methods
+     */
+
     private static void addAdditionalDataForContactPerson(Customer customer) {
         List<ContactPerson> contactPersons = customer.getContactPersons();
-        if (!contactPersons.isEmpty()){
+        if (!contactPersons.isEmpty()) {
             contactPersons.forEach(person -> person.setContractor(customer));
         }
     }

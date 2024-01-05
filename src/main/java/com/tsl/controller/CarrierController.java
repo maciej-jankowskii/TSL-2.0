@@ -27,6 +27,10 @@ public class CarrierController {
         this.objectMapper = objectMapper;
     }
 
+    /***
+     Handling requests related to reading, adding, updating carriers
+     */
+
     @GetMapping
     public ResponseEntity<List<CarrierDTO>> findAllCarriers() {
         List<CarrierDTO> allCarriers = carrierService.findAllCarriers();
@@ -34,6 +38,12 @@ public class CarrierController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(allCarriers);
+    }
+
+    @GetMapping("/sorted")
+    public ResponseEntity<List<CarrierDTO>> findAllCarriersSortedBy(@RequestParam String sortBy) {
+        List<CarrierDTO> sortedCarriers = carrierService.findAllCarriersSortedBy(sortBy);
+        return ResponseEntity.ok(sortedCarriers);
     }
 
     @PostMapping
@@ -46,12 +56,6 @@ public class CarrierController {
         return ResponseEntity.created(uri).body(created);
     }
 
-    @GetMapping("/sorted")
-    public ResponseEntity<List<CarrierDTO>> findAllCarriersSortedBy(@RequestParam String sortBy) {
-        List<CarrierDTO> sortedCarriers = carrierService.findAllCarriersSortedBy(sortBy);
-        return ResponseEntity.ok(sortedCarriers);
-    }
-
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCarrier(@PathVariable Long id, @RequestBody JsonMergePatch patch)
             throws JsonPatchException, JsonProcessingException {
@@ -61,11 +65,15 @@ public class CarrierController {
 
     }
 
+    /***
+     Helper methods for updates
+     */
+
     private void applyPatchAndUpdateCarrier(CarrierDTO carrierDTO, JsonMergePatch patch)
             throws JsonPatchException, JsonProcessingException {
         JsonNode carrierNode = objectMapper.valueToTree(carrierDTO);
         JsonNode patchedCarrier = patch.apply(carrierNode);
         CarrierDTO patchedCarrierDTO = objectMapper.treeToValue(patchedCarrier, CarrierDTO.class);
-        carrierService.updateCarrier(carrierDTO, patchedCarrierDTO);
+        carrierService.updateCarrier(patchedCarrierDTO);
     }
 }

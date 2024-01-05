@@ -27,6 +27,10 @@ public class CargoController {
         this.objectMapper = objectMapper;
     }
 
+    /***
+     Handling requests related to reading, adding, updating, deleting customers
+     */
+
     @GetMapping
     public ResponseEntity<List<CargoDTO>> findAllCargos() {
         List<CargoDTO> allCargos = cargoService.findAllCargos();
@@ -76,8 +80,17 @@ public class CargoController {
         CargoDTO cargoDTO = cargoService.findCargoById(id);
         applyPatchAndUpdateCargo(cargoDTO, patch);
         return ResponseEntity.noContent().build();
-
     }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> deleteCargo(@PathVariable Long id) {
+        cargoService.deleteCargo(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    /***
+     Helper methods for updates
+     */
 
     private void applyPatchAndUpdateCargo(CargoDTO cargoDTO, JsonMergePatch patch)
             throws JsonPatchException, JsonProcessingException {
