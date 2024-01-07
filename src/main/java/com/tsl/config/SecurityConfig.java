@@ -39,9 +39,10 @@ public class SecurityConfig {
                 .requestMatchers("/warehouses/**", "/cargos/**").hasAnyRole("ADMIN", "FORWARDER", "PLANNER")
                 .requestMatchers("/customers/**", "/carriers/**").hasAnyRole("ADMIN", "FORWARDER", "PLANNER", "ACCOUNTANT")
                 .requestMatchers("/forwarding-orders").hasAnyRole("FORWARDER", "ADMIN")
-                .requestMatchers("/invoices/**", "/salary/**").hasAnyRole("ACCOUNTANT", "ADMIN")
+                .requestMatchers("/invoices/**").hasAnyRole("ACCOUNTANT", "ADMIN")
                 .requestMatchers("/transport-orders").hasAnyRole("PLANNER", "ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/salary/**").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
