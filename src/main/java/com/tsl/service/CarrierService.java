@@ -1,11 +1,16 @@
 package com.tsl.service;
 
 import com.tsl.dtos.CarrierDTO;
+import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.CarrierNotFoundException;
+import com.tsl.exceptions.ContactPersonNotFoundException;
 import com.tsl.mapper.CarrierMapper;
+import com.tsl.model.address.Address;
 import com.tsl.model.contractor.Carrier;
 import com.tsl.model.contractor.ContactPerson;
+import com.tsl.repository.AddressRepository;
 import com.tsl.repository.CarrierRepository;
+import com.tsl.repository.ContactPersonRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +23,14 @@ public class CarrierService {
 
     private final CarrierRepository carrierRepository;
     private final CarrierMapper carrierMapper;
+    private final AddressRepository addressRepository;
+    private final ContactPersonRepository contactPersonRepository;
 
-    public CarrierService(CarrierRepository carrierRepository, CarrierMapper carrierMapper) {
+    public CarrierService(CarrierRepository carrierRepository, CarrierMapper carrierMapper, AddressRepository addressRepository, ContactPersonRepository contactPersonRepository) {
         this.carrierRepository = carrierRepository;
         this.carrierMapper = carrierMapper;
+        this.addressRepository = addressRepository;
+        this.contactPersonRepository = contactPersonRepository;
     }
 
     /**
@@ -47,12 +56,25 @@ public class CarrierService {
     @Transactional
     public CarrierDTO addCarrier(CarrierDTO carrierDTO) {
         Carrier carrier = carrierMapper.mapToEntity(carrierDTO);
-        carrier.setBalance(BigDecimal.ZERO);
 
+        addAdditionalDataForCarrier(carrierDTO, carrier);
         addAdditionalDataForContactPerson(carrier);
 
         Carrier saved = carrierRepository.save(carrier);
         return carrierMapper.mapToDTO(saved);
+    }
+
+    private void addAdditionalDataForCarrier(CarrierDTO carrierDTO, Carrier carrier) {
+        carrier.setBalance(BigDecimal.ZERO);
+
+        Address address = addressRepository.findById(carrierDTO.getAddressId()).orElseThrow(() -> new AddressNotFoundException("Address not found"));
+        carrier.setAddress(address);
+
+        List<ContactPerson> contact = carrierDTO.getContactPersonIds().stream()
+                .map(contactPersonIds -> contactPersonRepository.findById(contactPersonIds)
+                        .orElseThrow(() -> new ContactPersonNotFoundException("Contact Person not found with this ID " + contactPersonIds)))
+                .collect(Collectors.toList());
+        carrier.setContactPersons(contact);
     }
 
     @Transactional
