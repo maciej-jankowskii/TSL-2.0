@@ -33,18 +33,7 @@ public class ForwardingOrderMapper {
         ForwardingOrder order = new ForwardingOrder();
         order.setId(dto.getId());
         order.setOrderNumber(dto.getOrderNumber());
-        Cargo cargo = cargoRepository.findById(dto.getCargoId()).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
-        order.setCargo(cargo);
         order.setPrice(dto.getPrice());
-        Currency currency = cargo.getCurrency();
-        String dtoCurrency = dto.getCurrency();
-
-        if (!currency.equals(Currency.valueOf(dtoCurrency))) {
-            throw new CurrencyMismatchException("Currency mismatch");
-        }
-        order.setCurrency(Currency.valueOf(dtoCurrency));
-        Carrier carrier = carrierRepository.findById(dto.getCarrierId()).orElseThrow(() -> new CarrierNotFoundException("Carrier not found"));
-        order.setCarrier(carrier);
         order.setTypeOfTruck(TypeOfTruck.valueOf(dto.getTypeOfTruck()));
         order.setTruckNumbers(dto.getTruckNumbers());
         order.setMargin(dto.getMargin());

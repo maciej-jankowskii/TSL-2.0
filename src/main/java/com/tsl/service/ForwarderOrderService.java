@@ -1,6 +1,7 @@
 package com.tsl.service;
 
 import com.tsl.dtos.ForwardingOrderDTO;
+import com.tsl.enums.Currency;
 import com.tsl.enums.OrderStatus;
 import com.tsl.exceptions.*;
 import com.tsl.mapper.ForwardingOrderMapper;
@@ -70,8 +71,10 @@ public class ForwarderOrderService {
     @Transactional
     public ForwardingOrderDTO addForwardingOrder(ForwardingOrderDTO forwardingOrderDTO) {
         ForwardingOrder order = forwardingOrderMapper.mapToEntity(forwardingOrderDTO);
-        Cargo cargo = extractCargoFromOrderDTO(forwardingOrderDTO);
-        Carrier carrier = extractCarrierFromOrderDTO(forwardingOrderDTO);
+
+        Cargo cargo = extractCargoFromOrderDTO(forwardingOrderDTO, order);
+        Carrier carrier = extractCarrierFromOrderDTO(forwardingOrderDTO, order);
+        checkingCurrency(forwardingOrderDTO, order, cargo);
         Forwarder forwarder = getLoggedInUser();
 
         checkingActualInsuranceAndLicence(carrier);
@@ -109,15 +112,28 @@ public class ForwarderOrderService {
      * Helper methods for add new order
      */
 
-    private Carrier extractCarrierFromOrderDTO(ForwardingOrderDTO forwardingOrderDTO) {
-        Long carrierId = forwardingOrderDTO.getCarrierId();
-        return carrierRepository.findById(carrierId).orElseThrow(() -> new CarrierNotFoundException("Carrier not found"));
+    private static void checkingCurrency(ForwardingOrderDTO forwardingOrderDTO, ForwardingOrder order, Cargo cargo) {
+        Currency currency = cargo.getCurrency();
+        String dtoCurrency = forwardingOrderDTO.getCurrency();
+
+        if (!currency.equals(Currency.valueOf(dtoCurrency))) {
+            throw new CurrencyMismatchException("Currency mismatch");
+        }
+        order.setCurrency(Currency.valueOf(dtoCurrency));
     }
 
-    private Cargo extractCargoFromOrderDTO(ForwardingOrderDTO forwardingOrderDTO) {
-        Long cargoId = forwardingOrderDTO.getCargoId();
-        return cargoRepository.findById(cargoId).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
+    private Carrier extractCarrierFromOrderDTO(ForwardingOrderDTO forwardingOrderDTO, ForwardingOrder order) {
+        Carrier carrier = carrierRepository.findById(forwardingOrderDTO.getCarrierId()).orElseThrow(() -> new CarrierNotFoundException("Carrier not found"));
+        order.setCarrier(carrier);
+        return carrier;
     }
+
+    private Cargo extractCargoFromOrderDTO(ForwardingOrderDTO forwardingOrderDTO, ForwardingOrder order) {
+        Cargo cargo = cargoRepository.findById(forwardingOrderDTO.getCargoId()).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
+        order.setCargo(cargo);
+        return cargo;
+    }
+
 
     private static void checkingIsCargoAvailable(Cargo cargo) {
         if (cargo.getAssignedToOrder()) {
