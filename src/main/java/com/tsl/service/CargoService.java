@@ -67,8 +67,8 @@ public class CargoService {
 
     @Transactional
     public CargoDTO addCargo(CargoDTO cargoDTO) {
-        Customer customer = extractCustomerFromCargoDTO(cargoDTO);
         Cargo cargo = cargoMapper.mapToEntity(cargoDTO);
+        Customer customer = customerRepository.findById(cargoDTO.getCustomerId()).orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
 
         addAdditionalDataForCargo(cargo, customer);
         checkingLoadingData(cargo);
@@ -84,11 +84,14 @@ public class CargoService {
     public void updateCargo(CargoDTO currentDTO, CargoDTO updatedDTO) {
         Cargo cargo = cargoMapper.mapToEntity(updatedDTO);
         checkingIsAssignedCargo(cargo);
+        checkingUnauthorizedValueChange(currentDTO, updatedDTO);
+        cargoRepository.save(cargo);
+    }
 
+    private static void checkingUnauthorizedValueChange(CargoDTO currentDTO, CargoDTO updatedDTO) {
         if (currentDTO.getInvoiced() == true && updatedDTO.getInvoiced() == false) {
             throw new CannotEditEntityException("Cannot change isInvoiced value from true to false");
         }
-        cargoRepository.save(cargo);
     }
 
     @Transactional
@@ -152,11 +155,6 @@ public class CargoService {
         if (unloadingDate != null && unloadingDate.isBefore(loadingDate)) {
             throw new WrongLoadigDateException("The loading date cannot be later than the unloading date");
         }
-    }
-
-    private Customer extractCustomerFromCargoDTO(CargoDTO cargoDTO) {
-        Long customerId = cargoDTO.getCustomerId();
-        return customerRepository.findById(customerId).orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
     }
 
 }

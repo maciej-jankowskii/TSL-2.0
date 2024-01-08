@@ -19,11 +19,10 @@ public class CargoMapper {
         this.customerRepository = customerRepository;
     }
 
-    public Cargo mapToEntity(CargoDTO cargoDTO){
-        if (cargoDTO == null){
+    public Cargo mapToEntity(CargoDTO cargoDTO) {
+        if (cargoDTO == null) {
             throw new NullEntityException("Cargo data cannot be null");
         }
-
         Cargo cargo = new Cargo();
         cargo.setId(cargoDTO.getId());
         cargo.setCargoNumber(cargoDTO.getCargoNumber());
@@ -38,13 +37,11 @@ public class CargoMapper {
         cargo.setDescription(cargoDTO.getDescription());
         cargo.setAssignedToOrder(cargoDTO.getAssignedToOrder());
         cargo.setInvoiced(cargoDTO.getInvoiced());
-        Customer customer = customerRepository.findById(cargoDTO.getCustomerId()).orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
-        cargo.setCustomer(customer);
         return cargo;
     }
 
-    public CargoDTO mapToDTO(Cargo cargo){
-        if (cargo == null){
+    public CargoDTO mapToDTO(Cargo cargo) {
+        if (cargo == null) {
             throw new NullEntityException("Cargo cannot be null");
         }
 
