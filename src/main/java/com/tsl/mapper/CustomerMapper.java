@@ -17,39 +17,22 @@ import java.util.stream.Collectors;
 @Service
 public class CustomerMapper {
 
-    private final AddressRepository addressRepository;
-    private final ContactPersonRepository contactPersonRepository;
-
-    public CustomerMapper(AddressRepository addressRepository, ContactPersonRepository contactPersonRepository) {
-        this.addressRepository = addressRepository;
-        this.contactPersonRepository = contactPersonRepository;
-    }
-
-    public Customer mapToEntity(CustomerDTO customerDTO){
-        if (customerDTO == null){
+    public Customer mapToEntity(CustomerDTO customerDTO) {
+        if (customerDTO == null) {
             throw new NullEntityException("Customer data cannot be null");
         }
-
         Customer customer = new Customer();
         customer.setId(customerDTO.getId());
         customer.setFullName(customerDTO.getFullName());
         customer.setShortName(customerDTO.getShortName());
-        Address address = addressRepository.findById(customerDTO.getAddressId()).orElseThrow(() -> new AddressNotFoundException("Address not found"));
-        customer.setAddress(address);
         customer.setVatNumber(customerDTO.getVatNumber());
         customer.setDescription(customerDTO.getDescription());
         customer.setTermOfPayment(customerDTO.getTermOfPayment());
-
-        List<ContactPerson> contact = customerDTO.getContactPersonIds().stream()
-                .map(contactPersonIds -> contactPersonRepository.findById(contactPersonIds)
-                        .orElseThrow(() -> new ContactPersonNotFoundException("Contact Person not found with this ID " + contactPersonIds)))
-                .collect(Collectors.toList());
-        customer.setContactPersons(contact);
         return customer;
     }
 
-    public CustomerDTO mapToDTO(Customer customer){
-        if (customer == null){
+    public CustomerDTO mapToDTO(Customer customer) {
+        if (customer == null) {
             throw new NullEntityException("Customer cannot be null");
         }
         CustomerDTO dto = new CustomerDTO();

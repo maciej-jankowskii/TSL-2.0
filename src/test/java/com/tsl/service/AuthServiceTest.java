@@ -22,6 +22,8 @@ class AuthServiceTest {
 
     @Mock private AuthenticationManager authenticationManager;
     @Mock private JWTGenerator jwtGenerator;
+    @Mock private UserDetails userDetails;
+    @Mock private Authentication authentication;
     @InjectMocks private AuthService authService;
 
     @BeforeEach
@@ -33,9 +35,6 @@ class AuthServiceTest {
     @DisplayName("Should log in correctly")
     public void testLoginUser_Success(){
         UserLoginDTO userLoginDTO = prepareDataForLogIn();
-
-        UserDetails userDetails = mock(UserDetails.class);
-        Authentication authentication = mock(Authentication.class);
 
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
