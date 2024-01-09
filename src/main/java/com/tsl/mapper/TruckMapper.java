@@ -31,8 +31,6 @@ public class TruckMapper {
         truck.setTechnicalInspectionDate(dto.getTechnicalInspectionDate());
         truck.setInsuranceDate(dto.getInsuranceDate());
         truck.setAssignedToDriver(dto.getAssignedToDriver());
-        TransportPlanner planner = transportPlannerRepository.findById(dto.getTransportPlannerId()).orElseThrow(() -> new EmployeeNotFoundException("Transport planner not found"));
-        truck.setTransportPlanner(planner);
         return truck;
     }
 

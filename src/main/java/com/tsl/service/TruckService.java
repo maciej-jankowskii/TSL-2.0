@@ -61,7 +61,13 @@ public class TruckService {
     @Transactional
     public void updateTruck(TruckDTO truckDTO) {
         Truck truck = truckMapper.mapToEntity(truckDTO);
+        checkingTransportPlanner(truckDTO, truck);
         truckRepository.save(truck);
+    }
+
+    private void checkingTransportPlanner(TruckDTO truckDTO, Truck truck) {
+        TransportPlanner planner = transportPlannerRepository.findById(truckDTO.getTransportPlannerId()).orElseThrow(() -> new EmployeeNotFoundException("Transport planner not found"));
+        truck.setTransportPlanner(planner);
     }
 
     public void deleteTruck(Long id) {
