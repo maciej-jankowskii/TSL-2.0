@@ -45,6 +45,10 @@ public class GoodsService {
         return goodsRepository.findAllOrderBy(sortBy).stream().map(goodsMapper::mapToDTO).collect(Collectors.toList());
     }
 
+    /**
+     Create, update, delete methods
+     */
+
     @Transactional
     public GoodsDTO addGoods(GoodsDTO goodsDTO) {
         Goods goods = goodsMapper.mapToEntity(goodsDTO);
@@ -55,10 +59,6 @@ public class GoodsService {
         Goods saved = goodsRepository.save(goods);
         return goodsMapper.mapToDTO(saved);
     }
-
-    /**
-     Create, update, delete methods
-     */
 
     @Transactional
     public void updateGoods(GoodsDTO current, GoodsDTO updated) {
