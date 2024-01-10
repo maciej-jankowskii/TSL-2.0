@@ -1,11 +1,13 @@
 package com.tsl.service.forwardingAndTransport;
 
 import com.tsl.dtos.forwardiing.CustomerDTO;
+import com.tsl.dtos.forwardiing.CustomerWithBalanceDTO;
 import com.tsl.enums.PaymentRating;
 import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.ContactPersonNotFoundException;
 import com.tsl.exceptions.CustomerNotFoundException;
 import com.tsl.mapper.CustomerMapper;
+import com.tsl.mapper.CustomerWithBalanceMapper;
 import com.tsl.model.address.Address;
 import com.tsl.model.contractor.ContactPerson;
 import com.tsl.model.contractor.Customer;
@@ -26,13 +28,16 @@ public class CustomerService {
 
     private final AddressRepository addressRepository;
     private final ContactPersonRepository contactPersonRepository;
+    private final CustomerWithBalanceMapper customerWithBalanceMapper;
 
     public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper,
-                           AddressRepository addressRepository, ContactPersonRepository contactPersonRepository) {
+                           AddressRepository addressRepository, ContactPersonRepository contactPersonRepository,
+                           CustomerWithBalanceMapper customerWithBalanceMapper) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
         this.addressRepository = addressRepository;
         this.contactPersonRepository = contactPersonRepository;
+        this.customerWithBalanceMapper = customerWithBalanceMapper;
     }
 
     /**
@@ -41,6 +46,10 @@ public class CustomerService {
 
     public List<CustomerDTO> findAllCustomers() {
         return customerRepository.findAll().stream().map(customerMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public List<CustomerWithBalanceDTO> findAllCustomersWithBalance(){
+        return customerRepository.findAll().stream().map(customerWithBalanceMapper::mapToDTO).collect(Collectors.toList());
     }
 
     public List<CustomerDTO> findAllCustomersSortedBy(String sortBy) {

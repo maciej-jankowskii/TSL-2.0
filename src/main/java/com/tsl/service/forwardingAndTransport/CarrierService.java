@@ -1,10 +1,12 @@
 package com.tsl.service.forwardingAndTransport;
 
 import com.tsl.dtos.forwardiing.CarrierDTO;
+import com.tsl.dtos.forwardiing.CarrierWithBalanceDTO;
 import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.CarrierNotFoundException;
 import com.tsl.exceptions.ContactPersonNotFoundException;
 import com.tsl.mapper.CarrierMapper;
+import com.tsl.mapper.CarrierWithBalanceMapper;
 import com.tsl.model.address.Address;
 import com.tsl.model.contractor.Carrier;
 import com.tsl.model.contractor.ContactPerson;
@@ -25,13 +27,16 @@ public class CarrierService {
     private final CarrierMapper carrierMapper;
     private final AddressRepository addressRepository;
     private final ContactPersonRepository contactPersonRepository;
+    private final CarrierWithBalanceMapper carrierWithBalanceMapper;
 
     public CarrierService(CarrierRepository carrierRepository, CarrierMapper carrierMapper,
-                          AddressRepository addressRepository, ContactPersonRepository contactPersonRepository) {
+                          AddressRepository addressRepository, ContactPersonRepository contactPersonRepository,
+                          CarrierWithBalanceMapper carrierWithBalanceMapper) {
         this.carrierRepository = carrierRepository;
         this.carrierMapper = carrierMapper;
         this.addressRepository = addressRepository;
         this.contactPersonRepository = contactPersonRepository;
+        this.carrierWithBalanceMapper = carrierWithBalanceMapper;
     }
 
     /**
@@ -40,6 +45,10 @@ public class CarrierService {
 
     public List<CarrierDTO> findAllCarriers() {
         return carrierRepository.findAll().stream().map(carrierMapper::mapToDTO).collect(Collectors.toList());
+    }
+
+    public List<CarrierWithBalanceDTO> findAllCarriersWithBalance(){
+        return carrierRepository.findAll().stream().map(carrierWithBalanceMapper::mapToDTO).collect(Collectors.toList());
     }
 
     public List<CarrierDTO> findAllCarriersSortedBy(String sortBy) {

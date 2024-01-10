@@ -6,9 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import com.tsl.dtos.employees.*;
+import com.tsl.dtos.forwardiing.CarrierWithBalanceDTO;
+import com.tsl.dtos.forwardiing.CustomerWithBalanceDTO;
 import com.tsl.dtos.transport.TruckDTO;
 import com.tsl.dtos.warehouses.WarehouseDTO;
 import com.tsl.service.employees.*;
+import com.tsl.service.forwardingAndTransport.CarrierService;
+import com.tsl.service.forwardingAndTransport.CustomerService;
 import com.tsl.service.forwardingAndTransport.TruckService;
 import com.tsl.service.warehouses.WarehouseService;
 import jakarta.validation.Valid;
@@ -33,11 +37,14 @@ public class AdminController {
     private final TruckService truckService;
     private final ObjectMapper objectMapper;
     private final WarehouseService warehouseService;
+    private final CustomerService customerService;
+    private final CarrierService carrierService;
 
     public AdminController(ForwarderService forwarderService, TransportPlannerService transportPlannerService,
                            AccountantService accountantService, DriverService driverService,
                            WarehouseWorkerService warehouseWorkerService, TruckService truckService,
-                           ObjectMapper objectMapper, WarehouseService warehouseService) {
+                           ObjectMapper objectMapper, WarehouseService warehouseService, CustomerService customerService,
+                           CarrierService carrierService) {
         this.forwarderService = forwarderService;
         this.transportPlannerService = transportPlannerService;
         this.accountantService = accountantService;
@@ -46,6 +53,8 @@ public class AdminController {
         this.truckService = truckService;
         this.objectMapper = objectMapper;
         this.warehouseService = warehouseService;
+        this.customerService = customerService;
+        this.carrierService = carrierService;
     }
 
     /***
@@ -263,6 +272,30 @@ public class AdminController {
     ResponseEntity<?> deleteWarehouse(@PathVariable Long id) {
         warehouseService.deleteWarehouse(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Handling request related to Customer and Carrier
+     */
+
+    @GetMapping("/carriers")
+    public ResponseEntity<List<CarrierWithBalanceDTO>> findAllCarriers() {
+        List<CarrierWithBalanceDTO> allCarriers = carrierService.findAllCarriersWithBalance();
+        if (allCarriers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allCarriers);
+
+    }
+
+    @GetMapping("/customers")
+    public ResponseEntity<List<CustomerWithBalanceDTO>> findAllCustomers() {
+        List<CustomerWithBalanceDTO> allCustomers = customerService.findAllCustomersWithBalance();
+        if (allCustomers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allCustomers);
+
     }
 
     /**
