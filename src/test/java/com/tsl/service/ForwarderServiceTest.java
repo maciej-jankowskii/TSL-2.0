@@ -1,15 +1,16 @@
 package com.tsl.service;
 
-import com.tsl.dtos.ForwarderDTO;
+import com.tsl.dtos.employees.ForwarderDTO;
 import com.tsl.exceptions.EmailAddressIsTaken;
 import com.tsl.mapper.ForwarderMapper;
 import com.tsl.model.address.Address;
 import com.tsl.model.employee.Forwarder;
 import com.tsl.model.role.EmployeeRole;
-import com.tsl.repository.AddressRepository;
-import com.tsl.repository.EmployeeRoleRepository;
-import com.tsl.repository.ForwarderRepository;
-import com.tsl.repository.UserRepository;
+import com.tsl.repository.contactAndAddress.AddressRepository;
+import com.tsl.repository.employees.EmployeeRoleRepository;
+import com.tsl.repository.employees.ForwarderRepository;
+import com.tsl.repository.employees.UserRepository;
+import com.tsl.service.employees.ForwarderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,15 +30,23 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ForwarderServiceTest {
-    @Mock private ForwarderRepository forwarderRepository;
-    @Mock private ForwarderMapper forwarderMapper;
-    @Mock private PasswordEncoder passwordEncoder;
-    @Mock private EmployeeRoleRepository employeeRoleRepository;
-    @Mock private UserRepository userRepository;
-    @Mock private AddressRepository addressRepository;
-    @InjectMocks private ForwarderService forwarderService;
+    @Mock
+    private ForwarderRepository forwarderRepository;
+    @Mock
+    private ForwarderMapper forwarderMapper;
+    @Mock
+    private PasswordEncoder passwordEncoder;
+    @Mock
+    private EmployeeRoleRepository employeeRoleRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private AddressRepository addressRepository;
+    @InjectMocks
+    private ForwarderService forwarderService;
+
     @BeforeEach
-    public void init(){
+    public void init() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -76,6 +85,7 @@ class ForwarderServiceTest {
         assertNotNull(result);
         assertEquals(forwarderDTO, result);
     }
+
     @Test
     @DisplayName("Should register new Forwarder successfully")
     public void testRegisterNewForwarder_Success() throws RoleNotFoundException {

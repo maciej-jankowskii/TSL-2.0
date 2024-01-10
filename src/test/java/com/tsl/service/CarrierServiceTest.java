@@ -1,6 +1,6 @@
 package com.tsl.service;
 
-import com.tsl.dtos.CarrierDTO;
+import com.tsl.dtos.forwardiing.CarrierDTO;
 import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.CarrierNotFoundException;
 import com.tsl.exceptions.NullEntityException;
@@ -8,9 +8,10 @@ import com.tsl.mapper.CarrierMapper;
 import com.tsl.model.address.Address;
 import com.tsl.model.contractor.Carrier;
 import com.tsl.model.contractor.ContactPerson;
-import com.tsl.repository.AddressRepository;
-import com.tsl.repository.CarrierRepository;
-import com.tsl.repository.ContactPersonRepository;
+import com.tsl.repository.contactAndAddress.AddressRepository;
+import com.tsl.repository.forwardingAndTransport.CarrierRepository;
+import com.tsl.repository.contactAndAddress.ContactPersonRepository;
+import com.tsl.service.forwardingAndTransport.CarrierService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,14 +1,16 @@
 package com.tsl.service;
 
-import com.tsl.dtos.CustomerInvoiceDTO;
+import com.tsl.dtos.invoices.CustomerInvoiceDTO;
 import com.tsl.exceptions.*;
 import com.tsl.mapper.CustomerInvoiceMapper;
 import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.Customer;
 import com.tsl.model.invoice.CustomerInvoice;
-import com.tsl.repository.CargoRepository;
-import com.tsl.repository.CustomerInvoiceRepository;
-import com.tsl.repository.CustomerRepository;
+import com.tsl.repository.forwardingAndTransport.CargoRepository;
+import com.tsl.repository.invoices.CustomerInvoiceRepository;
+import com.tsl.repository.forwardingAndTransport.CustomerRepository;
+import com.tsl.service.calculators.VatCalculatorService;
+import com.tsl.service.invoices.CustomerInvoiceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,14 +30,21 @@ import static org.mockito.Mockito.*;
 
 class CustomerInvoiceServiceTest {
 
-    @Mock private CargoRepository cargoRepository;
-    @Mock private CustomerRepository customerRepository;
-    @Mock private CustomerInvoiceRepository customerInvoiceRepository;
-    @Mock private CustomerInvoiceMapper customerInvoiceMapper;
-    @Mock private VatCalculatorService vatCalculatorService;
-    @InjectMocks private CustomerInvoiceService customerInvoiceService;
+    @Mock
+    private CargoRepository cargoRepository;
+    @Mock
+    private CustomerRepository customerRepository;
+    @Mock
+    private CustomerInvoiceRepository customerInvoiceRepository;
+    @Mock
+    private CustomerInvoiceMapper customerInvoiceMapper;
+    @Mock
+    private VatCalculatorService vatCalculatorService;
+    @InjectMocks
+    private CustomerInvoiceService customerInvoiceService;
+
     @BeforeEach
-    public void init(){
+    public void init() {
         MockitoAnnotations.openMocks(this);
     }
 

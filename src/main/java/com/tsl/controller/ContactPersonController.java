@@ -1,7 +1,7 @@
 package com.tsl.controller;
 
-import com.tsl.dtos.ContactPersonDTO;
-import com.tsl.service.ContactPersonService;
+import com.tsl.dtos.addressAndContact.ContactPersonDTO;
+import com.tsl.service.contactAndAddress.ContactPersonService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,9 +1,10 @@
 package com.tsl.service;
 
-import com.tsl.dtos.ContactPersonDTO;
+import com.tsl.dtos.addressAndContact.ContactPersonDTO;
 import com.tsl.mapper.ContactPersonMapper;
 import com.tsl.model.contractor.ContactPerson;
-import com.tsl.repository.ContactPersonRepository;
+import com.tsl.repository.contactAndAddress.ContactPersonRepository;
+import com.tsl.service.contactAndAddress.ContactPersonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

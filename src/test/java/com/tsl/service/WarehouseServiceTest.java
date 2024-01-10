@@ -1,6 +1,6 @@
 package com.tsl.service;
 
-import com.tsl.dtos.WarehouseDTO;
+import com.tsl.dtos.warehouses.WarehouseDTO;
 import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.CannotDeleteEntityException;
 import com.tsl.exceptions.WarehouseNotFoundException;
@@ -9,8 +9,9 @@ import com.tsl.model.address.Address;
 import com.tsl.model.employee.WarehouseWorker;
 import com.tsl.model.warehouse.Warehouse;
 import com.tsl.model.warehouse.order.WarehouseOrder;
-import com.tsl.repository.AddressRepository;
-import com.tsl.repository.WarehouseRepository;
+import com.tsl.repository.contactAndAddress.AddressRepository;
+import com.tsl.repository.warehouses.WarehouseRepository;
+import com.tsl.service.warehouses.WarehouseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,20 +29,24 @@ import static org.mockito.Mockito.*;
 
 class WarehouseServiceTest {
 
-    @Mock private WarehouseRepository warehouseRepository;
-    @Mock private WarehouseMapper warehouseMapper;
-    @Mock private AddressRepository addressRepository;
+    @Mock
+    private WarehouseRepository warehouseRepository;
+    @Mock
+    private WarehouseMapper warehouseMapper;
+    @Mock
+    private AddressRepository addressRepository;
 
-    @InjectMocks private WarehouseService warehouseService;
+    @InjectMocks
+    private WarehouseService warehouseService;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("Should find all Warehouses")
-    public void testFindAllWarehouses_Success(){
+    public void testFindAllWarehouses_Success() {
         Warehouse warehouse1 = prepareFirstWarehouse();
         Warehouse warehouse2 = prepareSecondWarehouse();
         WarehouseDTO warehouseDTO1 = prepareFirstWarehouseDTO();
@@ -60,7 +65,7 @@ class WarehouseServiceTest {
 
     @Test
     @DisplayName("Should find Warehouse by ID")
-    public void testFindWarehouseById_Success(){
+    public void testFindWarehouseById_Success() {
         Warehouse warehouse = prepareFirstWarehouse();
         WarehouseDTO warehouseDTO = prepareFirstWarehouseDTO();
 
@@ -75,7 +80,7 @@ class WarehouseServiceTest {
 
     @Test
     @DisplayName("Should throw WarehouseNotFoundException")
-    public void testFindWarehouseById_WarehouseNotFound(){
+    public void testFindWarehouseById_WarehouseNotFound() {
         Long warehouseId = 1L;
 
         when(warehouseRepository.findById(warehouseId)).thenReturn(Optional.empty());
@@ -85,7 +90,7 @@ class WarehouseServiceTest {
 
     @Test
     @DisplayName("Should add new Warehouse")
-    public void testAddWarehouse_Success(){
+    public void testAddWarehouse_Success() {
         Warehouse warehouse = prepareFirstWarehouse();
         WarehouseDTO warehouseDTO = prepareFirstWarehouseDTO();
         Address address = prepareAddress();
@@ -115,7 +120,7 @@ class WarehouseServiceTest {
 
     @Test
     @DisplayName("Should delete Warehouse successfully")
-    public void testDeleteWarehouse_Success(){
+    public void testDeleteWarehouse_Success() {
         Warehouse warehouse = prepareFirstWarehouse();
         List<WarehouseOrder> warehouseOrders = Collections.emptyList();
 
@@ -129,7 +134,7 @@ class WarehouseServiceTest {
 
     @Test
     @DisplayName("Should throw WarehouseNotFoundException when deleting non-existent Warehouse")
-    public void testDeleteWarehouse_WarehouseNotFound(){
+    public void testDeleteWarehouse_WarehouseNotFound() {
         Long warehouseId = 1L;
 
         when(warehouseRepository.findById(warehouseId)).thenReturn(Optional.empty());
@@ -197,9 +202,6 @@ class WarehouseServiceTest {
         warehouse.setId(1L);
         return warehouse;
     }
-
-
-
 
 
 }

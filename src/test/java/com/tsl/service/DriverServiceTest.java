@@ -1,14 +1,17 @@
 package com.tsl.service;
 
-import com.tsl.dtos.DetailedDriverDTO;
+import com.tsl.dtos.employees.DetailedDriverDTO;
 import com.tsl.exceptions.DriverIsAlreadyAssignedToTruck;
 import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.exceptions.TruckNotFoundException;
 import com.tsl.mapper.DetailedDriverMapper;
+import com.tsl.model.address.Address;
 import com.tsl.model.employee.Driver;
 import com.tsl.model.truck.Truck;
-import com.tsl.repository.DriverRepository;
-import com.tsl.repository.TruckRepository;
+import com.tsl.repository.contactAndAddress.AddressRepository;
+import com.tsl.repository.employees.DriverRepository;
+import com.tsl.repository.forwardingAndTransport.TruckRepository;
+import com.tsl.service.employees.DriverService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +32,10 @@ class DriverServiceTest {
     private DriverRepository driverRepository;
     @Mock
     private DetailedDriverMapper detailedDriverMapper;
-    @Mock private TruckRepository truckRepository;
+    @Mock
+    private TruckRepository truckRepository;
+    @Mock
+    private AddressRepository addressRepository;
     @InjectMocks
     private DriverService driverService;
 
@@ -95,6 +101,7 @@ class DriverServiceTest {
         Driver driver = prepareDriver();
 
         when(detailedDriverMapper.mapToEntity(detailedDriverDTO)).thenReturn(driver);
+        when(addressRepository.findById(detailedDriverDTO.getAddressId())).thenReturn(Optional.of(new Address()));
         when(driverRepository.save(driver)).thenReturn(driver);
 
         String result = driverService.registerNewDriver(detailedDriverDTO);

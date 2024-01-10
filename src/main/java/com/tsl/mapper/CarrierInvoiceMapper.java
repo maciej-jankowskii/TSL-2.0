@@ -1,29 +1,15 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.CarrierInvoiceDTO;
-import com.tsl.exceptions.CarrierNotFoundException;
-import com.tsl.exceptions.OrderNotFoundException;
+import com.tsl.dtos.invoices.CarrierInvoiceDTO;
 import com.tsl.exceptions.NullEntityException;
-import com.tsl.model.contractor.Carrier;
 import com.tsl.model.invoice.CarrierInvoice;
-import com.tsl.model.order.ForwardingOrder;
-import com.tsl.repository.CarrierRepository;
-import com.tsl.repository.ForwarderOrderRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CarrierInvoiceMapper {
 
-    private final ForwarderOrderRepository forwarderOrderRepository;
-    private final CarrierRepository carrierRepository;
-
-    public CarrierInvoiceMapper(ForwarderOrderRepository forwarderOrderRepository, CarrierRepository carrierRepository) {
-        this.forwarderOrderRepository = forwarderOrderRepository;
-        this.carrierRepository = carrierRepository;
-    }
-
-    public CarrierInvoice mapToEntity(CarrierInvoiceDTO carrierInvoiceDTO){
-        if (carrierInvoiceDTO == null){
+    public CarrierInvoice mapToEntity(CarrierInvoiceDTO carrierInvoiceDTO) {
+        if (carrierInvoiceDTO == null) {
             throw new NullEntityException("Invoice from Carrier data cannot be null");
         }
         CarrierInvoice carrierInvoice = new CarrierInvoice();
@@ -37,8 +23,8 @@ public class CarrierInvoiceMapper {
         return carrierInvoice;
     }
 
-    public CarrierInvoiceDTO mapToDTO(CarrierInvoice carrierInvoice){
-        if (carrierInvoice == null){
+    public CarrierInvoiceDTO mapToDTO(CarrierInvoice carrierInvoice) {
+        if (carrierInvoice == null) {
             throw new NullEntityException("Invoice from Carrier cannot be null");
         }
 

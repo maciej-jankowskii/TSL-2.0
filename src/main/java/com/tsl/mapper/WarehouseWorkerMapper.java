@@ -1,29 +1,15 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.WarehouseWorkerDTO;
+import com.tsl.dtos.employees.WarehouseWorkerDTO;
 import com.tsl.enums.FormOfEmployment;
-import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.NullEntityException;
-import com.tsl.exceptions.WarehouseNotFoundException;
-import com.tsl.model.address.Address;
 import com.tsl.model.employee.WarehouseWorker;
-import com.tsl.model.warehouse.Warehouse;
-import com.tsl.repository.AddressRepository;
-import com.tsl.repository.WarehouseRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WarehouseWorkerMapper {
-    private final AddressRepository addressRepository;
-    private final WarehouseRepository warehouseRepository;
-
-    public WarehouseWorkerMapper(AddressRepository addressRepository, WarehouseRepository warehouseRepository) {
-        this.addressRepository = addressRepository;
-        this.warehouseRepository = warehouseRepository;
-    }
-
-    public WarehouseWorker mapToEntity(WarehouseWorkerDTO dto){
-        if (dto == null){
+    public WarehouseWorker mapToEntity(WarehouseWorkerDTO dto) {
+        if (dto == null) {
             throw new NullEntityException("Warehouse worker data cannot be null");
         }
 
@@ -40,8 +26,9 @@ public class WarehouseWorkerMapper {
         worker.setPermissionsForklift(dto.getPermissionsForklift());
         return worker;
     }
-    public WarehouseWorkerDTO mapToDTO(WarehouseWorker worker){
-        if (worker == null){
+
+    public WarehouseWorkerDTO mapToDTO(WarehouseWorker worker) {
+        if (worker == null) {
             throw new NullEntityException("Warehouse worker cannot be null");
         }
 

@@ -1,6 +1,6 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.CarrierDTO;
+import com.tsl.dtos.forwardiing.CarrierDTO;
 import com.tsl.exceptions.NullEntityException;
 import com.tsl.model.contractor.Carrier;
 import com.tsl.model.contractor.ContactPerson;
@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 @Service
 public class CarrierMapper {
 
-    public Carrier mapToEntity(CarrierDTO  carrierDTO){
-        if (carrierDTO == null){
+    public Carrier mapToEntity(CarrierDTO carrierDTO) {
+        if (carrierDTO == null) {
             throw new NullEntityException("Carrier data cannot be null");
         }
 
@@ -29,8 +29,8 @@ public class CarrierMapper {
         return carrier;
     }
 
-    public CarrierDTO mapToDTO(Carrier carrier){
-        if (carrier == null){
+    public CarrierDTO mapToDTO(Carrier carrier) {
+        if (carrier == null) {
             throw new NullEntityException("Carrier cannot be null");
         }
         CarrierDTO dto = new CarrierDTO();

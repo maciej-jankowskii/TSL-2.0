@@ -1,6 +1,6 @@
 package com.tsl.service;
 
-import com.tsl.dtos.AccountantDTO;
+import com.tsl.dtos.employees.AccountantDTO;
 import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.EmailAddressIsTaken;
 import com.tsl.exceptions.EmployeeNotFoundException;
@@ -8,10 +8,11 @@ import com.tsl.mapper.AccountantMapper;
 import com.tsl.model.address.Address;
 import com.tsl.model.employee.Accountant;
 import com.tsl.model.role.EmployeeRole;
-import com.tsl.repository.AccountantRepository;
-import com.tsl.repository.AddressRepository;
-import com.tsl.repository.EmployeeRoleRepository;
-import com.tsl.repository.UserRepository;
+import com.tsl.repository.employees.AccountantRepository;
+import com.tsl.repository.contactAndAddress.AddressRepository;
+import com.tsl.repository.employees.EmployeeRoleRepository;
+import com.tsl.repository.employees.UserRepository;
+import com.tsl.service.employees.AccountantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

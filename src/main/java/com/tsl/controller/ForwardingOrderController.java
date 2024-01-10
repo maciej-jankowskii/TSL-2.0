@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
-import com.tsl.dtos.ForwardingOrderDTO;
+import com.tsl.dtos.forwardiing.ForwardingOrderDTO;
 import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.model.employee.Forwarder;
-import com.tsl.repository.ForwarderRepository;
-import com.tsl.service.ForwarderOrderService;
+import com.tsl.repository.employees.ForwarderRepository;
+import com.tsl.service.forwardingAndTransport.ForwarderOrderService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -28,7 +28,8 @@ public class ForwardingOrderController {
     private final ForwarderRepository forwarderRepository;
     private final ObjectMapper objectMapper;
 
-    public ForwardingOrderController(ForwarderOrderService forwarderOrderService, ForwarderRepository forwarderRepository, ObjectMapper objectMapper) {
+    public ForwardingOrderController(ForwarderOrderService forwarderOrderService,
+                                     ForwarderRepository forwarderRepository, ObjectMapper objectMapper) {
         this.forwarderOrderService = forwarderOrderService;
         this.forwarderRepository = forwarderRepository;
         this.objectMapper = objectMapper;
@@ -39,9 +40,9 @@ public class ForwardingOrderController {
      */
 
     @GetMapping
-    public ResponseEntity<List<ForwardingOrderDTO>> findAllForwardingOrders(){
+    public ResponseEntity<List<ForwardingOrderDTO>> findAllForwardingOrders() {
         List<ForwardingOrderDTO> allForwardingOrders = forwarderOrderService.findAllForwardingOrders();
-        if (allForwardingOrders.isEmpty()){
+        if (allForwardingOrders.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -56,7 +57,8 @@ public class ForwardingOrderController {
     }
 
     @PostMapping
-    public ResponseEntity<ForwardingOrderDTO> addForwardingOrder(@RequestBody @Valid ForwardingOrderDTO forwardingOrderDTO){
+    public ResponseEntity<ForwardingOrderDTO> addForwardingOrder
+            (@RequestBody @Valid ForwardingOrderDTO forwardingOrderDTO) {
         ForwardingOrderDTO created = forwarderOrderService.addForwardingOrder(forwardingOrderDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{/id}")
@@ -95,6 +97,7 @@ public class ForwardingOrderController {
     private Forwarder getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
-        return forwarderRepository.findByEmail(userEmail).orElseThrow(() -> new EmployeeNotFoundException("Forwarder not found"));
+        return forwarderRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EmployeeNotFoundException("Forwarder not found"));
     }
 }

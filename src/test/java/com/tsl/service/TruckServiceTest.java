@@ -1,13 +1,15 @@
 package com.tsl.service;
 
-import com.tsl.dtos.TruckDTO;
+import com.tsl.dtos.transport.TruckDTO;
 import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.exceptions.TruckNotFoundException;
 import com.tsl.mapper.TruckMapper;
 import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.truck.Truck;
-import com.tsl.repository.TransportPlannerRepository;
-import com.tsl.repository.TruckRepository;
+import com.tsl.repository.employees.TransportPlannerRepository;
+import com.tsl.repository.forwardingAndTransport.TruckRepository;
+import com.tsl.service.calculators.SalaryBonusCalculator;
+import com.tsl.service.forwardingAndTransport.TruckService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,13 +27,19 @@ import static org.mockito.Mockito.*;
 
 class TruckServiceTest {
 
-    @Mock private TruckRepository truckRepository;
-    @Mock private TruckMapper truckMapper;
-    @Mock private TransportPlannerRepository transportPlannerRepository;
-    @Mock private SalaryBonusCalculator salaryBonusCalculator;
-    @InjectMocks private TruckService truckService;
+    @Mock
+    private TruckRepository truckRepository;
+    @Mock
+    private TruckMapper truckMapper;
+    @Mock
+    private TransportPlannerRepository transportPlannerRepository;
+    @Mock
+    private SalaryBonusCalculator salaryBonusCalculator;
+    @InjectMocks
+    private TruckService truckService;
+
     @BeforeEach
-    public void init(){
+    public void init() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -142,7 +150,6 @@ class TruckServiceTest {
         transportPlanner.setSalaryBonus(0.0);
         return transportPlanner;
     }
-
 
 
 }

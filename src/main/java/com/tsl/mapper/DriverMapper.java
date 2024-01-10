@@ -1,13 +1,12 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.DriverDTO;
+import com.tsl.dtos.employees.DriverDTO;
 import com.tsl.enums.FormOfEmployment;
 import com.tsl.exceptions.NullEntityException;
 import com.tsl.exceptions.TruckNotFoundException;
 import com.tsl.model.employee.Driver;
 import com.tsl.model.truck.Truck;
-import com.tsl.repository.AddressRepository;
-import com.tsl.repository.TruckRepository;
+import com.tsl.repository.forwardingAndTransport.TruckRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,8 +18,8 @@ public class DriverMapper {
         this.truckRepository = truckRepository;
     }
 
-    public Driver mapToEntity(DriverDTO dto){
-        if (dto == null){
+    public Driver mapToEntity(DriverDTO dto) {
+        if (dto == null) {
             throw new NullEntityException("Driver data cannot be null");
         }
         Driver driver = new Driver();
@@ -42,8 +41,8 @@ public class DriverMapper {
         return driver;
     }
 
-    public DriverDTO mapToDTO(Driver driver){
-        if (driver == null){
+    public DriverDTO mapToDTO(Driver driver) {
+        if (driver == null) {
             throw new NullEntityException("Driver cannot be null");
         }
         DriverDTO dto = new DriverDTO();

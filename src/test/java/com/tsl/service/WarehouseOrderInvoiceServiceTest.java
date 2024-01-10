@@ -1,14 +1,16 @@
 package com.tsl.service;
 
-import com.tsl.dtos.WarehouseOrderInvoiceDTO;
+import com.tsl.dtos.invoices.WarehouseOrderInvoiceDTO;
 import com.tsl.exceptions.*;
 import com.tsl.mapper.WarehouseOrderInvoiceMapper;
 import com.tsl.model.contractor.Customer;
 import com.tsl.model.invoice.WarehouseOrderInvoice;
 import com.tsl.model.warehouse.Warehouse;
 import com.tsl.model.warehouse.order.WarehouseOrder;
-import com.tsl.repository.WarehouseOrderInvoiceRepository;
-import com.tsl.repository.WarehouseOrderRepository;
+import com.tsl.repository.invoices.WarehouseOrderInvoiceRepository;
+import com.tsl.repository.warehouses.WarehouseOrderRepository;
+import com.tsl.service.calculators.VatCalculatorService;
+import com.tsl.service.invoices.WarehouseOrderInvoiceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,14 +28,20 @@ import static org.mockito.Mockito.*;
 
 class WarehouseOrderInvoiceServiceTest {
 
-    @Mock private WarehouseOrderInvoiceMapper warehouseOrderInvoiceMapper;
-    @Mock private WarehouseOrderInvoiceRepository warehouseOrderInvoiceRepository;
-    @Mock private WarehouseOrderRepository warehouseOrderRepository;
-    @Mock private VatCalculatorService vatCalculatorService;
+    @Mock
+    private WarehouseOrderInvoiceMapper warehouseOrderInvoiceMapper;
+    @Mock
+    private WarehouseOrderInvoiceRepository warehouseOrderInvoiceRepository;
+    @Mock
+    private WarehouseOrderRepository warehouseOrderRepository;
+    @Mock
+    private VatCalculatorService vatCalculatorService;
 
-    @InjectMocks private WarehouseOrderInvoiceService warehouseOrderInvoiceService;
+    @InjectMocks
+    private WarehouseOrderInvoiceService warehouseOrderInvoiceService;
+
     @BeforeEach
-    public void init(){
+    public void init() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -117,7 +125,7 @@ class WarehouseOrderInvoiceServiceTest {
         when(warehouseOrderInvoiceMapper.mapToEntity(invoiceDTO)).thenReturn(new WarehouseOrderInvoice());
         when(warehouseOrderRepository.findById(invoiceDTO.getWarehouseOrderId())).thenReturn(Optional.empty());
 
-        assertThrows(WarehouseOrderNotFoundException.class, () -> warehouseOrderInvoiceService.addWarehouseInvoice(invoiceDTO));
+        assertThrows(OrderNotFoundException.class, () -> warehouseOrderInvoiceService.addWarehouseInvoice(invoiceDTO));
 
         verify(vatCalculatorService, never()).calculateGrossValue(any(), any());
         verify(warehouseOrderInvoiceRepository, never()).save(any());

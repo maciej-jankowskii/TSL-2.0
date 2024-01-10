@@ -1,6 +1,6 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.ContactPersonDTO;
+import com.tsl.dtos.addressAndContact.ContactPersonDTO;
 import com.tsl.exceptions.NullEntityException;
 import com.tsl.model.contractor.ContactPerson;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ContactPersonMapper {
     public ContactPerson mapToEntity(ContactPersonDTO contactPersonDTO) {
-        if (contactPersonDTO == null){
+        if (contactPersonDTO == null) {
             throw new NullEntityException("Contact person data cannot be null");
         }
         ContactPerson contactPerson = new ContactPerson();
@@ -21,7 +21,7 @@ public class ContactPersonMapper {
     }
 
     public ContactPersonDTO mapToDTO(ContactPerson contactPerson) {
-        if (contactPerson == null){
+        if (contactPerson == null) {
             throw new NullEntityException("Contact person cannot be null");
         }
         ContactPersonDTO dto = new ContactPersonDTO();

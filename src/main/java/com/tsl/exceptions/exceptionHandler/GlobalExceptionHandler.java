@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({NullEntityException.class, CarrierNotFoundException.class, CustomerNotFoundException.class,
             AddressNotFoundException.class, CargoNotFoundException.class, ContactPersonNotFoundException.class,
             OrderNotFoundException.class, GoodsNotFoundException.class,
-            WarehouseNotFoundException.class, WarehouseOrderNotFoundException.class, TruckNotFoundException.class,
+            WarehouseNotFoundException.class, TruckNotFoundException.class,
             EmployeeNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -33,46 +33,45 @@ public class GlobalExceptionHandler {
             DriverIsAlreadyAssignedToTruck.class, EmailAddressIsTaken.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.CONFLICT)
-    public String handleErrorsRelatedToConflicts(RuntimeException ex){
+    public String handleErrorsRelatedToConflicts(RuntimeException ex) {
         return ex.getMessage();
     }
 
     @ExceptionHandler({CurrencyMismatchException.class, IncompatibleGoodsTypeException.class,
-            NoGoodsSelectedException.class, NonUniqueLabelsException.class, WrongLoadigDateException.class,
-            CannotEditGoodsAssignedToOrderException.class, NoTrucksException.class,
+            NoGoodsSelectedException.class, NonUniqueLabelsException.class, WrongLoadigDateException.class, NoTrucksException.class,
             CannotEditEntityException.class, CannotDeleteEntityException.class, NoDriverOnTheTruckException.class,
             TruckFailsRequirementsException.class, CarrierFailsRequirements.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleErrorRelatedToInvalidRequest(RuntimeException ex){
+    public String handleErrorRelatedToInvalidRequest(RuntimeException ex) {
         return ex.getMessage();
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public String handleBadCredentialsException(BadCredentialsException ex){
+    public String handleBadCredentialsException(BadCredentialsException ex) {
         return ex.getMessage();
     }
 
     @ExceptionHandler(MailException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleMailException(MailException ex){
+    public String handleMailException(MailException ex) {
         return ex.getMessage();
     }
 
     @ExceptionHandler({JsonPatchException.class, JsonProcessingException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleJsonPatchException(Exception ex){
+    public String handleJsonPatchException(Exception ex) {
         return ex.getMessage();
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleRoleNotFoundException(Exception ex){
+    public String handleRoleNotFoundException(Exception ex) {
         return ex.getMessage();
     }
 }

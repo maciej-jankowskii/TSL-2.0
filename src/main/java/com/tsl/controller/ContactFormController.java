@@ -1,7 +1,7 @@
 package com.tsl.controller;
 
 import com.tsl.model.contact.ContactForm;
-import com.tsl.service.ContactFormService;
+import com.tsl.service.contactAndAddress.ContactFormService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

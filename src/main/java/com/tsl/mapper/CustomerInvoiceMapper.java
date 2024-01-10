@@ -1,29 +1,15 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.CustomerInvoiceDTO;
-import com.tsl.exceptions.CarrierNotFoundException;
-import com.tsl.exceptions.CustomerNotFoundException;
+import com.tsl.dtos.invoices.CustomerInvoiceDTO;
 import com.tsl.exceptions.NullEntityException;
-import com.tsl.model.cargo.Cargo;
-import com.tsl.model.contractor.Customer;
 import com.tsl.model.invoice.CustomerInvoice;
-import com.tsl.repository.CargoRepository;
-import com.tsl.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerInvoiceMapper {
 
-    private final CargoRepository cargoRepository;
-    private final CustomerRepository customerRepository;
-
-    public CustomerInvoiceMapper(CargoRepository cargoRepository, CustomerRepository customerRepository) {
-        this.cargoRepository = cargoRepository;
-        this.customerRepository = customerRepository;
-    }
-
-    public CustomerInvoice mapToEntity(CustomerInvoiceDTO customerInvoiceDTO){
-        if (customerInvoiceDTO == null){
+    public CustomerInvoice mapToEntity(CustomerInvoiceDTO customerInvoiceDTO) {
+        if (customerInvoiceDTO == null) {
             throw new NullEntityException("Customer invoice data cannot be null");
         }
 
@@ -38,8 +24,8 @@ public class CustomerInvoiceMapper {
         return customerInvoice;
     }
 
-    public CustomerInvoiceDTO mapToDTO(CustomerInvoice customerInvoice){
-        if (customerInvoice == null){
+    public CustomerInvoiceDTO mapToDTO(CustomerInvoice customerInvoice) {
+        if (customerInvoice == null) {
             throw new NullEntityException("Customer invoice cannot be null");
         }
 

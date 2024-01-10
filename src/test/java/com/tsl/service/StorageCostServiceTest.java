@@ -5,11 +5,11 @@ import com.tsl.model.contractor.Customer;
 import com.tsl.model.warehouse.Warehouse;
 import com.tsl.model.warehouse.goods.Goods;
 import com.tsl.model.warehouse.order.WarehouseOrder;
+import com.tsl.service.calculators.StorageCostService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
@@ -19,9 +19,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StorageCostServiceTest {
-
-    @Mock
-    private WarehouseOrder warehouseOrder;
     @InjectMocks
     private StorageCostService storageCostService;
 

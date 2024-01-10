@@ -1,25 +1,17 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.AccountantDTO;
+import com.tsl.dtos.employees.AccountantDTO;
 import com.tsl.enums.FormOfEmployment;
 import com.tsl.enums.TypeOfAccounting;
-import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.NullEntityException;
-import com.tsl.model.address.Address;
 import com.tsl.model.employee.Accountant;
-import com.tsl.repository.AddressRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccountantMapper {
-    private final AddressRepository addressRepository;
 
-    public AccountantMapper(AddressRepository addressRepository) {
-        this.addressRepository = addressRepository;
-    }
-
-    public AccountantDTO mapToDTO(Accountant accountant){
-        if (accountant == null){
+    public AccountantDTO mapToDTO(Accountant accountant) {
+        if (accountant == null) {
             throw new NullEntityException("Accountant cannot be null");
         }
         AccountantDTO dto = new AccountantDTO();
@@ -38,8 +30,8 @@ public class AccountantMapper {
         return dto;
     }
 
-    public Accountant mapToEntity(AccountantDTO dto){
-        if (dto == null){
+    public Accountant mapToEntity(AccountantDTO dto) {
+        if (dto == null) {
             throw new NullEntityException("Accountant data cannot be null");
         }
         Accountant accountant = new Accountant();

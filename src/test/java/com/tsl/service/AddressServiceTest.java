@@ -1,9 +1,10 @@
 package com.tsl.service;
 
-import com.tsl.dtos.AddressDTO;
+import com.tsl.dtos.addressAndContact.AddressDTO;
 import com.tsl.mapper.AddressMapper;
 import com.tsl.model.address.Address;
-import com.tsl.repository.AddressRepository;
+import com.tsl.repository.contactAndAddress.AddressRepository;
+import com.tsl.service.contactAndAddress.AddressService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

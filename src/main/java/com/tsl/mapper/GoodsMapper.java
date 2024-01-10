@@ -1,6 +1,6 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.GoodsDTO;
+import com.tsl.dtos.warehouses.GoodsDTO;
 import com.tsl.enums.TypeOfGoods;
 import com.tsl.exceptions.NullEntityException;
 import com.tsl.model.warehouse.goods.Goods;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class GoodsMapper {
 
     public Goods mapToEntity(GoodsDTO dto) {
-        if (dto == null){
+        if (dto == null) {
             throw new NullEntityException("Goods data cannot be null");
         }
         Goods goods = new Goods();
@@ -26,7 +26,7 @@ public class GoodsMapper {
     }
 
     public GoodsDTO mapToDTO(Goods goods) {
-        if (goods == null){
+        if (goods == null) {
             throw new NullEntityException("Goods cannot be null");
         }
         GoodsDTO dto = new GoodsDTO();

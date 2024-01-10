@@ -1,14 +1,14 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.WarehouseOrderDTO;
+import com.tsl.dtos.warehouses.WarehouseOrderDTO;
 import com.tsl.exceptions.*;
 import com.tsl.model.contractor.Customer;
 import com.tsl.model.warehouse.Warehouse;
 import com.tsl.model.warehouse.goods.Goods;
 import com.tsl.model.warehouse.order.WarehouseOrder;
-import com.tsl.repository.CustomerRepository;
-import com.tsl.repository.GoodsRepository;
-import com.tsl.repository.WarehouseRepository;
+import com.tsl.repository.forwardingAndTransport.CustomerRepository;
+import com.tsl.repository.warehouses.GoodsRepository;
+import com.tsl.repository.warehouses.WarehouseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.tsl.service;
 
-import com.tsl.dtos.TransportPlannerDTO;
+import com.tsl.dtos.employees.TransportPlannerDTO;
 import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.EmailAddressIsTaken;
 import com.tsl.exceptions.EmployeeNotFoundException;
@@ -9,7 +9,13 @@ import com.tsl.model.address.Address;
 import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.role.EmployeeRole;
 import com.tsl.model.truck.Truck;
-import com.tsl.repository.*;
+import com.tsl.repository.contactAndAddress.AddressRepository;
+import com.tsl.repository.employees.EmployeeRoleRepository;
+import com.tsl.repository.employees.TransportPlannerRepository;
+import com.tsl.repository.employees.UserRepository;
+import com.tsl.repository.forwardingAndTransport.TruckRepository;
+import com.tsl.service.calculators.SalaryBonusCalculator;
+import com.tsl.service.employees.TransportPlannerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -4,6 +4,7 @@ import com.tsl.model.employee.Forwarder;
 import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.order.ForwardingOrder;
 import com.tsl.model.truck.Truck;
+import com.tsl.service.calculators.SalaryBonusCalculator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +52,7 @@ class SalaryBonusCalculatorTest {
     private TransportPlanner prepareTransportPlanner(int numberOfTrucks) {
         TransportPlanner planner = new TransportPlanner();
         List<Truck> trucks = new ArrayList<>();
-        for (int i = 0; i < numberOfTrucks ; i++) {
+        for (int i = 0; i < numberOfTrucks; i++) {
             trucks.add(new Truck());
         }
         planner.setCompanyTrucks(trucks);

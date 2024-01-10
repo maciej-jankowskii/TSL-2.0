@@ -1,24 +1,16 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.TruckDTO;
+import com.tsl.dtos.transport.TruckDTO;
 import com.tsl.enums.TypeOfTruck;
-import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.exceptions.NullEntityException;
-import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.truck.Truck;
-import com.tsl.repository.TransportPlannerRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TruckMapper {
-    private final TransportPlannerRepository transportPlannerRepository;
 
-    public TruckMapper(TransportPlannerRepository transportPlannerRepository) {
-        this.transportPlannerRepository = transportPlannerRepository;
-    }
-
-    public Truck mapToEntity(TruckDTO dto){
-        if (dto == null){
+    public Truck mapToEntity(TruckDTO dto) {
+        if (dto == null) {
             throw new NullEntityException("Truck data cannot be null");
         }
 
@@ -35,9 +27,8 @@ public class TruckMapper {
     }
 
 
-
-    public TruckDTO mapToDTO(Truck truck){
-        if (truck == null){
+    public TruckDTO mapToDTO(Truck truck) {
+        if (truck == null) {
             throw new NullEntityException("Truck cannot be null");
         }
         TruckDTO dto = new TruckDTO();

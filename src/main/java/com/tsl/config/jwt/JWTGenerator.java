@@ -1,7 +1,5 @@
 package com.tsl.config.jwt;
 
-import com.tsl.model.employee.User;
-import com.tsl.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,12 +13,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class JWTGenerator {
-
-    private final UserRepository userRepository;
-
-    public JWTGenerator(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public String generatedToken(Authentication authentication) {
         String userEmail = authentication.getName();

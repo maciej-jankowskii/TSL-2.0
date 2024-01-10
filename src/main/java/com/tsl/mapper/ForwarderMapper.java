@@ -1,25 +1,16 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.ForwarderDTO;
+import com.tsl.dtos.employees.ForwarderDTO;
 import com.tsl.enums.FormOfEmployment;
-import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.NullEntityException;
-import com.tsl.model.address.Address;
 import com.tsl.model.employee.Forwarder;
-import com.tsl.repository.AddressRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ForwarderMapper {
 
-    private final AddressRepository addressRepository;
-
-    public ForwarderMapper(AddressRepository addressRepository) {
-        this.addressRepository = addressRepository;
-    }
-
-    public ForwarderDTO mapToDTO(Forwarder forwarder){
-        if (forwarder == null){
+    public ForwarderDTO mapToDTO(Forwarder forwarder) {
+        if (forwarder == null) {
             throw new NullEntityException("Forwarder cannot be null");
         }
 
@@ -41,8 +32,8 @@ public class ForwarderMapper {
         return dto;
     }
 
-    public Forwarder mapToEntity(ForwarderDTO forwarderDTO){
-        if (forwarderDTO == null){
+    public Forwarder mapToEntity(ForwarderDTO forwarderDTO) {
+        if (forwarderDTO == null) {
             throw new NullEntityException("Forwarder data cannot be null");
         }
         Forwarder forwarder = new Forwarder();

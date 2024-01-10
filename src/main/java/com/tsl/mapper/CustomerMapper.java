@@ -1,14 +1,9 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.CustomerDTO;
-import com.tsl.exceptions.AddressNotFoundException;
-import com.tsl.exceptions.ContactPersonNotFoundException;
+import com.tsl.dtos.forwardiing.CustomerDTO;
 import com.tsl.exceptions.NullEntityException;
-import com.tsl.model.address.Address;
 import com.tsl.model.contractor.ContactPerson;
 import com.tsl.model.contractor.Customer;
-import com.tsl.repository.AddressRepository;
-import com.tsl.repository.ContactPersonRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -5,8 +5,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
-import com.tsl.dtos.*;
-import com.tsl.service.*;
+import com.tsl.dtos.employees.*;
+import com.tsl.dtos.transport.TruckDTO;
+import com.tsl.dtos.warehouses.WarehouseDTO;
+import com.tsl.service.employees.*;
+import com.tsl.service.forwardingAndTransport.TruckService;
+import com.tsl.service.warehouses.WarehouseService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +34,10 @@ public class AdminController {
     private final ObjectMapper objectMapper;
     private final WarehouseService warehouseService;
 
-    public AdminController(ForwarderService forwarderService, TransportPlannerService transportPlannerService, AccountantService accountantService, DriverService driverService, WarehouseWorkerService warehouseWorkerService, TruckService truckService, ObjectMapper objectMapper, WarehouseService warehouseService) {
+    public AdminController(ForwarderService forwarderService, TransportPlannerService transportPlannerService,
+                           AccountantService accountantService, DriverService driverService,
+                           WarehouseWorkerService warehouseWorkerService, TruckService truckService,
+                           ObjectMapper objectMapper, WarehouseService warehouseService) {
         this.forwarderService = forwarderService;
         this.transportPlannerService = transportPlannerService;
         this.accountantService = accountantService;
@@ -55,7 +62,8 @@ public class AdminController {
     }
 
     @PostMapping("/forwarders/register")
-    public ResponseEntity<String> registerNewForwarder(@RequestBody @Valid ForwarderDTO forwarderDTO) throws RoleNotFoundException {
+    public ResponseEntity<String> registerNewForwarder(@RequestBody @Valid ForwarderDTO forwarderDTO)
+            throws RoleNotFoundException {
         String result = forwarderService.registerNewForwarder(forwarderDTO);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
 
@@ -85,7 +93,8 @@ public class AdminController {
     }
 
     @PostMapping("/planners/register")
-    public ResponseEntity<String> registerNewPlanner(@RequestBody @Valid TransportPlannerDTO plannerDTO) throws RoleNotFoundException {
+    public ResponseEntity<String> registerNewPlanner(@RequestBody @Valid TransportPlannerDTO plannerDTO)
+            throws RoleNotFoundException {
         String result = transportPlannerService.registerNewTransportPlanner(plannerDTO);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
@@ -114,7 +123,8 @@ public class AdminController {
     }
 
     @PostMapping("/accountants/register")
-    public ResponseEntity<String> registerNewAccountant(@RequestBody @Valid AccountantDTO accountantDTO) throws RoleNotFoundException {
+    public ResponseEntity<String> registerNewAccountant(@RequestBody @Valid AccountantDTO accountantDTO)
+            throws RoleNotFoundException {
         String result = accountantService.registerNewAccountant(accountantDTO);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
@@ -221,7 +231,7 @@ public class AdminController {
     }
 
     @PostMapping("/driver/{driverId}/assignTruck/{truckId}")
-    public ResponseEntity<?> assignTruckToDriver(@PathVariable Long driverId, @PathVariable Long truckId){
+    public ResponseEntity<?> assignTruckToDriver(@PathVariable Long driverId, @PathVariable Long truckId) {
         driverService.assignTruckToDriver(driverId, truckId);
         return ResponseEntity.noContent().build();
     }

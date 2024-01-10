@@ -1,16 +1,18 @@
 package com.tsl.service;
 
-import com.tsl.dtos.WarehouseOrderDTO;
+import com.tsl.dtos.warehouses.WarehouseOrderDTO;
 import com.tsl.enums.TypeOfGoods;
 import com.tsl.exceptions.IncompatibleGoodsTypeException;
+import com.tsl.exceptions.OrderNotFoundException;
 import com.tsl.exceptions.WarehouseOrderIsAlreadyCompletedException;
-import com.tsl.exceptions.WarehouseOrderNotFoundException;
 import com.tsl.mapper.WarehouseOrderMapper;
 import com.tsl.model.warehouse.Warehouse;
 import com.tsl.model.warehouse.goods.Goods;
 import com.tsl.model.warehouse.order.WarehouseOrder;
-import com.tsl.repository.WarehouseOrderRepository;
-import com.tsl.repository.WarehouseRepository;
+import com.tsl.repository.warehouses.WarehouseOrderRepository;
+import com.tsl.repository.warehouses.WarehouseRepository;
+import com.tsl.service.calculators.StorageCostService;
+import com.tsl.service.warehouses.WarehouseOrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,14 +29,19 @@ import static org.mockito.Mockito.*;
 
 class WarehouseOrderServiceTest {
 
-    @Mock private WarehouseOrderRepository warehouseOrderRepository;
-    @Mock private WarehouseOrderMapper warehouseOrderMapper;
-    @Mock private WarehouseRepository warehouseRepository;
-    @Mock private StorageCostService storageCostService;
-    @InjectMocks private WarehouseOrderService orderService;
+    @Mock
+    private WarehouseOrderRepository warehouseOrderRepository;
+    @Mock
+    private WarehouseOrderMapper warehouseOrderMapper;
+    @Mock
+    private WarehouseRepository warehouseRepository;
+    @Mock
+    private StorageCostService storageCostService;
+    @InjectMocks
+    private WarehouseOrderService orderService;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -81,7 +88,7 @@ class WarehouseOrderServiceTest {
 
         when(warehouseOrderRepository.findById(orderId)).thenReturn(Optional.empty());
 
-        assertThrows(WarehouseOrderNotFoundException.class, () -> orderService.findWarehouseOrder(orderId));
+        assertThrows(OrderNotFoundException.class, () -> orderService.findWarehouseOrder(orderId));
 
         verify(warehouseOrderRepository, times(1)).findById(orderId);
     }
@@ -151,7 +158,7 @@ class WarehouseOrderServiceTest {
         Long warehouseOrderId = 1L;
         when(warehouseOrderRepository.findById(warehouseOrderId)).thenReturn(java.util.Optional.empty());
 
-        assertThrows(WarehouseOrderNotFoundException.class, () -> orderService.markWarehouseOrderAsCompleted(warehouseOrderId));
+        assertThrows(OrderNotFoundException.class, () -> orderService.markWarehouseOrderAsCompleted(warehouseOrderId));
 
         verify(warehouseOrderRepository, never()).save(any());
     }
@@ -229,7 +236,6 @@ class WarehouseOrderServiceTest {
         warehouseOrder.setId(1L);
         return warehouseOrder;
     }
-
 
 
 }

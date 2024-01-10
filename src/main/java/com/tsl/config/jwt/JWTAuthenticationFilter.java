@@ -1,6 +1,6 @@
 package com.tsl.config.jwt;
 
-import com.tsl.service.CustomUserDetailsService;
+import com.tsl.service.auth.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

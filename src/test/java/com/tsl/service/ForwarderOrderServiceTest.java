@@ -1,6 +1,6 @@
 package com.tsl.service;
 
-import com.tsl.dtos.ForwardingOrderDTO;
+import com.tsl.dtos.forwardiing.ForwardingOrderDTO;
 import com.tsl.enums.Currency;
 import com.tsl.enums.OrderStatus;
 import com.tsl.exceptions.*;
@@ -9,10 +9,12 @@ import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.Carrier;
 import com.tsl.model.employee.Forwarder;
 import com.tsl.model.order.ForwardingOrder;
-import com.tsl.repository.CargoRepository;
-import com.tsl.repository.CarrierRepository;
-import com.tsl.repository.ForwarderOrderRepository;
-import com.tsl.repository.ForwarderRepository;
+import com.tsl.repository.forwardingAndTransport.CargoRepository;
+import com.tsl.repository.forwardingAndTransport.CarrierRepository;
+import com.tsl.repository.forwardingAndTransport.ForwarderOrderRepository;
+import com.tsl.repository.employees.ForwarderRepository;
+import com.tsl.service.calculators.VatCalculatorService;
+import com.tsl.service.forwardingAndTransport.ForwarderOrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

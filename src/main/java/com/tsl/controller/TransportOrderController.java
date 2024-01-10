@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
-import com.tsl.dtos.TransportOrderDTO;
+import com.tsl.dtos.transport.TransportOrderDTO;
 import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.model.employee.TransportPlanner;
-import com.tsl.repository.TransportPlannerRepository;
-import com.tsl.service.TransportOrderService;
+import com.tsl.repository.employees.TransportPlannerRepository;
+import com.tsl.service.forwardingAndTransport.TransportOrderService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -27,7 +27,8 @@ public class TransportOrderController {
     private final TransportPlannerRepository transportPlannerRepository;
     private final ObjectMapper objectMapper;
 
-    public TransportOrderController(TransportOrderService transportOrderService, TransportPlannerRepository transportPlannerRepository, ObjectMapper objectMapper) {
+    public TransportOrderController(TransportOrderService transportOrderService,
+                                    TransportPlannerRepository transportPlannerRepository, ObjectMapper objectMapper) {
         this.transportOrderService = transportOrderService;
         this.transportPlannerRepository = transportPlannerRepository;
         this.objectMapper = objectMapper;

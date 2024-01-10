@@ -1,7 +1,8 @@
 package com.tsl.service;
 
 import com.tsl.config.jwt.JWTGenerator;
-import com.tsl.dtos.UserLoginDTO;
+import com.tsl.dtos.auth.UserLoginDTO;
+import com.tsl.service.auth.AuthService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,20 +21,25 @@ import static org.mockito.Mockito.*;
 
 class AuthServiceTest {
 
-    @Mock private AuthenticationManager authenticationManager;
-    @Mock private JWTGenerator jwtGenerator;
-    @Mock private UserDetails userDetails;
-    @Mock private Authentication authentication;
-    @InjectMocks private AuthService authService;
+    @Mock
+    private AuthenticationManager authenticationManager;
+    @Mock
+    private JWTGenerator jwtGenerator;
+    @Mock
+    private UserDetails userDetails;
+    @Mock
+    private Authentication authentication;
+    @InjectMocks
+    private AuthService authService;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("Should log in correctly")
-    public void testLoginUser_Success(){
+    public void testLoginUser_Success() {
         UserLoginDTO userLoginDTO = prepareDataForLogIn();
 
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
@@ -53,7 +59,7 @@ class AuthServiceTest {
 
     @Test
     @DisplayName("Should throw BadCredentialsException because login data is wrong")
-    public void testLoginUser_withInvalidData(){
+    public void testLoginUser_withInvalidData() {
         UserLoginDTO userLoginDTO = prepareDataForLogIn();
 
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))

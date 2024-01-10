@@ -1,6 +1,6 @@
 package com.tsl.service;
 
-import com.tsl.dtos.CargoDTO;
+import com.tsl.dtos.forwardiing.CargoDTO;
 import com.tsl.exceptions.CannotEditEntityException;
 import com.tsl.exceptions.CargoNotFoundException;
 import com.tsl.exceptions.CustomerNotFoundException;
@@ -9,9 +9,11 @@ import com.tsl.mapper.CargoMapper;
 import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.Customer;
 import com.tsl.model.employee.User;
-import com.tsl.repository.CargoRepository;
-import com.tsl.repository.CustomerRepository;
-import com.tsl.repository.UserRepository;
+import com.tsl.repository.forwardingAndTransport.CargoRepository;
+import com.tsl.repository.forwardingAndTransport.CustomerRepository;
+import com.tsl.repository.employees.UserRepository;
+import com.tsl.service.calculators.VatCalculatorService;
+import com.tsl.service.forwardingAndTransport.CargoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

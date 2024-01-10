@@ -1,6 +1,6 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.AddressDTO;
+import com.tsl.dtos.addressAndContact.AddressDTO;
 import com.tsl.exceptions.NullEntityException;
 import com.tsl.model.address.Address;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddressMapper {
     public Address mapToEntity(AddressDTO addressDTO) {
-        if (addressDTO == null){
+        if (addressDTO == null) {
             throw new NullEntityException("Address data cannot be null");
         }
         Address address = new Address();
@@ -23,7 +23,7 @@ public class AddressMapper {
     }
 
     public AddressDTO mapToDTO(Address address) {
-        if (address == null){
+        if (address == null) {
             throw new NullEntityException("Address cannot be null");
         }
         AddressDTO dto = new AddressDTO();

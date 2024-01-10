@@ -1,7 +1,7 @@
 package com.tsl.controller;
 
-import com.tsl.dtos.DriverDTO;
-import com.tsl.service.DriverService;
+import com.tsl.dtos.employees.DriverDTO;
+import com.tsl.service.employees.DriverService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

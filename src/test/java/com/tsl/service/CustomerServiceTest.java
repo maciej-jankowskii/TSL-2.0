@@ -1,6 +1,6 @@
 package com.tsl.service;
 
-import com.tsl.dtos.CustomerDTO;
+import com.tsl.dtos.forwardiing.CustomerDTO;
 import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.CustomerNotFoundException;
 import com.tsl.exceptions.NullEntityException;
@@ -8,9 +8,10 @@ import com.tsl.mapper.CustomerMapper;
 import com.tsl.model.address.Address;
 import com.tsl.model.contractor.ContactPerson;
 import com.tsl.model.contractor.Customer;
-import com.tsl.repository.AddressRepository;
-import com.tsl.repository.ContactPersonRepository;
-import com.tsl.repository.CustomerRepository;
+import com.tsl.repository.contactAndAddress.AddressRepository;
+import com.tsl.repository.contactAndAddress.ContactPersonRepository;
+import com.tsl.repository.forwardingAndTransport.CustomerRepository;
+import com.tsl.service.forwardingAndTransport.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,16 +37,17 @@ class CustomerServiceTest {
     private AddressRepository addressRepository;
     @Mock
     private ContactPersonRepository contactPersonRepository;
-    @InjectMocks private CustomerService customerService;
+    @InjectMocks
+    private CustomerService customerService;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("Should find all Customers")
-    public void testFindAllCustomers_Success(){
+    public void testFindAllCustomers_Success() {
         Customer customer1 = prepareFirstCustomer();
         Customer customer2 = prepareSecondCustomer();
         CustomerDTO customerDTO1 = prepareFirstDTO();
@@ -64,7 +66,7 @@ class CustomerServiceTest {
 
     @Test
     @DisplayName("Should find Customer by ID")
-    public void testFindCustomerById_Success(){
+    public void testFindCustomerById_Success() {
         Customer customer = prepareFirstCustomer();
         CustomerDTO customerDTO = prepareFirstDTO();
 
@@ -80,7 +82,7 @@ class CustomerServiceTest {
 
     @Test
     @DisplayName("Should throw CustomerNotFoundException")
-    public void testFindCustomerById_CustomerNotFound(){
+    public void testFindCustomerById_CustomerNotFound() {
         Long customerId = 1L;
 
         when(customerRepository.findById(customerId)).thenReturn(Optional.empty());
@@ -90,7 +92,7 @@ class CustomerServiceTest {
 
     @Test
     @DisplayName("Should add new Customer")
-    public void testAddCustomer_Success(){
+    public void testAddCustomer_Success() {
         Customer customer = prepareFirstCustomer();
         CustomerDTO customerDTO = prepareFirstDTO();
 
@@ -125,7 +127,7 @@ class CustomerServiceTest {
 
         when(addressRepository.findById(customerDTO.getAddressId())).thenReturn(Optional.empty());
 
-        assertThrows(AddressNotFoundException.class, () -> customerService.addCustomer( customerDTO));
+        assertThrows(AddressNotFoundException.class, () -> customerService.addCustomer(customerDTO));
 
         verify(customerRepository, never()).save(any());
     }
@@ -139,6 +141,7 @@ class CustomerServiceTest {
         customerDTO.setContactPersonIds(emptyList());
         return customerDTO;
     }
+
     private CustomerDTO prepareSecondDTO() {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setId(2L);

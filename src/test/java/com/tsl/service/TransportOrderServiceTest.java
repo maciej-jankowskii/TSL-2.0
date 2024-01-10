@@ -1,6 +1,6 @@
 package com.tsl.service;
 
-import com.tsl.dtos.TransportOrderDTO;
+import com.tsl.dtos.transport.TransportOrderDTO;
 import com.tsl.enums.Currency;
 import com.tsl.enums.OrderStatus;
 import com.tsl.exceptions.CannotEditEntityException;
@@ -13,13 +13,14 @@ import com.tsl.model.employee.Driver;
 import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.order.TransportOrder;
 import com.tsl.model.truck.Truck;
-import com.tsl.repository.CargoRepository;
-import com.tsl.repository.TransportOrderRepository;
-import com.tsl.repository.TransportPlannerRepository;
+import com.tsl.repository.forwardingAndTransport.CargoRepository;
+import com.tsl.repository.forwardingAndTransport.TransportOrderRepository;
+import com.tsl.repository.employees.TransportPlannerRepository;
+import com.tsl.repository.forwardingAndTransport.TruckRepository;
+import com.tsl.service.forwardingAndTransport.TransportOrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -46,6 +47,8 @@ class TransportOrderServiceTest {
     private CargoRepository cargoRepository;
     @Mock
     private TransportPlannerRepository transportPlannerRepository;
+    @Mock
+    private TruckRepository truckRepository;
     @InjectMocks
     private TransportOrderService transportOrderService;
 
@@ -113,6 +116,7 @@ class TransportOrderServiceTest {
         order.setTruck(truck);
 
         when(transportOrderMapper.mapToEntity(orderDTO)).thenReturn(order);
+        when(truckRepository.findById(orderDTO.getTruckId())).thenReturn(Optional.of(truck));
         when(cargoRepository.findById(orderDTO.getCargoId())).thenReturn(java.util.Optional.of(cargo));
         when(transportPlannerRepository.findByEmail(anyString())).thenReturn(java.util.Optional.of(planner));
         when(transportOrderRepository.save(order)).thenReturn(order);
@@ -137,6 +141,7 @@ class TransportOrderServiceTest {
         order.setTruck(truck);
 
         when(transportOrderMapper.mapToEntity(orderDTO)).thenReturn(order);
+        when(truckRepository.findById(orderDTO.getTruckId())).thenReturn(Optional.of(truck));
         when(cargoRepository.findById(orderDTO.getCargoId())).thenReturn(java.util.Optional.of(cargo));
         when(transportPlannerRepository.findByEmail(anyString())).thenReturn(java.util.Optional.of(planner));
 
@@ -158,6 +163,7 @@ class TransportOrderServiceTest {
 
 
         when(transportOrderMapper.mapToEntity(orderDTO)).thenReturn(order);
+        when(truckRepository.findById(orderDTO.getTruckId())).thenReturn(Optional.of(truck));
         when(cargoRepository.findById(orderDTO.getCargoId())).thenReturn(java.util.Optional.of(cargo));
         when(transportPlannerRepository.findByEmail(anyString())).thenReturn(java.util.Optional.of(planner));
 

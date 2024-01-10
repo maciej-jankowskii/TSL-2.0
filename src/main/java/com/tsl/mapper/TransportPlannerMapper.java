@@ -1,14 +1,10 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.TransportPlannerDTO;
+import com.tsl.dtos.employees.TransportPlannerDTO;
 import com.tsl.enums.FormOfEmployment;
 import com.tsl.exceptions.*;
-import com.tsl.model.address.Address;
 import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.truck.Truck;
-import com.tsl.model.warehouse.goods.Goods;
-import com.tsl.repository.AddressRepository;
-import com.tsl.repository.TruckRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,16 +12,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class TransportPlannerMapper {
-    private final AddressRepository addressRepository;
-    private final TruckRepository truckRepository;
 
-    public TransportPlannerMapper(AddressRepository addressRepository, TruckRepository truckRepository) {
-        this.addressRepository = addressRepository;
-        this.truckRepository = truckRepository;
-    }
-
-    public TransportPlanner mapToEntity(TransportPlannerDTO dto){
-        if (dto == null){
+    public TransportPlanner mapToEntity(TransportPlannerDTO dto) {
+        if (dto == null) {
             throw new NullEntityException("Transport planner data cannot be null");
         }
         TransportPlanner planner = new TransportPlanner();
@@ -43,8 +32,8 @@ public class TransportPlannerMapper {
         return planner;
     }
 
-    public TransportPlannerDTO mapToDTO(TransportPlanner planner){
-        if (planner == null){
+    public TransportPlannerDTO mapToDTO(TransportPlanner planner) {
+        if (planner == null) {
             throw new NullEntityException("Transport planner cannot be null");
         }
         TransportPlannerDTO dto = new TransportPlannerDTO();

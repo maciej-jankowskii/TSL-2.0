@@ -5,12 +5,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
-import com.tsl.dtos.GoodsDTO;
-import com.tsl.dtos.WarehouseDTO;
-import com.tsl.dtos.WarehouseOrderDTO;
-import com.tsl.service.GoodsService;
-import com.tsl.service.WarehouseOrderService;
-import com.tsl.service.WarehouseService;
+import com.tsl.dtos.warehouses.GoodsDTO;
+import com.tsl.dtos.warehouses.WarehouseDTO;
+import com.tsl.dtos.warehouses.WarehouseOrderDTO;
+import com.tsl.service.warehouses.GoodsService;
+import com.tsl.service.warehouses.WarehouseOrderService;
+import com.tsl.service.warehouses.WarehouseService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,8 @@ public class WarehouseController {
     private final WarehouseOrderService warehouseOrderService;
     private final ObjectMapper objectMapper;
 
-    public WarehouseController(WarehouseService warehouseService, GoodsService goodsService, WarehouseOrderService warehouseOrderService, ObjectMapper objectMapper) {
+    public WarehouseController(WarehouseService warehouseService, GoodsService goodsService,
+                               WarehouseOrderService warehouseOrderService, ObjectMapper objectMapper) {
         this.warehouseService = warehouseService;
         this.goodsService = goodsService;
         this.warehouseOrderService = warehouseOrderService;

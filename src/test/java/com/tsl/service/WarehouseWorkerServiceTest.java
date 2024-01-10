@@ -1,6 +1,6 @@
 package com.tsl.service;
 
-import com.tsl.dtos.WarehouseWorkerDTO;
+import com.tsl.dtos.employees.WarehouseWorkerDTO;
 import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.exceptions.WarehouseNotFoundException;
@@ -8,9 +8,10 @@ import com.tsl.mapper.WarehouseWorkerMapper;
 import com.tsl.model.address.Address;
 import com.tsl.model.employee.WarehouseWorker;
 import com.tsl.model.warehouse.Warehouse;
-import com.tsl.repository.AddressRepository;
-import com.tsl.repository.WarehouseRepository;
-import com.tsl.repository.WarehouseWorkerRepository;
+import com.tsl.repository.contactAndAddress.AddressRepository;
+import com.tsl.repository.warehouses.WarehouseRepository;
+import com.tsl.repository.employees.WarehouseWorkerRepository;
+import com.tsl.service.employees.WarehouseWorkerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

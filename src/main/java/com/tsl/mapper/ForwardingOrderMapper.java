@@ -1,30 +1,13 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.ForwardingOrderDTO;
-import com.tsl.enums.Currency;
-import com.tsl.enums.OrderStatus;
+import com.tsl.dtos.forwardiing.ForwardingOrderDTO;
 import com.tsl.enums.TypeOfTruck;
 import com.tsl.exceptions.*;
-import com.tsl.model.cargo.Cargo;
-import com.tsl.model.contractor.Carrier;
-import com.tsl.model.employee.Forwarder;
 import com.tsl.model.order.ForwardingOrder;
-import com.tsl.repository.CargoRepository;
-import com.tsl.repository.CarrierRepository;
-import com.tsl.repository.ForwarderRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ForwardingOrderMapper {
-    private final CargoRepository cargoRepository;
-    private final CarrierRepository carrierRepository;
-    private final ForwarderRepository forwarderRepository;
-
-    public ForwardingOrderMapper(CargoRepository cargoRepository, CarrierRepository carrierRepository, ForwarderRepository forwarderRepository) {
-        this.cargoRepository = cargoRepository;
-        this.carrierRepository = carrierRepository;
-        this.forwarderRepository = forwarderRepository;
-    }
 
     public ForwardingOrder mapToEntity(ForwardingOrderDTO dto) {
         if (dto == null) {

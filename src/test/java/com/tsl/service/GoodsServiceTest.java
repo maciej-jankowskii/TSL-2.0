@@ -1,12 +1,13 @@
 package com.tsl.service;
 
-import com.tsl.dtos.GoodsDTO;
-import com.tsl.exceptions.CannotEditGoodsAssignedToOrderException;
+import com.tsl.dtos.warehouses.GoodsDTO;
+import com.tsl.exceptions.CannotEditEntityException;
 import com.tsl.exceptions.GoodsNotFoundException;
 import com.tsl.exceptions.NonUniqueLabelsException;
 import com.tsl.mapper.GoodsMapper;
 import com.tsl.model.warehouse.goods.Goods;
-import com.tsl.repository.GoodsRepository;
+import com.tsl.repository.warehouses.GoodsRepository;
+import com.tsl.service.warehouses.GoodsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,18 +24,21 @@ import static org.mockito.Mockito.*;
 
 class GoodsServiceTest {
 
-    @Mock private GoodsRepository goodsRepository;
-    @Mock private GoodsMapper goodsMapper;
-    @InjectMocks private GoodsService goodsService;
+    @Mock
+    private GoodsRepository goodsRepository;
+    @Mock
+    private GoodsMapper goodsMapper;
+    @InjectMocks
+    private GoodsService goodsService;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @DisplayName("Should find all Goods")
-    public void testFindAll_Success(){
+    public void testFindAll_Success() {
         Goods goods1 = prepareFirstGoods();
         Goods goods2 = prepareSecondGoods();
         GoodsDTO goodsDTO1 = prepareFirstGoodsDTO();
@@ -53,7 +57,7 @@ class GoodsServiceTest {
 
     @Test
     @DisplayName("Should find all Goods not assigned to order")
-    public void testFindAllNotAssignedToOrderGoods_Success(){
+    public void testFindAllNotAssignedToOrderGoods_Success() {
         Goods goods1 = prepareFirstGoods();
         Goods goods2 = prepareSecondGoods();
         GoodsDTO goodsDTO1 = prepareFirstGoodsDTO();
@@ -72,7 +76,7 @@ class GoodsServiceTest {
 
     @Test
     @DisplayName("Should find Goods by ID")
-    public void testFindGoodsById_Success(){
+    public void testFindGoodsById_Success() {
         Goods goods = prepareFirstGoods();
         GoodsDTO goodsDTO = prepareFirstGoodsDTO();
 
@@ -87,7 +91,7 @@ class GoodsServiceTest {
 
     @Test
     @DisplayName("Should throw GoodsNotFoundException")
-    public void testFindGoodsById_GoodsNotFound(){
+    public void testFindGoodsById_GoodsNotFound() {
         Long goodsId = 1L;
 
         when(goodsRepository.findById(goodsId)).thenReturn(Optional.empty());
@@ -97,7 +101,7 @@ class GoodsServiceTest {
 
     @Test
     @DisplayName("Should add new Goods successfully")
-    public void testAddGoods_Success(){
+    public void testAddGoods_Success() {
         Goods goods = prepareFirstGoods();
         GoodsDTO goodsDTO = prepareFirstGoodsDTO();
         goodsDTO.setAssignedToOrder(false);
@@ -130,7 +134,7 @@ class GoodsServiceTest {
 
     @Test
     @DisplayName("Should update Goods successfully")
-    public void testUpdateGoods_Success(){
+    public void testUpdateGoods_Success() {
         GoodsDTO currentGoods = prepareFirstGoodsDTO();
         GoodsDTO updatedGoodsDTO = prepareSecondGoodsDTO();
         Goods goods = prepareSecondGoods();
@@ -155,7 +159,7 @@ class GoodsServiceTest {
         when(goodsMapper.mapToEntity(updatedGoodsDTO)).thenReturn(goods);
         when(goodsRepository.findById(updatedGoodsDTO.getId())).thenReturn(Optional.of(goods));
 
-        assertThrows(CannotEditGoodsAssignedToOrderException.class, () -> goodsService.updateGoods(currentGoods, updatedGoodsDTO));
+        assertThrows(CannotEditEntityException.class, () -> goodsService.updateGoods(currentGoods, updatedGoodsDTO));
 
         verify(goodsRepository, never()).save(any());
     }
@@ -172,12 +176,10 @@ class GoodsServiceTest {
         when(goodsMapper.mapToEntity(updatedGoodsDTO)).thenReturn(goods);
         when(goodsRepository.findById(currentGoods.getId())).thenReturn(Optional.of(goods));
 
-        assertThrows(CannotEditGoodsAssignedToOrderException.class, () -> goodsService.updateGoods(currentGoods, updatedGoodsDTO));
+        assertThrows(CannotEditEntityException.class, () -> goodsService.updateGoods(currentGoods, updatedGoodsDTO));
 
         verify(goodsRepository, never()).save(any());
     }
-
-
 
 
     private GoodsDTO prepareFirstGoodsDTO() {
@@ -213,9 +215,6 @@ class GoodsServiceTest {
         goods.setAssignedToOrder(false);
         return goods;
     }
-
-
-
 
 
 }

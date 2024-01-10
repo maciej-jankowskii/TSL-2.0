@@ -1,23 +1,13 @@
 package com.tsl.mapper;
 
-import com.tsl.dtos.CargoDTO;
+import com.tsl.dtos.forwardiing.CargoDTO;
 import com.tsl.enums.Currency;
-import com.tsl.exceptions.CustomerNotFoundException;
 import com.tsl.exceptions.NullEntityException;
 import com.tsl.model.cargo.Cargo;
-import com.tsl.model.contractor.Customer;
-import com.tsl.repository.CustomerRepository;
-import com.tsl.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CargoMapper {
-
-    private final CustomerRepository customerRepository;
-
-    public CargoMapper(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
 
     public Cargo mapToEntity(CargoDTO cargoDTO) {
         if (cargoDTO == null) {

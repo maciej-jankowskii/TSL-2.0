@@ -1,7 +1,6 @@
 package com.tsl.model.warehouse.goods;
 
 import com.tsl.enums.TypeOfGoods;
-import com.tsl.exceptions.CannotEditGoodsAssignedToOrderException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
