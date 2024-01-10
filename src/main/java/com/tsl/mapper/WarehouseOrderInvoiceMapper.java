@@ -29,8 +29,6 @@ public class WarehouseOrderInvoiceMapper {
         invoice.setNetValue(invoiceDTO.getNetValue());
         invoice.setGrossValue(invoiceDTO.getGrossValue());
         invoice.setIsPaid(invoiceDTO.getIsPaid());
-        WarehouseOrder order = warehouseOrderRepository.findById(invoiceDTO.getWarehouseOrderId()).orElseThrow(() -> new WarehouseOrderNotFoundException("Warehouse order not found"));
-        invoice.setWarehouseOrder(order);
         return invoice;
     }
 

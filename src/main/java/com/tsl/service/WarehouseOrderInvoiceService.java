@@ -1,10 +1,7 @@
 package com.tsl.service;
 
 import com.tsl.dtos.WarehouseOrderInvoiceDTO;
-import com.tsl.exceptions.CannotEditEntityException;
-import com.tsl.exceptions.InvoiceAlreadyPaidException;
-import com.tsl.exceptions.InvoiceNotFoundException;
-import com.tsl.exceptions.OrderNotFoundException;
+import com.tsl.exceptions.*;
 import com.tsl.mapper.WarehouseOrderInvoiceMapper;
 import com.tsl.model.contractor.Customer;
 import com.tsl.model.invoice.WarehouseOrderInvoice;
@@ -59,7 +56,7 @@ public class WarehouseOrderInvoiceService {
     public WarehouseOrderInvoiceDTO addWarehouseInvoice(WarehouseOrderInvoiceDTO invoiceDTO) {
         WarehouseOrderInvoice invoice = warehouseOrderInvoiceMapper.mapToEntity(invoiceDTO);
 
-        WarehouseOrder order = extractOrderFromInvoice(invoiceDTO);
+        WarehouseOrder order = warehouseOrderRepository.findById(invoiceDTO.getWarehouseOrderId()).orElseThrow(() -> new WarehouseOrderNotFoundException("Warehouse order not found"));
         Customer customer = extractCustomerFromOrder(order);
 
         changeCompletedStatusForOrder(order);
@@ -124,6 +121,7 @@ public class WarehouseOrderInvoiceService {
     }
 
     private static void addAdditionalDataForInvoiceAndCustomer(WarehouseOrderInvoice invoice, WarehouseOrder order, Customer customer, BigDecimal grossValue) {
+        invoice.setWarehouseOrder(order);
         invoice.setInvoiceDate(LocalDate.now());
         invoice.setDueDate(LocalDate.now().plusDays(PAYMENT_DATE_FOR_INVOICE));
         invoice.setNetValue(BigDecimal.valueOf(order.getTotalCosts()));
