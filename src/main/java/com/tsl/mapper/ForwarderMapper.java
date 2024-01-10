@@ -53,8 +53,6 @@ public class ForwarderMapper {
         forwarder.setEmail(forwarderDTO.getEmail());
         forwarder.setPassword(forwarderDTO.getPassword());
         forwarder.setTelephone(forwarderDTO.getTelephone());
-        Address address = addressRepository.findById(forwarderDTO.getAddressId()).orElseThrow(() -> new AddressNotFoundException("Address not found"));
-        forwarder.setAddress(address);
         forwarder.setBasicGrossSalary(forwarderDTO.getBasicGrossSalary());
         forwarder.setDateOfEmployment(forwarderDTO.getDateOfEmployment());
         forwarder.setFormOfEmployment(FormOfEmployment.valueOf(forwarderDTO.getFormOfEmployment()));

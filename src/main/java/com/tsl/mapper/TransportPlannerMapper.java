@@ -35,23 +35,11 @@ public class TransportPlannerMapper {
         planner.setEmail(dto.getEmail());
         planner.setTelephone(dto.getTelephone());
         planner.setPassword(dto.getPassword());
-        Address address = addressRepository.findById(dto.getAddressId()).orElseThrow(() -> new AddressNotFoundException("Address not found"));
-        planner.setAddress(address);
         planner.setBasicGrossSalary(dto.getBasicGrossSalary());
         planner.setDateOfEmployment(dto.getDateOfEmployment());
         planner.setFormOfEmployment(FormOfEmployment.valueOf(dto.getFormOfEmployment()));
         planner.setContractExpiryDate(dto.getContractExpiryDate());
         planner.setSalaryBonus(dto.getSalaryBonus());
-        List<Truck> trucks = dto.getTruckIds().stream()
-                .map(truckIds -> truckRepository.findById(truckIds)
-                        .orElseThrow(() -> new NoTrucksException("Truck not found with id: " + truckIds)))
-                .collect(Collectors.toList());
-
-        if (trucks.isEmpty()) {
-            throw new NoTrucksException("No truck selected");
-        }
-
-        planner.setCompanyTrucks(trucks);
         return planner;
     }
 
