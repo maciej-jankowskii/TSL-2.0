@@ -35,13 +35,6 @@ public class CustomerInvoiceMapper {
         customerInvoice.setNetValue(customerInvoiceDTO.getNetValue());
         customerInvoice.setGrossValue(customerInvoiceDTO.getGrossValue());
         customerInvoice.setIsPaid(customerInvoiceDTO.getIsPaid());
-
-        Cargo cargo = cargoRepository.findById(customerInvoiceDTO.getCargoId()).orElseThrow(() -> new CarrierNotFoundException("Cargo not found"));
-        customerInvoice.setCargo(cargo);
-
-        Customer customer = customerRepository.findById(customerInvoiceDTO.getCustomerId()).orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
-        customerInvoice.setCustomer(customer);
-
         return customerInvoice;
     }
 

@@ -69,8 +69,8 @@ public class CustomerInvoiceService {
     public CustomerInvoiceDTO addCustomerInvoice(CustomerInvoiceDTO customerInvoiceDTO) {
         CustomerInvoice invoice = customerInvoiceMapper.mapToEntity(customerInvoiceDTO);
 
-        Customer customer = extractCustomerFromInvoice(customerInvoiceDTO);
-        Cargo cargo = extractCargoFromInvoice(customerInvoiceDTO);
+        Cargo cargo = cargoRepository.findById(customerInvoiceDTO.getCargoId()).orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
+        Customer customer = customerRepository.findById(customerInvoiceDTO.getCustomerId()).orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
 
         changeInvoicingStatusForCargo(cargo);
         addAdditionalDataFromInvoice(invoice, cargo, customer);
@@ -131,6 +131,9 @@ public class CustomerInvoiceService {
     }
 
     private void addAdditionalDataFromInvoice(CustomerInvoice invoice, Cargo cargo, Customer customer) {
+        invoice.setCustomer(customer);
+        invoice.setCargo(cargo);
+
         LocalDate currentDate = LocalDate.now();
         invoice.setInvoiceDate(currentDate);
 
