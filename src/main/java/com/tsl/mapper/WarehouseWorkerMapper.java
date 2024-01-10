@@ -32,14 +32,10 @@ public class WarehouseWorkerMapper {
         worker.setFirstName(dto.getFirstName());
         worker.setLastName(dto.getLastName());
         worker.setTelephone(dto.getTelephone());
-        Address address = addressRepository.findById(dto.getAddressId()).orElseThrow(() -> new AddressNotFoundException("Address not found"));
-        worker.setAddress(address);
         worker.setBasicGrossSalary(dto.getBasicGrossSalary());
         worker.setDateOfEmployment(dto.getDateOfEmployment());
         worker.setContractExpiryDate(dto.getContractExpiryDate());
         worker.setFormOfEmployment(FormOfEmployment.valueOf(dto.getFormOfEmployment()));
-        Warehouse warehouse = warehouseRepository.findById(dto.getWarehouseId()).orElseThrow(() -> new WarehouseNotFoundException("Warehouse not found"));
-        worker.setWarehouse(warehouse);
         worker.setPermissionsCrane(dto.getPermissionsCrane());
         worker.setPermissionsForklift(dto.getPermissionsForklift());
         return worker;
