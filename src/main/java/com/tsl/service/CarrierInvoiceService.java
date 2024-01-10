@@ -58,8 +58,8 @@ public class CarrierInvoiceService {
     public CarrierInvoiceDTO addCarrierInvoice(CarrierInvoiceDTO carrierInvoiceDTO) {
         CarrierInvoice invoice = carrierInvoiceMapper.mapToEntity(carrierInvoiceDTO);
 
-        ForwardingOrder order = extractOrderFromInvoice(carrierInvoiceDTO);
-        Carrier carrier = extractCarrierFromInvoice(carrierInvoiceDTO);
+        Carrier carrier = carrierRepository.findById(carrierInvoiceDTO.getCarrierId()).orElseThrow(() -> new CarrierNotFoundException("Carrier not found"));
+        ForwardingOrder order = forwarderOrderRepository.findById(carrierInvoiceDTO.getOrderId()).orElseThrow(() -> new OrderNotFoundException("Order not found"));
 
         addAdditionalDataFroInvoice(invoice, order, carrier);
 
@@ -114,6 +114,9 @@ public class CarrierInvoiceService {
     }
 
     private void addAdditionalDataFroInvoice(CarrierInvoice invoice, ForwardingOrder order, Carrier carrier) {
+        invoice.setOrder(order);
+        invoice.setCarrier(carrier);
+
         LocalDate currentDate = LocalDate.now();
         invoice.setInvoiceDate(currentDate);
 
