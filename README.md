@@ -1,10 +1,10 @@
 # TSL 2.0
 
 1. [English version below](#en)
-2. [O aplikacji](#oaplikacji)
-3. [Najbliższe zmiany](#zmiany)
+2. [O aplikacji](#o)
+3. [Najbliższe zmiany](#najbliższe)
 4. [Instalacja](#instalacja)
-5. [Działanie aplikacji](#dzialanie)
+5. [Działanie](#dzialanie)
 6. [Autor](#autor)
 
 ## O aplikacji
@@ -40,7 +40,7 @@ Opcja dostępna dla każdego to możliwość zostawienia wiadomości dla firmy, 
 
 ...
 
-## Najbliższe zmiany {#zmiany}
+## Najbliższe zmiany 
 
 TSL jest cały czas rozwijany, chciałbym aby opisane powyżej funkcjonalności były tylko początkiem rozwoju tej aplikacji.
 W najbliższym czasie chciałbym dodać:
