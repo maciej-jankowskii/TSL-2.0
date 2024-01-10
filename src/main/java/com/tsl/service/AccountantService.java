@@ -1,12 +1,15 @@
 package com.tsl.service;
 
 import com.tsl.dtos.AccountantDTO;
+import com.tsl.exceptions.AddressNotFoundException;
 import com.tsl.exceptions.EmailAddressIsTaken;
 import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.mapper.AccountantMapper;
+import com.tsl.model.address.Address;
 import com.tsl.model.employee.Accountant;
 import com.tsl.model.role.EmployeeRole;
 import com.tsl.repository.AccountantRepository;
+import com.tsl.repository.AddressRepository;
 import com.tsl.repository.EmployeeRoleRepository;
 import com.tsl.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,13 +28,15 @@ public class AccountantService {
     private final PasswordEncoder passwordEncoder;
     private final EmployeeRoleRepository employeeRoleRepository;
     private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
 
-    public AccountantService(AccountantMapper accountantMapper, AccountantRepository accountantRepository, PasswordEncoder passwordEncoder, EmployeeRoleRepository employeeRoleRepository, UserRepository userRepository) {
+    public AccountantService(AccountantMapper accountantMapper, AccountantRepository accountantRepository, PasswordEncoder passwordEncoder, EmployeeRoleRepository employeeRoleRepository, UserRepository userRepository, AddressRepository addressRepository) {
         this.accountantMapper = accountantMapper;
         this.accountantRepository = accountantRepository;
         this.passwordEncoder = passwordEncoder;
         this.employeeRoleRepository = employeeRoleRepository;
         this.userRepository = userRepository;
+        this.addressRepository = addressRepository;
     }
 
     public List<AccountantDTO> findAllAccountants(){
@@ -43,6 +48,20 @@ public class AccountantService {
     }
 
     @Transactional
+    public String registerNewAccountant(AccountantDTO accountantDTO) throws RoleNotFoundException {
+        checkingAvailabilityOfEmail(accountantDTO);
+
+        Accountant accountant = accountantMapper.mapToEntity(accountantDTO);
+        Address address = addressRepository.findById(accountantDTO.getAddressId()).orElseThrow(() -> new AddressNotFoundException("Address not found"));
+        accountant.setAddress(address);
+
+        addAdditionalDataForAccountant(accountantDTO, accountant);
+
+        accountantRepository.save(accountant);
+        return "User registered successfully!";
+    }
+
+    @Transactional
     public void updateAccountant(AccountantDTO accountantDTO) {
         Accountant accountant = accountantMapper.mapToEntity(accountantDTO);
         accountantRepository.save(accountant);
@@ -50,16 +69,6 @@ public class AccountantService {
 
     public void deleteAccountant(Long id) {
         accountantRepository.deleteById(id);
-    }
-    @Transactional
-    public String registerNewAccountant(AccountantDTO accountantDTO) throws RoleNotFoundException {
-        checkingAvailabilityOfEmail(accountantDTO);
-
-        Accountant accountant = accountantMapper.mapToEntity(accountantDTO);
-        addAdditionalDataForAccountant(accountantDTO, accountant);
-
-        accountantRepository.save(accountant);
-        return "User registered successfully!";
     }
 
     private void addAdditionalDataForAccountant(AccountantDTO accountantDTO, Accountant accountant) throws RoleNotFoundException {

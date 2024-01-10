@@ -49,8 +49,6 @@ public class AccountantMapper {
         accountant.setEmail(dto.getEmail());
         accountant.setPassword(dto.getPassword());
         accountant.setTelephone(dto.getTelephone());
-        Address address = addressRepository.findById(dto.getAddressId()).orElseThrow(() -> new AddressNotFoundException("Address not found"));
-        accountant.setAddress(address);
         accountant.setBasicGrossSalary(dto.getBasicGrossSalary());
         accountant.setDateOfEmployment(dto.getDateOfEmployment());
         accountant.setFormOfEmployment(FormOfEmployment.valueOf(dto.getFormOfEmployment()));
