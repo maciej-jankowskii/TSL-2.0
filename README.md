@@ -1,13 +1,13 @@
 # TSL 2.0
 
 1. [English version below](#en)
-2. [O aplikacji](#o)
-3. [Najbliższe zmiany](#najbliższe)
+2. [Opis](#opis)
+3. [Zmiany](#zmiany)
 4. [Instalacja](#instalacja)
 5. [Działanie](#dzialanie)
 6. [Autor](#autor)
 
-## O aplikacji
+## Opis
 
 Przy tworzeniu tej aplikacji wykorzystałem swoje doświadczenie zawodowe. Od ponad 8 lat pracuje w branży transportowej. 
 Bardzo chciałem stworzyć aplikacje, która mogłaby śmiało posłużyć mi na codzień w pracy i ułatwić codzienne obowiązki.
@@ -40,7 +40,7 @@ Opcja dostępna dla każdego to możliwość zostawienia wiadomości dla firmy, 
 
 ...
 
-## Najbliższe zmiany 
+## Zmiany 
 
 TSL jest cały czas rozwijany, chciałbym aby opisane powyżej funkcjonalności były tylko początkiem rozwoju tej aplikacji.
 W najbliższym czasie chciałbym dodać:
@@ -72,7 +72,7 @@ Można to zrobić z oficjalnej strony:
 
 
 
-## Działanie aplikacji
+## Działanie
 
 ...
 
