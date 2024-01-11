@@ -89,24 +89,6 @@ public class TransportOrderService {
         return transportOrderMapper.mapToDTO(saved);
     }
 
-    private static String findAndCheckCurrency(TransportOrderDTO dto, Cargo cargo) {
-        Currency currency = cargo.getCurrency();
-        String dtoCurrency = dto.getCurrency();
-        if (!currency.equals(Currency.valueOf(dtoCurrency))) {
-            throw new CurrencyMismatchException("Currency mismatch");
-        }
-        return dtoCurrency;
-    }
-
-    private Cargo findAndCheckCargo(TransportOrderDTO dto) {
-        Cargo cargo = cargoRepository.findById(dto.getCargoId())
-                .orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
-        if (cargo.getAssignedToOrder()) {
-            throw new CargoAlreadyAssignedException("Cargo is already assigned to another order");
-        }
-        return cargo;
-    }
-
     @Transactional
     public void updateTransportOrder(TransportOrderDTO currentDTO, TransportOrderDTO updatedDTO) {
         TransportPlanner planner = getLoggedInUser();
@@ -144,6 +126,8 @@ public class TransportOrderService {
         order.setDateAdded(LocalDate.now());
         order.setOrderStatus(OrderStatus.ASSIGNED_TO_COMPANY_TRUCK);
         cargo.setAssignedToOrder(true);
+        order.setPrice(cargo.getPrice());
+        order.setCurrency(cargo.getCurrency());
     }
 
     private TransportPlanner getLoggedInUser() {
@@ -166,6 +150,24 @@ public class TransportOrderService {
         if (!truck.getAssignedToDriver()) {
             throw new NoDriverOnTheTruckException("No driver on this truck");
         }
+    }
+
+    private static String findAndCheckCurrency(TransportOrderDTO dto, Cargo cargo) {
+        Currency currency = cargo.getCurrency();
+        String dtoCurrency = dto.getCurrency();
+        if (!currency.equals(Currency.valueOf(dtoCurrency))) {
+            throw new CurrencyMismatchException("Currency mismatch");
+        }
+        return dtoCurrency;
+    }
+
+    private Cargo findAndCheckCargo(TransportOrderDTO dto) {
+        Cargo cargo = cargoRepository.findById(dto.getCargoId())
+                .orElseThrow(() -> new CargoNotFoundException("Cargo not found"));
+        if (cargo.getAssignedToOrder()) {
+            throw new CargoAlreadyAssignedException("Cargo is already assigned to another order");
+        }
+        return cargo;
     }
 
     /**

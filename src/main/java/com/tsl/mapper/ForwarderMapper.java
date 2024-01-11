@@ -26,7 +26,6 @@ public class ForwarderMapper {
         dto.setDateOfEmployment(forwarder.getDateOfEmployment());
         dto.setFormOfEmployment(String.valueOf(forwarder.getFormOfEmployment()));
         dto.setContractExpiryDate(forwarder.getContractExpiryDate());
-        dto.setExtraPercentage(forwarder.getExtraPercentage());
         dto.setTotalMargin(forwarder.getTotalMargin());
         dto.setSalaryBonus(forwarder.getSalaryBonus());
         return dto;
@@ -48,7 +47,6 @@ public class ForwarderMapper {
         forwarder.setDateOfEmployment(forwarderDTO.getDateOfEmployment());
         forwarder.setFormOfEmployment(FormOfEmployment.valueOf(forwarderDTO.getFormOfEmployment()));
         forwarder.setContractExpiryDate(forwarderDTO.getContractExpiryDate());
-        forwarder.setExtraPercentage(forwarderDTO.getExtraPercentage());
         forwarder.setTotalMargin(forwarderDTO.getTotalMargin());
         forwarder.setSalaryBonus(forwarderDTO.getSalaryBonus());
         return forwarder;

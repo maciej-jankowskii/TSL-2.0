@@ -17,7 +17,6 @@ public class TransportOrderMapper {
         order.setId(dto.getId());
         order.setOrderNumber(dto.getOrderNumber());
         order.setDateAdded(dto.getDateAdded());
-        order.setPrice(dto.getPrice());
         order.setIsInvoiced(dto.getIsInvoiced());
         return order;
     }
@@ -31,8 +30,8 @@ public class TransportOrderMapper {
         dto.setOrderNumber(order.getOrderNumber());
         dto.setDateAdded(order.getDateAdded());
         dto.setCargoId(order.getCargo().getId());
-        dto.setPrice(order.getPrice());
-        dto.setCurrency(String.valueOf(order.getCurrency()));
+        dto.setPrice(order.getCargo().getPrice());
+        dto.setCurrency(String.valueOf(order.getCargo().getCurrency()));
         dto.setTransportPlannerId(order.getTransportPlanner().getId());
         dto.setTruckId(order.getTruck().getId());
         dto.setIsInvoiced(order.getIsInvoiced());

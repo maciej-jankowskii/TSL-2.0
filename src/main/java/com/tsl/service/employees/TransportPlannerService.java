@@ -82,7 +82,7 @@ public class TransportPlannerService {
     }
 
     @Transactional
-    public void assignPlannerToDriver(Long plannerId, Long truckId) {
+    public void assignTruckToPlanner(Long plannerId, Long truckId) {
 
         TransportPlanner planner = transportPlannerRepository.findById(plannerId)
                 .orElseThrow(() -> new EmployeeNotFoundException("Planner not found"));
@@ -91,7 +91,6 @@ public class TransportPlannerService {
 
         addAdditionalDataForPlannerAndTruck(planner, truck);
 
-        truckRepository.save(truck);
         truckRepository.save(truck);
     }
 
@@ -116,10 +115,6 @@ public class TransportPlannerService {
                 .map(truckIds -> truckRepository.findById(truckIds)
                         .orElseThrow(() -> new NoTrucksException("Truck not found with id: " + truckIds)))
                 .collect(Collectors.toList());
-
-        if (trucks.isEmpty()) {
-            throw new NoTrucksException("No truck selected");
-        }
 
         planner.setCompanyTrucks(trucks);
         planner.setAddress(address);

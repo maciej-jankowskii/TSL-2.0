@@ -82,8 +82,8 @@ public class DriverService {
         checkAssignToTruck(driver);
         addAdditionalDataForDriverAndTruck(driver, truck);
 
-        driverRepository.save(driver);
         truckRepository.save(truck);
+        driverRepository.save(driver);
     }
 
     @Transactional

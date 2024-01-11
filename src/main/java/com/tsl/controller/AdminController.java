@@ -247,8 +247,8 @@ public class AdminController {
 
     @PostMapping("/planner/{plannerId}/assignTruck/{truckId}")
     public ResponseEntity<?> assignTruckToPlanner(@PathVariable Long plannerId, @PathVariable Long truckId){
-        transportPlannerService.assignPlannerToDriver(plannerId, truckId);
-        return ResponseEntity.notFound().build();
+        transportPlannerService.assignTruckToPlanner(plannerId, truckId);
+        return ResponseEntity.noContent().build();
     }
 
     /***

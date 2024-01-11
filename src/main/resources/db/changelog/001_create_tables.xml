@@ -724,4 +724,8 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="032" author="maciej-jankowski">
+        <dropColumn tableName="forwarders" columnName="extra_percentage"/>
+    </changeSet>
+
 </databaseChangeLog>

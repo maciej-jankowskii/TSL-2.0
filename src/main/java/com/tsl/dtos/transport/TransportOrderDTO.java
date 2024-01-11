@@ -17,9 +17,7 @@ public class TransportOrderDTO {
     private LocalDate dateAdded;
     @NotNull
     private Long cargoId;
-    @NotNull
     private BigDecimal price;
-    @NotBlank
     private String currency;
     private String orderStatus;
     private Boolean isInvoiced;

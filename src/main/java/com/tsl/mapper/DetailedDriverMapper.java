@@ -49,6 +49,7 @@ public class DetailedDriverMapper {
         dto.setWorkSystem(driver.getWorkSystem());
         dto.setAssignedToTruck(driver.getAssignedToTruck());
         dto.setMainDriver(driver.getMainDriver());
+        dto.setTruckId(driver.getTruck().getId());
         return dto;
     }
 }
