@@ -10,7 +10,7 @@
 ## Opis
 
 Przy tworzeniu tej aplikacji wykorzystałem swoje doświadczenie zawodowe. Od ponad 8 lat pracuje w branży transportowej. 
-Bardzo chciałem stworzyć aplikacje, która mogłaby śmiało posłużyć mi na codzień w pracy i ułatwić codzienne obowiązki.
+Bardzo chciałem stworzyć aplikacje, która mogłaby śmiało posłużyć mi na co dzień w pracy i ułatwić codzienne obowiązki.
 
 TSL dzieli się na kilka sekcji. Sekcja <b>administratora</b> pozwala rejestrować nowych pracowników firmy, takich jak:
 - spedytorzy,
@@ -23,14 +23,14 @@ Możemy dodawać nowe firmowe ciężarówki i przypisywać do nich kierowców. M
 Administrator ma możliwość również obliczenia wypłaty pracownika w danym miesiącu. 
 
 Druga sekcja to sekcja <b>magazynowa.</b> Jako pracownicy możemy dodawać nowe magazyny, towary, oraz na ich podstawie tworzyć zlecenia magazynowe. 
-Każy magazyn ma określony typ, powierzchnie i koszty składowania towaru. Towary natomiast mają swoje unikalne etykiety, bazując na nich dodajemy zlecenia. 
+Każdy magazyn ma określony typ, powierzchnie i koszty składowania towaru. Towary natomiast mają swoje unikalne etykiety, bazując na nich dodajemy zlecenia. 
 
 Kolejna sekcja to sekcja <b>spedycji.</b> Tutaj mamy możliwość dodawać klientów którzy zlecają nam transport towaru, możemy dodawać ładunki oraz przewoźników którzy będą realizować transport.
 Bazując na tym wszystkim tworzymy zlecenie spedycyjne. Każde zlecenie ma określoną marże która jest przypisywana do spedytora.
 
 Sekcja <b>transportu</b> działa bardzo podobnie, lecz pomija etap przewoźnika, z racji tego że transport odbywa się własnym taborem. 
 
-Sekcja <b>księgowości</b> to przede wszystkim faktury od przeowoźników, faktury dla klientów za ładunki oraz zlecenia magazynowe.
+Sekcja <b>księgowości</b> to przede wszystkim faktury od przewoźników, faktury dla klientów za ładunki oraz zlecenia magazynowe.
 
 Opcja dostępna dla każdego to możliwość zostawienia wiadomości dla firmy, jest to symulacja formularza kontaktowego. 
 
@@ -62,7 +62,7 @@ W pierwszej kolejności należy sklonować repozytorium:
 ```bash
   git clone https://github.com/maciej-jankowskii/TSL-2.0
 ```
-Należy pamiętać o utworzeniiu bazy danych lokalnie na swoim komputerze, i odpowiednim skonfigurowaniu pliku application.yml
+Należy pamiętać o utworzeniu bazy danych lokalnie na swoim komputerze, i odpowiednim skonfigurowaniu pliku application.yml
 Do łatwiejszego testowania aplikacji polecam pobranie Postmana. 
 Można to zrobić z oficjalnej strony: 
 
@@ -74,9 +74,9 @@ Można to zrobić z oficjalnej strony:
 ## Działanie
 
 
-Aby rozpocząć testowanie aplikacji należy w pierwszej kolejności się zalogować. Możemy to zrobić jako administrator i następnie zarejestrować nowego pracownika lub zalogować się od razu na przygotowane przeze mnie dane konkretnych pracowników. Na potrzeby testów przeprowadze Cię przez dwie opisane wyżej drogi. Zaczniemy od testowania sekcji spedycji. 
+Aby rozpocząć testowanie aplikacji należy w pierwszej kolejności się zalogować. Możemy to zrobić jako administrator i następnie zarejestrować nowego pracownika lub zalogować się od razu na przygotowane przeze mnie dane konkretnych pracowników. Na potrzeby testów przeprowadzę Cię przez dwie opisane wyżej drogi. Zaczniemy od testowania sekcji spedycji. 
 
-Uruchom program Postman oraz wyślij żądanie <b>POST</b> pod wsakzany adres. Użyj do tego przygotowanych przeze mnie danych, jest to konto administratora, szczegóły poniżej:
+Uruchom program Postman oraz wyślij żądanie <b>POST</b> pod wskazany adres. Użyj do tego przygotowanych przeze mnie danych, jest to konto administratora, szczegóły poniżej:
 
 ```http
 POST http://localhost:8080/auth/login
@@ -88,7 +88,7 @@ POST http://localhost:8080/auth/login
 }
 ```
 
-W odpowiedzi apliakcja wygeneruje dla Ciebie <b>token</b>, który będzie Ci potrzebny do dalszego działania. Pamiętaj aby użwać tego tokena z każdym kolejnym wysłanym żądaniem. Więcej informacji jak to zrobić znajdziesz poniżej. 
+W odpowiedzi aplikacja wygeneruje dla Ciebie <b>token</b>, który będzie Ci potrzebny do dalszego działania. Pamiętaj aby używać tego tokena z każdym kolejnym wysłanym żądaniem. Więcej informacji jak to zrobić znajdziesz poniżej. 
 Teraz możesz zarejestrować nowe konto pracownika na którym będziesz dalej operował. 
 
 Przygotuj nowe żądanie:
@@ -118,7 +118,7 @@ Pamiętaj aby wcześniej przekazać token. Screen poniżej:
 
 <img src="https://github.com/maciej-jankowskii/TSL-2.0/blob/85d690b017aa0a92b8fd438a3c54b4f735f26eba/src/main/resources/static/auth.png" alt="project-screenshot" width="760" height="320/">
 
-<b>Token musisz przekazywać praktycznie z każdym żądaniem z wyjątkiem logowania i formularza kontaktowego o którym będzie mowa później we wskazany wyżej sposób.</b>
+<b>Token musisz przekazywać praktycznie z każdym żądaniem z wyjątkiem logowania i formularza kontaktowego we wskazany wyżej sposób.</b>
 
 Jeżeli nie chcesz rejestrować nowego spedytora, zaloguj się na dane które przygotowałem wcześniej. 
 
@@ -133,11 +133,12 @@ POST http://localhost:8080/auth/login
 ```
 
 Możemy teraz zacząć sprawdzać funkcjonalności jakie daje nam sekcja spedycji. Każdy spedytor w pierwszej kolejności musi dodać klienta z którym będzie współpracował i który to będzie zlecał nam transporty. Aby to zrobić postępuj zgodnie ze wskazówkami. 
-Klient oprócz danych podstawowych ma swój adres oraz osobe kontaktową. Dodajmy zatem niezbędne dane. 
+Klient oprócz danych podstawowych ma swój adres oraz osobę kontaktową. Dodajmy zatem niezbędne dane. 
 
 ```http
 POST http://localhost:8080/addresses
 ```
+
 ```
 {
     "country": "Kraj",
@@ -183,7 +184,7 @@ Przykładowe dane:
 ```
 
 Pamiętaj o przekazywaniu tokena w sekcji <b>AUTHORIZATION</b>.
-W odpowiedzi ponieneś otrzymać teraz kod 201 Created. W ten sposób utworzyłeś klienta z którym będziesz współpracował. 
+W odpowiedzi powinieneś otrzymać teraz kod 201 Created. W ten sposób utworzyłeś klienta z którym będziesz współpracował. 
 Klient zleca nam transport i wysyła zlecenie z konkretnym towarem. Utwórzmy więc nowy ładunek.
 
 ```http
@@ -207,8 +208,8 @@ POST http://localhost:8080/cargos
 
 
 Utworzyliśmy właśnie nowy ładunek. W tym momencie saldo klienta zmieniło się o wskazaną cene + VAT jeżeli to klient z Polski. 
-Wysyłając dokładnie te same żądania tylko metodą GET otrzymamy liste klientów i liste ładunków. 
-Jeżeli w naszej bazie ładunków będzie więcej możemy je sortować lub wyślietlać tylko te które nie są jeszcze przypisane do żadnego zlecenia spedycyjnego.
+Wysyłając dokładnie te same żądania tylko metodą GET otrzymamy listę klientów i listę ładunków. 
+Jeżeli w naszej bazie ładunków będzie więcej możemy je sortować lub wyświetlać tylko te które nie są jeszcze przypisane do żadnego zlecenia spedycyjnego.
 
 
 ```http
@@ -277,8 +278,8 @@ POST http://localhost:8080/forwarding-orders
 }
 ```
 
-W ten sposób utworzyliśmy zlecenie, zarabiając różnice pomiedzy ceną ładunku a ceną zlecenia, i przypisując tą różnice do konta danego spedytora. Ułatwi nam to w dalszych krokach obliczanie całkowitej wypłaty pracownika. 
-Wyświetlanie wszystkich zlecen dostępne jest pod adresem:
+W ten sposób utworzyliśmy zlecenie, zarabiając różnice pomiędzy ceną ładunku a ceną zlecenia, i przypisując tą różnice do konta danego spedytora. Ułatwi nam to w dalszych krokach obliczanie całkowitej wypłaty pracownika. 
+Wyświetlanie wszystkich zleceń dostępne jest pod adresem:
 
 
 ```http
@@ -293,7 +294,7 @@ Pozostałe możliwości dostępne w sekcji spedycji to np:
 ```http
 PATCH http://localhost:8080/forwarding-orders/{id}
 ```
-- anunlacja zlecenia spedycynego
+- anulacja zlecenia spedycyjnego
 ```http
 PATCH http://localhost:8080/forwarding-orders/{id}/cancel
 ```
@@ -314,16 +315,17 @@ PATCH http://localhost:8080/customers/{id}
 PATCH http://localhost:8080/carriers/{id}
 ```
 
-W miejsce <b>{id}</b> wskazać należy id danego zasobu. Edycje elementów wiążą się z pewnymi ograniczeniami i zabezpieczeniami, które wprowadziłem i które poznasz podczas testowania aplikacj.
+W miejsce <b>{id}</b> wskazać należy id danego zasobu. Edycje elementów wiążą się z pewnymi ograniczeniami i zabezpieczeniami, które wprowadziłem i które poznasz podczas testowania aplikacji.
 Przeszliśmy tym samym przez sekcje spedycji i przejść możemy do sekcji transportu. Jest to część aplikacji, która będzie obsługiwała funkcjonalności związane z transportem własnym taborem. 
 
-W pierwszej kolejności należy przelogować sie na konto planisty transportowego, gdyż spedytor nie ma dostępu do tej sekcji. 
-Analogicznie do sytuacji na samym początku, możesz jako administrator zarejestrować nowego planiste.
+W pierwszej kolejności należy przelogować się na konto planisty transportowego, gdyż spedytor nie ma dostępu do tej sekcji. 
+Analogicznie do sytuacji na samym początku, możesz jako administrator zarejestrować nowego planistę.
 
 
 ```http
 POST http://localhost:8080/admin/planners/register
 ```
+
 ```
 {
     "firstName": "Nowy planner",
@@ -347,6 +349,7 @@ Dodawanie auta możemy zrobić w następujący sposób:
 ```http
 POST http://localhost:8080/admin/trucks
 ```
+
 ```
 {
         "brand": "Test3",
@@ -358,13 +361,15 @@ POST http://localhost:8080/admin/trucks
 }
 ```
 
-Pamiętaj że zlecenia można realizowac autami które mają przypisanych kierowców. Funkcje przypisywania możesz zrealizowac jako amidnistrator w poniższy sposób. 
+Pamiętaj że zlecenia można realizować autami które mają przypisanych kierowców. Funkcje przypisywania możesz wykonać jako administrator w poniższy sposób. 
 Przypisanie planisty do auta:
 
 ```http
 POST http://localhost:8080/admin/planner/7/assignTruck/2
 ```
+
 Przypisanie kierowcy do auta:
+
 ```http
 POST http://localhost:8080/admin/driver/6/assignTruck/1
 ```
@@ -377,6 +382,7 @@ Przed dalszymi testami należy przelogować się na utworzone konto planisty lub
 ```http
 POST http://localhost:8080/auth/login
 ```
+
 ```
 {
     "email": "planner@example.com",
@@ -386,9 +392,9 @@ POST http://localhost:8080/auth/login
 
 <i>Mimo że administrator ma dostęp do każdej sekcji, jest to niezbędne gdyż podczas tworzenia zlecenia czy to spedycyjnego czy transportowego aplikacja przypisuje zalogowanego użytkownika do zlecenia.</i>
 
-Wróćmy do testowania funkcjonalności sekcji transportu. Zasada pracy planisy jest podoba do pracy spedytora. Również przyjmujemy ładunki od klientów. Zatem możesz wykorzystać zasoby które utowrzyłes wcześniej lub wrócić i ponownie dodać nowego klienta i nowe ładunki. Pracownik ten jednak tworzy zlecenie które jest realizowane przez firmową cieżarówkę. 
+Wróćmy do testowania funkcjonalności sekcji transportu. Zasada pracy planisty jest podoba do pracy spedytora. Również przyjmujemy ładunki od klientów. Zatem możesz wykorzystać zasoby które utworzyłeś wcześniej lub wrócić i ponownie dodać nowego klienta i nowe ładunki. Pracownik ten jednak tworzy zlecenie które jest realizowane przez firmową ciężąrówkę. 
 
-Dane które mogą być przydatne przy utworzeniu takiego zlecenia to np. dostępni kierowcy czy ciężarówki
+Dane które mogą być przydatne przy tworzeniu takiego zlecenia to np. dostępni kierowcy czy ciężarówki
 
 
 ```http
@@ -421,7 +427,7 @@ Przykładowe zlecenie:
     }
 ```
 
-Pamiętaj aby ładunek był wolny - nie przypisany do innych zleceń, aby waluta zgadzała się z walutą ładunku oraz aby ciężarówka miała przypisanego kierowce i miała aktualne badania techniczne i ubezpieczenie. 
+Pamiętaj aby ładunek był wolny - nie przypisany do innych zleceń, aby waluta zgadzała się z walutą ładunku oraz aby ciężarówka miała przypisanego kierowcę i miała aktualne badania techniczne i ubezpieczenie. 
 Pozostałe istotne możliwości to:
 
 
@@ -429,7 +435,7 @@ Pozostałe istotne możliwości to:
 ```http
 PATCH http://localhost:8080/transport-orders/{id}
 ```
-- anunlacja zlecenia transportowego
+- anulacja zlecenia transportowego
 ```http
 PATCH http://localhost:8080/transport-orders/{id}/cancel
 ```
@@ -437,7 +443,7 @@ PATCH http://localhost:8080/transport-orders/{id}/cancel
 
 Przechodzimy teraz do sekcji magazynowania. 
 Jako administrator możemy podobnie jak poprzednio dodawać pracowników, w tym wypadku będą to pracownicy magazynu. 
-Wszystkie dostępne funkcjonalności możemy tu realizowac jako administrator, spedytor lub planista, a więc nie ma znaczenia na którym koncie jestesmy aktualnie zalogowani.
+Wszystkie dostępne funkcjonalności możemy tu realizować jako administrator, spedytor lub planista, a więc nie ma znaczenia na którym koncie jestesmy aktualnie zalogowani.
 
 ```http
 POST http://localhost:8080/admin/warehouse-workers/register
@@ -461,14 +467,14 @@ POST http://localhost:8080/admin/warehouse-workers/register
 }
 ```
 
-Wyświetlenie wszystkich pracowników odbywa się poprzez wyłasnie żądania:
+Wyświetlenie wszystkich pracowników odbywa się poprzez wysłanie żądania:
 
 ```http
 GET http://localhost:8080/admin/warehouse-workers
 ```
 
 
-Aby zacząć swiadczyć usługi magazynowania, oprócz pracowników należy dodać przede wszystkim magazyn, ta opcja również dostępna jest tylko do administratora:
+Aby zacząć świadczyć usługi magazynowania, oprócz pracowników należy dodać przede wszystkim magazyn, ta opcja również dostępna jest tylko do administratora:
 
 
 ```http
@@ -512,7 +518,7 @@ POST http://localhost:8080/warehouses/orders
 ```
 
 
-Pozostałe przypdate żądania z tej sekcji to np.
+Pozostałe przydatne żądania z tej sekcji to np.
 
 - wyświetlanie nie przypisanych do żadnego zlecenia towarów
 ```http
@@ -530,7 +536,7 @@ PATCH http://localhost:8080/warehouses/goods/{id}
 ```http
 GET http://localhost:8080/warehouses/orders
 ```
-- wyświetlenie zlecenie nie zakończonych
+- wyświetlenie zleceń nie zakończonych
 ```http
 GET http://localhost:8080/warehouses/orders/not-completed
 ```
@@ -543,11 +549,12 @@ PATCH http://localhost:8080/warehouses/orders/complete/{id}
 PATCH http://localhost:8080/warehouses/orders/{id}
 ```
 
-Przebrneliśmy przez trzy bardzo ważne sekcje w branży TSL. Teraz pora na równie istotny element czyli księgowość. 
-W przypadku księgowości możesz korzystać z konta administratora lub zalogowac się na przygotowane przeze mnie konto księgowej, oraz oczwiście mozesz zarejestrować nowego pracownika.
+Przebrnęliśmy  przez trzy bardzo ważne sekcje w branży TSL. Teraz pora na równie istotny element czyli księgowość. 
+W przypadku księgowości możesz korzystać z konta administratora lub zalogować się na przygotowane przeze mnie konto księgowej, oraz oczywiście możesz zarejestrować nowego pracownika.
 
 
 Dodanie pracownika
+
 ```http
 POST http://localhost:8080/admin/accountants/register
 ```
@@ -601,9 +608,8 @@ POST http://localhost:8080/invoices/customer
 <b>Wysyłając odpowiednie żądania możemy wyświetlać faktury, sortować, edytować, oznaczać jako zapłacone, co jest równoznaczne ze zmianą salda klienta. </b>
 
 Przykładowe żądania:
-- wyświetlenie faktur od przewoźników
 
-  
+- wyświetlenie faktur od przewoźników
 ```http
 GET http://localhost:8080/invoices/carrier
 ```
@@ -621,10 +627,10 @@ PATCH http://localhost:8080/invoices/customer/{id}/paid
 PATCH http://localhost:8080/invoices/carrier/{id}/paid
 ```
 
-Anaglogicznie możemy postępowac z fakturami za zlecenia magazynowe. 
+Analogicznie możemy postępować z fakturami za zlecenia magazynowe. 
 
-Jako administrator mamy równiez możliwośc obliczenia wypłaty danego pracownika. W przypadku spedytorów i planistów wypłata to podstawa + prowizja, dla każdego z nich obliczana inaczej. 
-Spedytor dostaje premie w zależności od sumy marzy jaką uzyska w danym miesiącu da którego obliczamy pensje. Planista natomiast dostaje premie w zależności od przypisanych do niego ciężarówek.
+Jako administrator mamy również możliwość obliczenia wypłaty danego pracownika. W przypadku spedytorów i planistów wypłata to podstawa + prowizja, dla każdego z nich obliczana inaczej. 
+Spedytor dostaje premie w zależności od sumy marży jaką uzyska w danym miesiącu da którego obliczamy pensje. Planista natomiast dostaje premie w zależności od przypisanych do niego ciężarówek.
 Obliczenia możemy wykonać wysyłając zadanie pod adres:
 
 
