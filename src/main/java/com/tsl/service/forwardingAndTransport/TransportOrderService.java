@@ -73,6 +73,7 @@ public class TransportOrderService {
         TransportOrder order = transportOrderMapper.mapToEntity(dto);
         Truck truck = truckRepository.findById(dto.getTruckId())
                 .orElseThrow(() -> new TruckNotFoundException("Truck not found"));
+
         TransportPlanner planner = getLoggedInUser();
 
         Cargo cargo = findAndCheckCargo(dto);

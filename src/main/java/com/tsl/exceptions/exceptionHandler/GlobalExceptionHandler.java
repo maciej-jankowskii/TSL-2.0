@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({CargoAlreadyAssignedException.class, InsufficientWarehouseSpaceException.class,
             InvoiceAlreadyPaidException.class, WarehouseOrderIsAlreadyCompletedException.class,
-            DriverIsAlreadyAssignedToTruck.class, EmailAddressIsTaken.class})
+            DriverIsAlreadyAssignedToTruck.class, EmailAddressIsTaken.class, TruckIsAlreadyAssignedToPlanner.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.CONFLICT)
     public String handleErrorsRelatedToConflicts(RuntimeException ex) {

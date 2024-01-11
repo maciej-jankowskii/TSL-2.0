@@ -1,12 +1,10 @@
 package com.tsl.service.employees;
 
 import com.tsl.dtos.employees.TransportPlannerDTO;
-import com.tsl.exceptions.AddressNotFoundException;
-import com.tsl.exceptions.EmailAddressIsTaken;
-import com.tsl.exceptions.EmployeeNotFoundException;
-import com.tsl.exceptions.NoTrucksException;
+import com.tsl.exceptions.*;
 import com.tsl.mapper.TransportPlannerMapper;
 import com.tsl.model.address.Address;
+import com.tsl.model.employee.Driver;
 import com.tsl.model.employee.TransportPlanner;
 import com.tsl.model.role.EmployeeRole;
 import com.tsl.model.truck.Truck;
@@ -83,6 +81,20 @@ public class TransportPlannerService {
         transportPlannerRepository.save(planner);
     }
 
+    @Transactional
+    public void assignPlannerToDriver(Long plannerId, Long truckId) {
+
+        TransportPlanner planner = transportPlannerRepository.findById(plannerId)
+                .orElseThrow(() -> new EmployeeNotFoundException("Planner not found"));
+
+        Truck truck = truckRepository.findById(truckId).orElseThrow(() -> new TruckNotFoundException("Truck not found"));
+
+        addAdditionalDataForPlannerAndTruck(planner, truck);
+
+        truckRepository.save(truck);
+        truckRepository.save(truck);
+    }
+
     public void deletePlanner(Long id) {
         transportPlannerRepository.deleteById(id);
     }
@@ -118,5 +130,15 @@ public class TransportPlannerService {
         if (userRepository.existsByEmail(transportPlanner.getEmail())) {
             throw new EmailAddressIsTaken("Email address is already taken");
         }
+    }
+
+    private static void addAdditionalDataForPlannerAndTruck(TransportPlanner planner, Truck truck) {
+        if (truck.getTransportPlanner() != null){
+            throw new TruckIsAlreadyAssignedToPlanner("Truck is already assigned to another planner");
+        }
+
+        truck.setTransportPlanner(planner);
+        List<Truck> companyTrucks = planner.getCompanyTrucks();
+        companyTrucks.add(truck);
     }
 }
