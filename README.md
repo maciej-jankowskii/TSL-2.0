@@ -116,7 +116,7 @@ W sekcji Body, przykładowe dane które możesz dodać:
 Pamiętaj aby wcześniej przekazać token. Screen poniżej:
 
 
-<img src="https://github.com/maciej-jankowskii/TSL-2.0/blob/85d690b017aa0a92b8fd438a3c54b4f735f26eba/src/main/resources/static/auth.png" alt="project-screenshot" width="760" height="320/">
+<img src="https://github.com/maciej-jankowskii/TSL-2.0/blob/85d690b017aa0a92b8fd438a3c54b4f735f26eba/src/main/resources/static/auth.png" alt="project-screenshot" width="720" height="380/">
 
 <b>Token musisz przekazywać praktycznie z każdym żądaniem z wyjątkiem logowania i formularza kontaktowego we wskazany wyżej sposób.</b>
 
@@ -769,7 +769,7 @@ Example data:
 
 Remember to pass the token beforehand. See the screenshot below:
 
-<img src="https://github.com/maciej-jankowskii/TSL-2.0/blob/85d690b017aa0a92b8fd438a3c54b4f735f26eba/src/main/resources/static/auth.png" alt="project-screenshot" width="760" height="320/">
+<img src="https://github.com/maciej-jankowskii/TSL-2.0/blob/85d690b017aa0a92b8fd438a3c54b4f735f26eba/src/main/resources/static/auth.png" alt="project-screenshot" width="720" height="380/">
 
 
 You must pass the token with practically every request, except for logging in and using the contact form, as mentioned above.
