@@ -29,8 +29,7 @@ Druga sekcja to sekcja magazynowa. Jako pracownicy możemy dodawać nowe magazyn
 Każy magazyn ma określony typ, powierzchnie i koszty składowania towaru. Towary natomiast mają swoje unikalne etykiety, bazując na nich dodajemy zlecenia. 
 
 Kolejna sekcja to sekcja spedycji. Tutaj mamy możliwość dodawać klientów którzy zlecają nam transport towaru, możemy dodawać ładunki oraz przewoźników którzy będą realizować transport.
-Bazując na tym wszystkim tworzymy zlecenie spedycyjne. Każde zlecenie ma określoną marże która jest przypisywana do spedytora. Spedytor natomiast dostaje bonus do wypłaty w danym miesiącu, 
-i bonus ten zależny jest od wysokości marży jaką uzyskał. 
+Bazując na tym wszystkim tworzymy zlecenie spedycyjne. Każde zlecenie ma określoną marże która jest przypisywana do spedytora.
 
 Sekcja transportu działa bardzo podobnie, lecz pomija etap przewoźnika, z racji tego że transport odbywa się własnym taborem. 
 
@@ -69,10 +68,26 @@ Można to zrobić z oficjalnej strony:
   https://www.postman.com/
 ```
 
-
-
-
 ## Działanie
+
+Aby rozpocząć testowanie aplikacji należy w pierwszej kolejności się zalogować. Możemy to zrobić jako administrator i następnie zarejestrować nowego pracownika lub zalogować się od razu na przygotowane przeze mnie dane konkretnych pracowników. Na potrzeby testów przeprowadze Cię przez dwie opisane wyżej drogi. 
+
+Uruchom program Postman oraz wyślij żądanie POST pod wsakzany adres. Użyj do tego przygotowanych przeze mnie danych, jest to konto administratora, szczegóły poniżej:
+
+```http
+  POST localhost:8080/auth/login
+```
+```
+{
+    "email": "john@example.com",
+    "password": "hard"
+}
+```
+
+W odpowiedzi apliakcja wygeneruje dla Ciebie token, który będzie Ci potrzebny do dalszego działania. Pamiętaj aby użwać tego tokena z każdym kolejnym wysłanym żądaniem. Więcej informacji jak to zrobić znajdziesz poniżej. 
+Teraz możesz zarejestrować nowe konto pracownika na którym będziesz dalej operował. 
+
+
 
 ...
 
