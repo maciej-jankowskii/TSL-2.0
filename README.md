@@ -125,6 +125,7 @@ Jeżeli nie chcesz rejestrować nowego spedytora, zaloguj się na dane które pr
 ```http
 POST http://localhost:8080/auth/login
 ```
+
 ```
 {
     "email": "forw1@example.com",
@@ -156,9 +157,9 @@ POST http://localhost:8080/contact-person
 
 ```
 {
-    "firstName": "Jan",
-    "lastName": "Kowlski",
-    "email": "kowalski@test.pl",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "doe@example.pl",
     "telephone": "775341222"
 }
 ```
@@ -443,7 +444,7 @@ PATCH http://localhost:8080/transport-orders/{id}/cancel
 
 Przechodzimy teraz do sekcji magazynowania. 
 Jako administrator możemy podobnie jak poprzednio dodawać pracowników, w tym wypadku będą to pracownicy magazynu. 
-Wszystkie dostępne funkcjonalności możemy tu realizować jako administrator, spedytor lub planista, a więc nie ma znaczenia na którym koncie jestesmy aktualnie zalogowani.
+Wszystkie dostępne funkcjonalności możemy tu realizować jako administrator, spedytor lub planista, a więc nie ma znaczenia na którym koncie jesteśmy aktualnie zalogowani.
 
 ```http
 POST http://localhost:8080/admin/warehouse-workers/register
@@ -506,6 +507,7 @@ DELETE http://localhost:8080/warehouses/{id}
 ```
 
 W tym momencie możemy przyjmować pierwsze towary. Aby to zrobić wysyłamy żądanie
+
 ```http
 POST http://localhost:8080/warehouses/goods
 ```
@@ -664,6 +666,654 @@ ____________
 
 
 
+## EN
+
+
+## Description
+
+During the creation of this application, I utilized my professional experience. I have been working in the transportation industry for over 8 years. I really wanted to create an application that could confidently serve me in my daily work and streamline everyday tasks.
+
+The Transport Management System (TSL) is divided into several sections. The <b>Administrator section</b> allows the registration of new company employees, such as:
+
+- forwarders,
+- transport planners,
+- accounting staff,
+- drivers,
+- warehouse employees.
+- 
+We can add new company trucks and assign drivers to them. We can also access more information about contractors, such as their current balance, not available to regular employees. The administrator also has the ability to calculate an employee's salary for a given month.
+
+The second section is the <b>Warehouse section</b>. As employees, we can add new warehouses, goods, and create warehouse orders based on them. Each warehouse has a specified type, area, and storage costs. Goods, on the other hand, have unique labels, and based on these labels, we create orders.
+
+The next section is the <b>Dispatch section</b>. Here, we can add clients who assign us goods transportation tasks, add cargoes, and carriers who will carry out the transport. Based on all this information, we create dispatch orders. Each order has a specified margin assigned to the dispatcher.
+
+The <b>Transport section</b> functions similarly but skips the carrier stage, as the transport is carried out with the company's own fleet.
+
+The <b>Accounting section</b> primarily deals with invoices from carriers, invoices to clients for cargoes, and warehouse orders.
+
+An option available to everyone is the ability to leave a message for the company, simulating a contact form.
+
+In the application, I primarily used: Java, Spring Boot, Spring Data, Spring Security, MySQL, Liquibase, Hibernate, and Lombok. For testing purposes, I utilized jUnit and Mockito. TSL is secured using JWT tokens.
+
+
+
+## Changes
+
+TSL is continuously being developed, and I would like the functionalities described above to be just the beginning of the application's evolution. In the near future, I plan to add:
+
+- chat simulations between company employees
+- the ability to create reports (e.g., the profitability of a specific employee)
+- balance limits for clients
+- integration with the NBP API to retrieve currency exchange rates (for international clients, to facilitate calculation of cargo/invoice values in foreign currencies)
+- implementation of the ability to calculate discounts, i.e., faster invoice payments (SKONTO)
+- modification of the database with a new table for employee salaries
+- corrections to tests
+
+
+## Installation
+
+Firstly, you need to clone the repository:
+
+```bash
+  git clone https://github.com/maciej-jankowskii/TSL-2.0
+```
+
+Remember to create a local database on your computer and configure the application.yml file accordingly. 
+For easier application testing, I recommend downloading Postman from the official website:
+
+```bash
+  https://www.postman.com/
+```
+
+## How it works
+
+To begin testing the application, you first need to log in. You can do this as an administrator and then register a new employee or log in directly using the credentials I have prepared for specific employees. For testing purposes, I will guide you through two paths described above. Let's start by testing the dispatch section.
+
+Launch the Postman program and send a <b>POST</b> request to the specified address. Use the data provided by me; this is an administrator account, details below:
+
+```http
+POST http://localhost:8080/auth/login
+```
+```
+{
+    "email": "john@example.com",
+    "password": "hard"
+}
+```
+
+
+In response, the application will generate a <b>token</b> for you, which you will need for further actions. Remember to use this token with each subsequent request. More information on how to do this can be found below. Now, you can register a new employee account to operate further.
+
+Prepare a new request:
+
+```http
+POST http://localhost:8080/admin/forwarders/register
+```
+
+Example data: 
+
+```
+{
+    "firstName": "Imie",
+    "lastName": "Nazwisko",
+    "email": "test@example.com",
+    "password": "hard",
+    "telephone": "+123456789",
+    "addressId": 1,
+    "basicGrossSalary": 5000.00,
+    "dateOfEmployment": "2023-01-01",
+    "formOfEmployment": "CONTRACT_EMPLOYMENT_FULL_TIME",
+    "contractExpiryDate": "2024-01-01",
+}
+```
+
+Remember to pass the token beforehand. See the screenshot below:
+
+<img src="https://github.com/maciej-jankowskii/TSL-2.0/blob/85d690b017aa0a92b8fd438a3c54b4f735f26eba/src/main/resources/static/auth.png" alt="project-screenshot" width="760" height="320/">
+
+
+You must pass the token with practically every request, except for logging in and using the contact form, as mentioned above.
+
+If you don't want to register a new forwarder, log in using the credentials I provided earlier.
+
+```http
+POST http://localhost:8080/auth/login
+```
+
+```
+{
+    "email": "forw1@example.com",
+    "password": "hard"
+}
+```
+
+
+We can now start exploring the functionalities provided by the dispatch section. Every dispatcher must first add a client with whom they will cooperate and who will assign us transports. To do this, follow the instructions.
+
+In addition to basic data, a client has their address and a contact person. Let's add the necessary information.
+
+```http
+POST http://localhost:8080/addresses
+```
+
+```
+{
+    "country": "Kraj",
+    "postalCode": "00-000",
+    "city": "Miasto",
+    "street": "ul. Testowa",
+    "homeNo": "10",
+    "flatNo": "10"
+}
+```
+
+```http
+POST http://localhost:8080/contact-person
+```
+
+```
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "doe@example.pl",
+    "telephone": "775341222"
+}
+```
+
+
+If you change the request type to <b>GET</b> and send it to the exact same address, you will receive the current list of addresses and contact persons. 
+Adding a client:
+
+```http
+POST http://localhost:8080/customers
+```
+
+Przykładowe dane:
+```
+{
+    "fullName": "Spedition",
+    "shortName": "SPED",
+    "addressId": 1,
+    "vatNumber": "PL66533567890",
+    "description": "Opis klienta",
+    "termOfPayment": 30,
+    "contactPersonIds": [1]
+}
+```
+
+
+Remember to include the token in the <b>AUTHORIZATION</b> section.
+In response, you should now receive the status code 201 Created. This way, you have created a client to collaborate with. The client assigns us transport and sends an order with specific goods. Let's create a new cargo.
+
+```http
+POST http://localhost:8080/cargos
+```
+
+```
+{
+    "cargoNumber": "Numer ładunku",
+    "price": "3000",
+    "currency": "PLN",
+    "loadingDate": "2024-02-01",
+    "unloadingDate" : "2024-02-05",
+    "loadingAddress": "Szczecin, ul. Nowa, Polska",
+    "unloadingAddress": "Warszawa, ul. Stara, Polska",
+    "goods": "Neutralny",
+    "description": "Test",
+    "customerId": 1
+}
+```
+
+We have just created a new cargo. At this moment, the client's balance has changed by the specified price + VAT if it's a client from Poland. 
+By sending the exact same requests but with the GET method, you will receive a list of clients and a list of cargoes. 
+If there are more cargoes in our database, we can sort them or display only those that are not yet assigned to any dispatch order.
+
+
+```http
+GET http://localhost:8080/cargos
+```
+```http
+GET http://localhost:8080/cargos/not-assigned
+```
+```http
+GET http://localhost:8080/cargos/not-invoiced
+```
+```http
+GET http://localhost:8080/cargos/sorted?sortBy=
+```
+
+Remember to add, after the "=" sign, based on what criteria the cargo will be sorted (e.g., cargo number, price, date added, loading and unloading dates, etc.).
+
+Now that we have a cargo, the next step is to add a carrier who will carry out the transport.
+
+```http
+POST http://localhost:8080/carriers
+```
+
+```
+{
+    "fullName": "Przewoźnik",
+    "shortName": "PK",
+    "addressId": 2,
+    "vatNumber": "PL99034567890",
+    "description": "Opis klienta",
+    "termOfPayment": 60,
+    "insuranceExpirationDate": "2024-12-31",
+    "licenceExpirationDate": "2024-12-31",
+    "contactPersonIds": [2]
+}
+```
+
+Remember to ensure that the expiration dates of the carrier's license and insurance are current. Otherwise, we won't be able to assign such a carrier to the order we will create shortly.
+
+Similar to before, we can display and sort carriers:
+
+```http
+GET http://localhost:8080/carriers
+```
+```http
+GET http://localhost:8080/carriers/sorted?sortBy=
+```
+
+Now we can create forwarding order.
+
+```http
+POST http://localhost:8080/forwarding-orders
+```
+
+
+```
+{
+    "orderNumber": "Numer",
+    "cargoId": "1",
+    "price": 2500,
+    "currency": "PLN",
+    "carrierId": 1 ,
+    "typeOfTruck": "TAUTLINER",
+    "truckNumbers": "OK2432/OK7313"
+}
+```
+
+
+This way, we have created an order, earning the difference between the cargo price and the order price, and assigning this difference to the dispatcher's account. This will make it easier for us in the next steps to calculate the total employee payout.
+
+Displaying all orders is available at:
+
+```http
+GET http://localhost:8080/forwarding-orders
+```
+
+Importantly, the dispatcher sees <b>only their own orders.</b>
+
+Other available options in the forwarder section include:
+
+- update forwarding order
+```http
+PATCH http://localhost:8080/forwarding-orders/{id}
+```
+- cancel forwarding order
+```http
+PATCH http://localhost:8080/forwarding-orders/{id}/cancel
+```
+- update cargo
+```http
+PATCH http://localhost:8080/cargos/{id}
+```
+- delete cargo
+```http
+DELETE http://localhost:8080/cargos/{id}
+```
+- update customer
+```http
+PATCH http://localhost:8080/customers/{id}
+```
+- update carrier
+```http
+PATCH http://localhost:8080/carriers/{id}
+```
+
+In the place of <b>{id}</b>, you should specify the id of the respective resource. 
+Editing items is associated with certain limitations and security measures that I have implemented, and you will learn about them during the application testing.
+
+We have now gone through the dispatch section, and we can move on to the transport section. This is the part of the application that will handle functionalities related to transporting goods with our own fleet.
+
+First, you should log in to the transport planner's account, as the dispatcher does not have access to this section. 
+Similarly to the situation at the very beginning, you can register a new transport planner as an administrator.
+
+```http
+POST http://localhost:8080/admin/planners/register
+```
+
+```
+{
+    "firstName": "Nowy planner",
+    "lastName": "Test",
+    "email": "test@example.com",
+    "password": "hard",
+    "telephone": "+123456789",
+    "addressId": 3,
+    "basicGrossSalary": 9000.00,
+    "dateOfEmployment": "2023-01-01",
+    "formOfEmployment": "CONTRACT_EMPLOYMENT_FULL_TIME",
+    "contractExpiryDate": "2024-01-01",
+    "truckIds": [0]
+}
+```
+
+If you want to assign a truck to the planner immediately, add it, and then, when registering the employee, enter the truck's ID in the 'truckIds' field.
+
+Adding a truck can be done as follows:
+
+```http
+POST http://localhost:8080/admin/trucks
+```
+
+```
+{
+        "brand": "Test3",
+        "model": "Test3",
+        "type": "TAUTLINER",
+        "plates": "ABC123/CBA421",
+        "technicalInspectionDate": "2024-02-01",
+        "insuranceDate": "2024-12-31"
+}
+```
+
+Remember that orders can be carried out by trucks that have assigned drivers. You can perform assignment functions as an administrator in the following way.
+
+Assigning a transport planner to a truck:
+
+```http
+POST http://localhost:8080/admin/planner/7/assignTruck/2
+```
+
+Assigning a driver to truck:
+
+```http
+POST http://localhost:8080/admin/driver/6/assignTruck/1
+```
+
+Before further testing, you should log in to the created transport planner account or use my provided credentials:
+
+```http
+POST http://localhost:8080/auth/login
+```
+
+```
+{
+    "email": "planner@example.com",
+    "password": "hard"
+}
+```
+
+<i>Even though the administrator has access to every section, it is essential because during the creation of an order, whether it is dispatch or transport, 
+the application assigns the logged-in user to the order.</i>
+
+Let's go back to testing the functionalities of the transport section. The workflow of a transport planner is similar to that of a dispatcher. 
+We also accept cargoes from clients. So, you can use the resources you created earlier or go back and add a new client and new cargoes again. However, this employee creates an order that is executed by a company truck.
+
+Useful information when creating such an order includes available drivers or trucks.
+
+```http
+GET http://localhost:8080/drivers
+```
+```http
+GET http://localhost:8080/trucks
+```
+```http
+GET http://localhost:8080/transport-orders
+```
+
+Now we can create transport order:
+
+
+```http
+POST http://localhost:8080/transport-orders
+```
+
+Example data:
+
+```
+    {
+        "orderNumber": "TSL001",
+        "cargoId": 2,
+        "price": 2000.00,
+        "currency": "PLN",
+        "truckId": 1
+    }
+```
+
+Remember to ensure that the cargo is free - not assigned to other orders, that the currency matches the cargo currency, and that the truck has an assigned driver with up-to-date technical inspections and insurance.
+
+Other important functionalities include:
+
+- update transport order
+```http
+PATCH http://localhost:8080/transport-orders/{id}
+```
+- cancel transport order
+```http
+PATCH http://localhost:8080/transport-orders/{id}/cancel
+```
+
+We are now moving to the warehousing section. As an administrator, we can, similarly to before, add employees, in this case, warehouse employees. All available functionalities can be executed here as an administrator, dispatcher, or transport planner, so it doesn't matter which account we are currently logged into.
+
+```http
+POST http://localhost:8080/admin/warehouse-workers/register
+```
+
+
+```
+{
+        "firstName": "Worker",
+        "lastName": "Worker",
+        "telephone": "+123456789",
+        "addressId": 10,
+        "basicGrossSalary": 3000.00,
+        "dateOfEmployment": "2023-01-01",
+        "formOfEmployment": "CONTRACT_EMPLOYMENT_FULL_TIME",
+        "contractExpiryDate": "2024-01-01",
+        "warehouseId": 1,
+        "permissionsForklift": true,
+        "permissionsCrane": false
+
+}
+```
+
+Displaying all warehouse workers:
+
+```http
+GET http://localhost:8080/admin/warehouse-workers
+```
+
+Now we can add new Warehouse ( remember, only admin can do it)
+
+```http
+POST http://localhost:8080/warehouses
+```
+
+```
+{
+    "typeOfGoods": "ADR_GOODS",
+    "addressId": 7,
+    "crane": true,
+    "forklift": true,
+    "costPer100SquareMeters": 220.0,
+    "availableArea": 18000.0
+}
+```
+
+Displaying, updating and deleting warehouses:
+
+```http
+GET http://localhost:8080/warehouses
+```
+```http
+PATCH http://localhost:8080/warehouses/{id}
+```
+```http
+DELETE http://localhost:8080/warehouses/{id}
+```
+
+At this point, we can start receiving the first goods. To do this, send a request:
+
+```http
+POST http://localhost:8080/warehouses/goods
+```
+
+We are creating a warehouse order based on this. Keep in mind that a warehouse order can only contain goods of the same type and with unique labels.
+
+```http
+POST http://localhost:8080/warehouses/orders
+```
+
+Other requests:
+
+- fisplaying free goods
+```http
+GET http://localhost:8080/warehouses/goods/not-assigned
+```
+- update goods
+```http
+PATCH http://localhost:8080/warehouses/goods/{id}
+```
+- delete goods
+```http
+PATCH http://localhost:8080/warehouses/goods/{id}
+```
+- displaying all orders
+```http
+GET http://localhost:8080/warehouses/orders
+```
+- displaying not completed orders
+```http
+GET http://localhost:8080/warehouses/orders/not-completed
+```
+- ability to end the order
+```http
+PATCH http://localhost:8080/warehouses/orders/complete/{id}
+```
+- update order
+```http
+PATCH http://localhost:8080/warehouses/orders/{id}
+```
+
+
+We've gone through three very important sections in the TSL industry. Now it's time for an equally essential element, which is accounting.
+
+In the case of accounting, you can use the administrator's account, log in to the accountant's account that I've prepared, or, of course, register a new employee.
+
+Adding an employee:
+
+```http
+POST http://localhost:8080/admin/accountants/register
+```
+
+Example data:
+
+```
+{
+    "firstName": "Księgowa",
+    "lastName": "Test",
+    "email": "ksiegowosc@example.com",
+    "password": "hard",
+    "telephone": "+123456789",
+    "addressId": 10,
+    "basicGrossSalary": 2500.00,
+    "dateOfEmployment": "2023-01-01",
+    "formOfEmployment": "CONTRACT_EMPLOYMENT_FULL_TIME",
+    "contractExpiryDate": "2024-01-01",
+    "typeOfAccounting": "INVOICES"
+}
+```
+
+Prepared accountant account:
+
+```
+{
+    "email": "acc@example.com",
+    "password": "hard"
+}
+```
+
+
+Or, as mentioned above, stay on the administrator's account.
+
+In this section, we add invoices from carriers and create invoices for clients. The VAT Calculator calculates invoice values for us, depending on whether the client is from Poland or abroad. Another class calculates the payment deadline.
+
+Below is just an example of adding an invoice for a client:
+
+```http
+POST http://localhost:8080/invoices/customer
+```
+
+
+```
+{
+    "invoiceNumber": "Numer",
+    "cargoId": 1,
+    "customerId": 1
+}
+```
+
+
+<b>By sending the appropriate requests, we can display invoices, sort them, edit them, mark them as paid, which is equivalent to changing the client's balance.</b>
+
+Example requests: 
+
+- displaying carrier invoices
+```http
+GET http://localhost:8080/invoices/carrier
+```
+- displaying invoices for customers
+```http
+GET http://localhost:8080/invoices/customer
+```
+
+
+Marking invoices as paid is done through the request:
+
+```http
+PATCH http://localhost:8080/invoices/customer/{id}/paid
+```
+```http
+PATCH http://localhost:8080/invoices/carrier/{id}/paid
+```
+
+Similarly, we can proceed with invoices for warehouse orders.
+
+As an administrator, we also have the option to calculate the payout for a specific employee. For dispatchers and transport planners, the payout consists of a base salary plus commission, calculated differently for each of them. A dispatcher receives a bonus based on the sum of the margin obtained in a given month from which we calculate salaries. The transport planner, on the other hand, receives a bonus depending on the trucks assigned to him.
+
+We can perform calculations by sending a request to the address:
+
+```http
+GET http://localhost:8080/salary/{id}
+```
+
+{id} is id number of employee.
+
+
+The contact form option is still available. For this functionality, an email address has been created to receive messages sent through the form.
+
+```http
+POST http://localhost:8080/contact/send
+```
+
+```
+{
+    "name": "John Doe",
+    "subject": "Test",
+    "email": "john.doe@example.com",
+    "message": "Test."
+}
+```
+
+
+____________
+<b>Thank you for staying until the end, and I wish you successful testing of the application.</b> 👋
+____________
+
+
 
 
 ## Autor
@@ -671,9 +1321,3 @@ ____________
 #### Maciej Jankowski
 #### Linkedin
 [![Linkedin](https://img.shields.io/badge/LinkedIn-0A66C2.svg?style=for-the-badge&logo=LinkedIn&logoColor=white)](https://www.linkedin.com/in/maciej-jankowskii/)
-
-
-
-
-## EN
-
