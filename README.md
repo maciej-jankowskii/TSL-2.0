@@ -1,6 +1,6 @@
 # TSL 2.0
 
-1. [English version below](#en)
+1. [English version](#en)
 2. [Opis](#opis)
 3. [Zmiany](#zmiany)
 4. [Instalacja](#instalacja)
