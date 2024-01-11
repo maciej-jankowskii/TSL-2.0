@@ -48,7 +48,8 @@ W najbliższym czasie chciałbym dodać:
 - limity salda dla klienta
 - połączenie z API NBP w celu pobierania kursów walut ( dla klientów zagranicznych, aby ułatwić obliczanie wartości ładunku/faktury jeżeli jest w obcej walucie )
 - zaimplementowanie możliwości obliczania tzw. SKONTA, czyli szybszej płatności faktury,
-- modyfikacja bazy danych o nową tabele - wypłaty pracowników 
+- modyfikacja bazy danych o nową tabele - wypłaty pracowników
+- poprawki w testach
 
 
 
