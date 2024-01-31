@@ -52,6 +52,10 @@ W najbliższym czasie chciałbym dodać przede wszystkim:
 - zaimplementowanie możliwości obliczania tzw. SKONTA, czyli szybszej płatności faktury,
 - modyfikacja bazy danych o nową tabele - wypłaty pracowników
 - poprawki w testach
+  
+
+<b>Na ten moment jednak kluczowe jest stworzenie interfejsu użytkownika z wykorzystaniem frameworka React, do którego dążę. </b>
+
 
 
 
