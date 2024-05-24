@@ -5,9 +5,7 @@ import com.tsl.model.cargo.Cargo;
 import com.tsl.model.invoice.CustomerInvoice;
 import com.tsl.model.warehouse.order.WarehouseOrder;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;

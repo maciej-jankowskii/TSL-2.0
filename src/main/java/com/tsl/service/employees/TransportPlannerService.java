@@ -14,6 +14,7 @@ import com.tsl.repository.employees.TransportPlannerRepository;
 import com.tsl.repository.employees.UserRepository;
 import com.tsl.repository.forwardingAndTransport.TruckRepository;
 import com.tsl.service.calculators.SalaryBonusCalculator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TransportPlannerService {
     private final TransportPlannerRepository transportPlannerRepository;
     private final TransportPlannerMapper transportPlannerMapper;
@@ -35,20 +37,6 @@ public class TransportPlannerService {
     private final AddressRepository addressRepository;
     private final TruckRepository truckRepository;
 
-    public TransportPlannerService(TransportPlannerRepository transportPlannerRepository,
-                                   TransportPlannerMapper transportPlannerMapper, PasswordEncoder passwordEncoder,
-                                   SalaryBonusCalculator salaryBonusCalculator, UserRepository userRepository,
-                                   EmployeeRoleRepository employeeRoleRepository, AddressRepository addressRepository,
-                                   TruckRepository truckRepository) {
-        this.transportPlannerRepository = transportPlannerRepository;
-        this.transportPlannerMapper = transportPlannerMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.salaryBonusCalculator = salaryBonusCalculator;
-        this.userRepository = userRepository;
-        this.employeeRoleRepository = employeeRoleRepository;
-        this.addressRepository = addressRepository;
-        this.truckRepository = truckRepository;
-    }
 
     public List<TransportPlannerDTO> findAllTransportPlanners() {
         return transportPlannerRepository.findAll().stream().map(transportPlannerMapper::mapToDTO)

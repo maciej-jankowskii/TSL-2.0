@@ -11,6 +11,7 @@ import com.tsl.model.employee.Forwarder;
 import com.tsl.repository.employees.ForwarderRepository;
 import com.tsl.service.forwardingAndTransport.ForwarderOrderService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,18 +23,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/forwarding-orders")
+@RequiredArgsConstructor
 public class ForwardingOrderController {
 
     private final ForwarderOrderService forwarderOrderService;
     private final ForwarderRepository forwarderRepository;
     private final ObjectMapper objectMapper;
 
-    public ForwardingOrderController(ForwarderOrderService forwarderOrderService,
-                                     ForwarderRepository forwarderRepository, ObjectMapper objectMapper) {
-        this.forwarderOrderService = forwarderOrderService;
-        this.forwarderRepository = forwarderRepository;
-        this.objectMapper = objectMapper;
-    }
 
     /***
      Handling requests related to reading, adding, updating forwarding orders

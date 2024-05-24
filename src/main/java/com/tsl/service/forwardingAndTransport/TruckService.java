@@ -8,6 +8,7 @@ import com.tsl.model.truck.Truck;
 import com.tsl.repository.employees.TransportPlannerRepository;
 import com.tsl.repository.forwardingAndTransport.TruckRepository;
 import com.tsl.service.calculators.SalaryBonusCalculator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,19 +16,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TruckService {
     private final TruckRepository truckRepository;
     private final TruckMapper truckMapper;
     private final TransportPlannerRepository transportPlannerRepository;
     private final SalaryBonusCalculator salaryBonusCalculator;
 
-    public TruckService(TruckRepository truckRepository, TruckMapper truckMapper,
-                        TransportPlannerRepository transportPlannerRepository, SalaryBonusCalculator salaryBonusCalculator) {
-        this.truckRepository = truckRepository;
-        this.truckMapper = truckMapper;
-        this.transportPlannerRepository = transportPlannerRepository;
-        this.salaryBonusCalculator = salaryBonusCalculator;
-    }
 
     /**
      * Finding methods

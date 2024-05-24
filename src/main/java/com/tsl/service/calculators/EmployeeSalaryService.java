@@ -3,21 +3,18 @@ package com.tsl.service.calculators;
 import com.tsl.exceptions.EmployeeNotFoundException;
 import com.tsl.model.employee.*;
 import com.tsl.repository.employees.UserRepository;
-import com.tsl.service.calculators.SalaryBonusCalculator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeSalaryService {
 
     private final UserRepository userRepository;
     private final SalaryBonusCalculator salaryBonusCalculator;
 
-    public EmployeeSalaryService(UserRepository userRepository, SalaryBonusCalculator salaryBonusCalculator) {
-        this.userRepository = userRepository;
-        this.salaryBonusCalculator = salaryBonusCalculator;
-    }
 
     public BigDecimal calculateSalaryForEmployee(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));

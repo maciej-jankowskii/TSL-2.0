@@ -13,6 +13,7 @@ import com.tsl.model.contractor.ContactPerson;
 import com.tsl.repository.contactAndAddress.AddressRepository;
 import com.tsl.repository.forwardingAndTransport.CarrierRepository;
 import com.tsl.repository.contactAndAddress.ContactPersonRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CarrierService {
 
     private final CarrierRepository carrierRepository;
@@ -29,15 +31,6 @@ public class CarrierService {
     private final ContactPersonRepository contactPersonRepository;
     private final CarrierWithBalanceMapper carrierWithBalanceMapper;
 
-    public CarrierService(CarrierRepository carrierRepository, CarrierMapper carrierMapper,
-                          AddressRepository addressRepository, ContactPersonRepository contactPersonRepository,
-                          CarrierWithBalanceMapper carrierWithBalanceMapper) {
-        this.carrierRepository = carrierRepository;
-        this.carrierMapper = carrierMapper;
-        this.addressRepository = addressRepository;
-        this.contactPersonRepository = contactPersonRepository;
-        this.carrierWithBalanceMapper = carrierWithBalanceMapper;
-    }
 
     /**
      * Finding methods

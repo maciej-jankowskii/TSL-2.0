@@ -8,6 +8,7 @@ import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import com.tsl.dtos.forwardiing.CustomerDTO;
 import com.tsl.service.forwardingAndTransport.CustomerService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -17,15 +18,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/customers")
+@RequiredArgsConstructor
 public class CustomerController {
 
     private final CustomerService customerService;
     private final ObjectMapper objectMapper;
 
-    public CustomerController(CustomerService customerService, ObjectMapper objectMapper) {
-        this.customerService = customerService;
-        this.objectMapper = objectMapper;
-    }
 
     /***
      Handling requests related to reading, adding, updating customers

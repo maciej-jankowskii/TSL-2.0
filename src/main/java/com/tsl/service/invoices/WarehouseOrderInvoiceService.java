@@ -10,6 +10,7 @@ import com.tsl.repository.invoices.WarehouseOrderInvoiceRepository;
 import com.tsl.repository.warehouses.WarehouseOrderRepository;
 import com.tsl.service.calculators.VatCalculatorService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class WarehouseOrderInvoiceService {
     private final static long PAYMENT_DATE_FOR_INVOICE = 30;
     private final WarehouseOrderInvoiceMapper warehouseOrderInvoiceMapper;
@@ -26,15 +28,6 @@ public class WarehouseOrderInvoiceService {
     private final WarehouseOrderRepository warehouseOrderRepository;
     private final VatCalculatorService vatCalculatorService;
 
-    public WarehouseOrderInvoiceService(WarehouseOrderInvoiceMapper warehouseOrderInvoiceMapper,
-                                        WarehouseOrderInvoiceRepository warehouseOrderInvoiceRepository,
-                                        WarehouseOrderRepository warehouseOrderRepository,
-                                        VatCalculatorService vatCalculatorService) {
-        this.warehouseOrderInvoiceMapper = warehouseOrderInvoiceMapper;
-        this.warehouseOrderInvoiceRepository = warehouseOrderInvoiceRepository;
-        this.warehouseOrderRepository = warehouseOrderRepository;
-        this.vatCalculatorService = vatCalculatorService;
-    }
 
     /***
      Finding methods

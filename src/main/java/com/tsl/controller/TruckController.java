@@ -2,6 +2,7 @@ package com.tsl.controller;
 
 import com.tsl.dtos.transport.TruckDTO;
 import com.tsl.service.forwardingAndTransport.TruckService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,13 +13,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/trucks")
+@RequiredArgsConstructor
 public class TruckController {
 
     private final TruckService truckService;
 
-    public TruckController(TruckService truckService) {
-        this.truckService = truckService;
-    }
 
     /***
      Handling requests related to reading trucks

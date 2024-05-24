@@ -12,6 +12,7 @@ import com.tsl.service.warehouses.GoodsService;
 import com.tsl.service.warehouses.WarehouseOrderService;
 import com.tsl.service.warehouses.WarehouseService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/warehouses")
+@RequiredArgsConstructor
 public class WarehouseController {
 
     private final WarehouseService warehouseService;
@@ -28,13 +30,6 @@ public class WarehouseController {
     private final WarehouseOrderService warehouseOrderService;
     private final ObjectMapper objectMapper;
 
-    public WarehouseController(WarehouseService warehouseService, GoodsService goodsService,
-                               WarehouseOrderService warehouseOrderService, ObjectMapper objectMapper) {
-        this.warehouseService = warehouseService;
-        this.goodsService = goodsService;
-        this.warehouseOrderService = warehouseOrderService;
-        this.objectMapper = objectMapper;
-    }
 
     /***
      Handling requests related to Warehouse Entities

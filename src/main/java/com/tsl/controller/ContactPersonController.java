@@ -3,6 +3,7 @@ package com.tsl.controller;
 import com.tsl.dtos.addressAndContact.ContactPersonDTO;
 import com.tsl.service.contactAndAddress.ContactPersonService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -12,12 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/contact-person")
+@RequiredArgsConstructor
 public class ContactPersonController {
     private final ContactPersonService contactPersonService;
 
-    public ContactPersonController(ContactPersonService contactPersonService) {
-        this.contactPersonService = contactPersonService;
-    }
 
     /***
      Handling requests related to reading and adding contact persons

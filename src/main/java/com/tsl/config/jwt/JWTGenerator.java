@@ -25,14 +25,13 @@ public class JWTGenerator {
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
 
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(userEmail)
                 .claim("roles", roles)
                 .setIssuedAt(new Date())
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.JWT_SECRET)
                 .compact();
-        return token;
     }
 
     public String getUserEmailFromJWT(String token) {

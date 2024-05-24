@@ -10,6 +10,7 @@ import com.tsl.repository.forwardingAndTransport.CargoRepository;
 import com.tsl.repository.invoices.CustomerInvoiceRepository;
 import com.tsl.repository.forwardingAndTransport.CustomerRepository;
 import com.tsl.service.calculators.VatCalculatorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerInvoiceService {
 
     private final CargoRepository cargoRepository;
@@ -27,15 +29,6 @@ public class CustomerInvoiceService {
     private final CustomerInvoiceMapper customerInvoiceMapper;
     private final VatCalculatorService vatCalculatorService;
 
-    public CustomerInvoiceService(CargoRepository cargoRepository, CustomerRepository customerRepository,
-                                  CustomerInvoiceRepository customerInvoiceRepository,
-                                  CustomerInvoiceMapper customerInvoiceMapper, VatCalculatorService vatCalculatorService) {
-        this.cargoRepository = cargoRepository;
-        this.customerRepository = customerRepository;
-        this.customerInvoiceRepository = customerInvoiceRepository;
-        this.customerInvoiceMapper = customerInvoiceMapper;
-        this.vatCalculatorService = vatCalculatorService;
-    }
 
     /***
      Finding methods

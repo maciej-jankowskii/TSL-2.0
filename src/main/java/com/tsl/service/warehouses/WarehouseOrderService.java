@@ -10,6 +10,7 @@ import com.tsl.model.warehouse.order.WarehouseOrder;
 import com.tsl.repository.warehouses.WarehouseOrderRepository;
 import com.tsl.repository.warehouses.WarehouseRepository;
 import com.tsl.service.calculators.StorageCostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class WarehouseOrderService {
 
     private final WarehouseOrderRepository warehouseOrderRepository;
@@ -25,14 +27,6 @@ public class WarehouseOrderService {
     private final WarehouseRepository warehouseRepository;
     private final StorageCostService storageCostService;
 
-    public WarehouseOrderService(WarehouseOrderRepository warehouseOrderRepository,
-                                 WarehouseOrderMapper warehouseOrderMapper, WarehouseRepository warehouseRepository,
-                                 StorageCostService storageCostService) {
-        this.warehouseOrderRepository = warehouseOrderRepository;
-        this.warehouseOrderMapper = warehouseOrderMapper;
-        this.warehouseRepository = warehouseRepository;
-        this.storageCostService = storageCostService;
-    }
 
     /**
      * Finding methods

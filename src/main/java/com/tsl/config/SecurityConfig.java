@@ -2,6 +2,7 @@ package com.tsl.config;
 
 import com.tsl.config.jwt.JWTAuthEntryPoint;
 import com.tsl.config.jwt.JWTAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,12 +17,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
     private final JWTAuthEntryPoint authEntryPoint;
 
-    public SecurityConfig(JWTAuthEntryPoint authEntryPoint) {
-        this.authEntryPoint = authEntryPoint;
-    }
 
 
     @Bean

@@ -10,6 +10,7 @@ import com.tsl.repository.forwardingAndTransport.CargoRepository;
 import com.tsl.repository.forwardingAndTransport.CustomerRepository;
 import com.tsl.repository.employees.UserRepository;
 import com.tsl.service.calculators.VatCalculatorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CargoService {
     private final CargoRepository cargoRepository;
     private final CargoMapper cargoMapper;
@@ -29,15 +31,6 @@ public class CargoService {
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
 
-    public CargoService(CargoRepository cargoRepository, CargoMapper cargoMapper,
-                        VatCalculatorService vatCalculatorService, CustomerRepository customerRepository,
-                        UserRepository userRepository) {
-        this.cargoRepository = cargoRepository;
-        this.cargoMapper = cargoMapper;
-        this.vatCalculatorService = vatCalculatorService;
-        this.customerRepository = customerRepository;
-        this.userRepository = userRepository;
-    }
 
     /**
      * Finding methods

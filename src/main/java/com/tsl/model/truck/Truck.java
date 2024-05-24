@@ -4,9 +4,7 @@ import com.tsl.enums.TypeOfTruck;
 import com.tsl.model.employee.Driver;
 import com.tsl.model.employee.TransportPlanner;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

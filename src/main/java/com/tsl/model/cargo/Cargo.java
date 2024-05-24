@@ -4,9 +4,7 @@ import com.tsl.enums.Currency;
 import com.tsl.model.contractor.Customer;
 import com.tsl.model.employee.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

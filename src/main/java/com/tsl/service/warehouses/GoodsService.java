@@ -5,6 +5,7 @@ import com.tsl.exceptions.*;
 import com.tsl.mapper.GoodsMapper;
 import com.tsl.model.warehouse.goods.Goods;
 import com.tsl.repository.warehouses.GoodsRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,15 +13,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class GoodsService {
 
     private final GoodsRepository goodsRepository;
     private final GoodsMapper goodsMapper;
 
-    public GoodsService(GoodsRepository goodsRepository, GoodsMapper goodsMapper) {
-        this.goodsRepository = goodsRepository;
-        this.goodsMapper = goodsMapper;
-    }
 
     /**
      * Finding methods

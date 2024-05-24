@@ -3,9 +3,7 @@ package com.tsl.model.invoice;
 import com.tsl.model.cargo.Cargo;
 import com.tsl.model.contractor.Customer;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter

@@ -11,6 +11,7 @@ import com.tsl.model.employee.TransportPlanner;
 import com.tsl.repository.employees.TransportPlannerRepository;
 import com.tsl.service.forwardingAndTransport.TransportOrderService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,17 +23,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/transport-orders")
+@RequiredArgsConstructor
 public class TransportOrderController {
     private final TransportOrderService transportOrderService;
     private final TransportPlannerRepository transportPlannerRepository;
     private final ObjectMapper objectMapper;
-
-    public TransportOrderController(TransportOrderService transportOrderService,
-                                    TransportPlannerRepository transportPlannerRepository, ObjectMapper objectMapper) {
-        this.transportOrderService = transportOrderService;
-        this.transportPlannerRepository = transportPlannerRepository;
-        this.objectMapper = objectMapper;
-    }
 
     /***
      Handling requests related to reading, adding, updating transport orders

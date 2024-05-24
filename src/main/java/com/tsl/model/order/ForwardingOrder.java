@@ -4,9 +4,7 @@ import com.tsl.enums.TypeOfTruck;
 import com.tsl.model.contractor.Carrier;
 import com.tsl.model.employee.Forwarder;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 

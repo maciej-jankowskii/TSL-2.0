@@ -14,6 +14,7 @@ import com.tsl.model.truck.Truck;
 import com.tsl.repository.contactAndAddress.AddressRepository;
 import com.tsl.repository.employees.DriverRepository;
 import com.tsl.repository.forwardingAndTransport.TruckRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class DriverService {
 
     private final DriverRepository driverRepository;
@@ -29,15 +31,6 @@ public class DriverService {
     private final DetailedDriverMapper detailedDriverMapper;
     private final AddressRepository addressRepository;
 
-    public DriverService(DriverRepository driverRepository, TruckRepository truckRepository,
-                         DriverMapper driverMapper, DetailedDriverMapper detailedDriverMapper,
-                         AddressRepository addressRepository) {
-        this.driverRepository = driverRepository;
-        this.truckRepository = truckRepository;
-        this.driverMapper = driverMapper;
-        this.detailedDriverMapper = detailedDriverMapper;
-        this.addressRepository = addressRepository;
-    }
 
     /**
      * Finding methods

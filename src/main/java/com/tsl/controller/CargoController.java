@@ -8,6 +8,7 @@ import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import com.tsl.dtos.forwardiing.CargoDTO;
 import com.tsl.service.forwardingAndTransport.CargoService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -17,15 +18,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cargos")
+@RequiredArgsConstructor
 public class CargoController {
 
     private final CargoService cargoService;
     private final ObjectMapper objectMapper;
 
-    public CargoController(CargoService cargoService, ObjectMapper objectMapper) {
-        this.cargoService = cargoService;
-        this.objectMapper = objectMapper;
-    }
 
     /***
      Handling requests related to reading, adding, updating, deleting customers

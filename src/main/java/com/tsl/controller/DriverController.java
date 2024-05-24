@@ -2,6 +2,7 @@ package com.tsl.controller;
 
 import com.tsl.dtos.employees.DriverDTO;
 import com.tsl.service.employees.DriverService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,12 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/drivers")
+@RequiredArgsConstructor
 public class DriverController {
     private final DriverService driverService;
 
-    public DriverController(DriverService driverService) {
-        this.driverService = driverService;
-    }
 
     /***
      Handling requests related to reading drivers

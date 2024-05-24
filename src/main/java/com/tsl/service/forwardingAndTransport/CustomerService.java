@@ -14,6 +14,7 @@ import com.tsl.model.contractor.Customer;
 import com.tsl.repository.contactAndAddress.AddressRepository;
 import com.tsl.repository.contactAndAddress.ContactPersonRepository;
 import com.tsl.repository.forwardingAndTransport.CustomerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
@@ -30,15 +32,6 @@ public class CustomerService {
     private final ContactPersonRepository contactPersonRepository;
     private final CustomerWithBalanceMapper customerWithBalanceMapper;
 
-    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper,
-                           AddressRepository addressRepository, ContactPersonRepository contactPersonRepository,
-                           CustomerWithBalanceMapper customerWithBalanceMapper) {
-        this.customerRepository = customerRepository;
-        this.customerMapper = customerMapper;
-        this.addressRepository = addressRepository;
-        this.contactPersonRepository = contactPersonRepository;
-        this.customerWithBalanceMapper = customerWithBalanceMapper;
-    }
 
     /**
      * Finding methods

@@ -9,23 +9,19 @@ import com.tsl.model.warehouse.order.WarehouseOrder;
 import com.tsl.repository.forwardingAndTransport.CustomerRepository;
 import com.tsl.repository.warehouses.GoodsRepository;
 import com.tsl.repository.warehouses.WarehouseRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class WarehouseOrderMapper {
 
     private final WarehouseRepository warehouseRepository;
     private final CustomerRepository customerRepository;
     private final GoodsRepository goodsRepository;
-
-    public WarehouseOrderMapper(WarehouseRepository warehouseRepository, CustomerRepository customerRepository, GoodsRepository goodsRepository) {
-        this.warehouseRepository = warehouseRepository;
-        this.customerRepository = customerRepository;
-        this.goodsRepository = goodsRepository;
-    }
 
     public WarehouseOrder mapToEntity(WarehouseOrderDTO warehouseOrderDTO){
         if (warehouseOrderDTO == null){

@@ -3,6 +3,7 @@ package com.tsl.controller;
 import com.tsl.dtos.addressAndContact.AddressDTO;
 import com.tsl.service.contactAndAddress.AddressService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -12,12 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/addresses")
+@RequiredArgsConstructor
 public class AddressController {
     private final AddressService addressService;
 
-    public AddressController(AddressService addressService) {
-        this.addressService = addressService;
-    }
 
     /***
      Handling requests related to reading and creating address

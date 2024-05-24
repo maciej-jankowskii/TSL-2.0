@@ -4,16 +4,12 @@ import com.tsl.enums.FormOfEmployment;
 import com.tsl.model.role.EmployeeRole;
 import com.tsl.model.address.Address;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 @Entity
 @Getter
 @Setter

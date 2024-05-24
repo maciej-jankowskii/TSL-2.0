@@ -16,6 +16,7 @@ import com.tsl.service.forwardingAndTransport.CustomerService;
 import com.tsl.service.forwardingAndTransport.TruckService;
 import com.tsl.service.warehouses.WarehouseService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class AdminController {
 
     private final ForwarderService forwarderService;
@@ -40,22 +42,6 @@ public class AdminController {
     private final CustomerService customerService;
     private final CarrierService carrierService;
 
-    public AdminController(ForwarderService forwarderService, TransportPlannerService transportPlannerService,
-                           AccountantService accountantService, DriverService driverService,
-                           WarehouseWorkerService warehouseWorkerService, TruckService truckService,
-                           ObjectMapper objectMapper, WarehouseService warehouseService, CustomerService customerService,
-                           CarrierService carrierService) {
-        this.forwarderService = forwarderService;
-        this.transportPlannerService = transportPlannerService;
-        this.accountantService = accountantService;
-        this.driverService = driverService;
-        this.warehouseWorkerService = warehouseWorkerService;
-        this.truckService = truckService;
-        this.objectMapper = objectMapper;
-        this.warehouseService = warehouseService;
-        this.customerService = customerService;
-        this.carrierService = carrierService;
-    }
 
     /***
      Handling requests related to find, register and edit new Employees. Add new Trucks and assign Driver to Truck

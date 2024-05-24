@@ -12,6 +12,7 @@ import com.tsl.repository.employees.AccountantRepository;
 import com.tsl.repository.contactAndAddress.AddressRepository;
 import com.tsl.repository.employees.EmployeeRoleRepository;
 import com.tsl.repository.employees.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AccountantService {
     private final AccountantMapper accountantMapper;
     private final AccountantRepository accountantRepository;
@@ -30,16 +32,6 @@ public class AccountantService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
 
-    public AccountantService(AccountantMapper accountantMapper, AccountantRepository accountantRepository,
-                             PasswordEncoder passwordEncoder, EmployeeRoleRepository employeeRoleRepository,
-                             UserRepository userRepository, AddressRepository addressRepository) {
-        this.accountantMapper = accountantMapper;
-        this.accountantRepository = accountantRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.employeeRoleRepository = employeeRoleRepository;
-        this.userRepository = userRepository;
-        this.addressRepository = addressRepository;
-    }
 
     public List<AccountantDTO> findAllAccountants() {
         return accountantRepository.findAll().stream().map(accountantMapper::mapToDTO).collect(Collectors.toList());

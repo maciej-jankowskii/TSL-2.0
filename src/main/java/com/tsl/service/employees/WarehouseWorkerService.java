@@ -11,6 +11,7 @@ import com.tsl.model.warehouse.Warehouse;
 import com.tsl.repository.contactAndAddress.AddressRepository;
 import com.tsl.repository.warehouses.WarehouseRepository;
 import com.tsl.repository.employees.WarehouseWorkerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,20 +19,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class WarehouseWorkerService {
     private final WarehouseWorkerRepository warehouseWorkerRepository;
     private final AddressRepository addressRepository;
     private final WarehouseRepository warehouseRepository;
     private final WarehouseWorkerMapper warehouseWorkerMapper;
 
-    public WarehouseWorkerService(WarehouseWorkerRepository warehouseWorkerRepository,
-                                  AddressRepository addressRepository, WarehouseRepository warehouseRepository,
-                                  WarehouseWorkerMapper warehouseWorkerMapper) {
-        this.warehouseWorkerRepository = warehouseWorkerRepository;
-        this.addressRepository = addressRepository;
-        this.warehouseRepository = warehouseRepository;
-        this.warehouseWorkerMapper = warehouseWorkerMapper;
-    }
 
     public List<WarehouseWorkerDTO> findAllWarehouseWorkers() {
         return warehouseWorkerRepository.findAll().stream().map(warehouseWorkerMapper::mapToDTO)

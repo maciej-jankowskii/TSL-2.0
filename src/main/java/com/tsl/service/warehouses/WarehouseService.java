@@ -10,6 +10,7 @@ import com.tsl.model.warehouse.Warehouse;
 import com.tsl.model.warehouse.order.WarehouseOrder;
 import com.tsl.repository.contactAndAddress.AddressRepository;
 import com.tsl.repository.warehouses.WarehouseRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,18 +19,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class WarehouseService {
 
     private final WarehouseRepository warehouseRepository;
     private final WarehouseMapper warehouseMapper;
     private final AddressRepository addressRepository;
 
-    public WarehouseService(WarehouseRepository warehouseRepository, WarehouseMapper warehouseMapper,
-                            AddressRepository addressRepository) {
-        this.warehouseRepository = warehouseRepository;
-        this.warehouseMapper = warehouseMapper;
-        this.addressRepository = addressRepository;
-    }
 
     /**
      * Finding methods

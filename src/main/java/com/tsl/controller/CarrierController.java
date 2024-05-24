@@ -8,6 +8,7 @@ import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import com.tsl.dtos.forwardiing.CarrierDTO;
 import com.tsl.service.forwardingAndTransport.CarrierService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -17,15 +18,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/carriers")
+@RequiredArgsConstructor
 public class CarrierController {
 
     private final CarrierService carrierService;
     private final ObjectMapper objectMapper;
 
-    public CarrierController(CarrierService carrierService, ObjectMapper objectMapper) {
-        this.carrierService = carrierService;
-        this.objectMapper = objectMapper;
-    }
 
     /***
      Handling requests related to reading, adding, updating carriers

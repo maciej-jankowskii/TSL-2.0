@@ -13,6 +13,7 @@ import com.tsl.repository.forwardingAndTransport.CargoRepository;
 import com.tsl.repository.forwardingAndTransport.TransportOrderRepository;
 import com.tsl.repository.employees.TransportPlannerRepository;
 import com.tsl.repository.forwardingAndTransport.TruckRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TransportOrderService {
     private final TransportOrderRepository transportOrderRepository;
     private final TransportOrderMapper transportOrderMapper;
@@ -30,15 +32,6 @@ public class TransportOrderService {
     private final TransportPlannerRepository transportPlannerRepository;
     private final TruckRepository truckRepository;
 
-    public TransportOrderService(TransportOrderRepository transportOrderRepository,
-                                 TransportOrderMapper transportOrderMapper, CargoRepository cargoRepository,
-                                 TransportPlannerRepository transportPlannerRepository, TruckRepository truckRepository) {
-        this.transportOrderRepository = transportOrderRepository;
-        this.transportOrderMapper = transportOrderMapper;
-        this.cargoRepository = cargoRepository;
-        this.transportPlannerRepository = transportPlannerRepository;
-        this.truckRepository = truckRepository;
-    }
 
     /**
      * Finding methods

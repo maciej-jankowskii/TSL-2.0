@@ -10,6 +10,7 @@ import com.tsl.repository.contactAndAddress.AddressRepository;
 import com.tsl.repository.employees.EmployeeRoleRepository;
 import com.tsl.repository.employees.ForwarderRepository;
 import com.tsl.repository.employees.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ForwarderService {
 
     private final ForwarderRepository forwarderRepository;
@@ -30,16 +32,6 @@ public class ForwarderService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
 
-    public ForwarderService(ForwarderRepository forwarderRepository, ForwarderMapper forwarderMapper,
-                            PasswordEncoder passwordEncoder, EmployeeRoleRepository employeeRoleRepository,
-                            UserRepository userRepository, AddressRepository addressRepository) {
-        this.forwarderRepository = forwarderRepository;
-        this.forwarderMapper = forwarderMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.employeeRoleRepository = employeeRoleRepository;
-        this.userRepository = userRepository;
-        this.addressRepository = addressRepository;
-    }
 
     public List<ForwarderDTO> findAllForwarders() {
         return forwarderRepository.findAll().stream().map(forwarderMapper::mapToDTO).collect(Collectors.toList());

@@ -2,6 +2,7 @@ package com.tsl.service.contactAndAddress;
 
 import com.tsl.model.contact.ContactForm;
 import com.tsl.repository.contactAndAddress.ContactFromRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,14 +13,11 @@ import java.time.LocalDate;
 
 
 @Service
+@RequiredArgsConstructor
 public class ContactFormService implements EmailContactForm {
     private final JavaMailSender javaMailSender;
     private final ContactFromRepository contactFromRepository;
 
-    public ContactFormService(JavaMailSender javaMailSender, ContactFromRepository contactFromRepository) {
-        this.javaMailSender = javaMailSender;
-        this.contactFromRepository = contactFromRepository;
-    }
 
     @Override
     @Transactional

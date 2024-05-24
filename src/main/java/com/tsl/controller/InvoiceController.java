@@ -12,6 +12,7 @@ import com.tsl.service.invoices.CarrierInvoiceService;
 import com.tsl.service.invoices.CustomerInvoiceService;
 import com.tsl.service.invoices.WarehouseOrderInvoiceService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -21,19 +22,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/invoices")
+@RequiredArgsConstructor
 public class InvoiceController {
     private final CarrierInvoiceService carrierInvoiceService;
     private final CustomerInvoiceService customerInvoiceService;
     private final ObjectMapper objectMapper;
     private final WarehouseOrderInvoiceService warehouseOrderInvoiceService;
 
-    public InvoiceController(CarrierInvoiceService carrierInvoiceService, CustomerInvoiceService customerInvoiceService,
-                             ObjectMapper objectMapper, WarehouseOrderInvoiceService warehouseOrderInvoiceService) {
-        this.carrierInvoiceService = carrierInvoiceService;
-        this.customerInvoiceService = customerInvoiceService;
-        this.objectMapper = objectMapper;
-        this.warehouseOrderInvoiceService = warehouseOrderInvoiceService;
-    }
 
     /***
      Handling requests related to Carrier invoices

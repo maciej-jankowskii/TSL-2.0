@@ -14,6 +14,7 @@ import com.tsl.repository.forwardingAndTransport.CarrierRepository;
 import com.tsl.repository.forwardingAndTransport.ForwarderOrderRepository;
 import com.tsl.repository.employees.ForwarderRepository;
 import com.tsl.service.calculators.VatCalculatorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ForwarderOrderService {
     private final ForwarderOrderRepository forwarderOrderRepository;
     private final ForwardingOrderMapper forwardingOrderMapper;
@@ -33,17 +35,6 @@ public class ForwarderOrderService {
     private final CarrierRepository carrierRepository;
     private final VatCalculatorService vatCalculatorService;
 
-    public ForwarderOrderService(ForwarderOrderRepository forwarderOrderRepository,
-                                 ForwardingOrderMapper forwardingOrderMapper, ForwarderRepository forwarderRepository,
-                                 CargoRepository cargoRepository, CarrierRepository carrierRepository,
-                                 VatCalculatorService vatCalculatorService) {
-        this.forwarderOrderRepository = forwarderOrderRepository;
-        this.forwardingOrderMapper = forwardingOrderMapper;
-        this.forwarderRepository = forwarderRepository;
-        this.cargoRepository = cargoRepository;
-        this.carrierRepository = carrierRepository;
-        this.vatCalculatorService = vatCalculatorService;
-    }
 
     /**
      * Finding methods
