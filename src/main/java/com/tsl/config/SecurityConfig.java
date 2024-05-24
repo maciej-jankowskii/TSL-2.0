@@ -36,6 +36,17 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request -> request
                 .requestMatchers("/auth/login").permitAll()
                 .requestMatchers("/contact/**").permitAll()
+                .requestMatchers("/swagger-ui/**",
+                        "/api/v1/auth/**",
+                        "/v2/api-docs",
+                        "/v3/api-docs",
+                        "/v3/api-docs/**",
+                        "/swagger-resources",
+                        "/swagger-resources/**",
+                        "/configuration/ui",
+                        "/configuration/security",
+                        "/webjars/**",
+                        "/swagger-ui.html").permitAll()
                 .requestMatchers("/warehouses/**", "/cargos/**").hasAnyRole("ADMIN", "FORWARDER", "PLANNER")
                 .requestMatchers("/customers/**", "/carriers/**").hasAnyRole("ADMIN", "FORWARDER", "PLANNER", "ACCOUNTANT")
                 .requestMatchers("/forwarding-orders").hasAnyRole("FORWARDER", "ADMIN")

@@ -21,4 +21,6 @@ public class TransportPlanner extends User{
     @OneToMany(mappedBy = "transportPlanner", fetch = FetchType.EAGER)
     private List<TransportOrder> transportOrders;
     private Double salaryBonus;
+
+
 }
