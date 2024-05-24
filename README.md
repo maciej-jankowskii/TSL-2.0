@@ -3,7 +3,7 @@
 1. [English version](#en)
 2. [Opis](#opis)
 3. [Zmiany](#zmiany)
-4. [Instalacja](#instalacja)
+4. [Instalacja + swagger](#instalacja)
 5. [Działanie](#działanie)
 6. [Autor](#autor)
 
@@ -72,6 +72,12 @@ Można to zrobić z oficjalnej strony:
 
 ```bash
   https://www.postman.com/
+```
+
+Aplikacje można również testować z użyciem Swaggera 
+
+```bash
+ http://localhost:8080/swagger-ui/index.html
 ```
 
 
@@ -727,6 +733,12 @@ For easier application testing, I recommend downloading Postman from the officia
 
 ```bash
   https://www.postman.com/
+```
+
+You can also use Swagger
+
+```bash
+ http://localhost:8080/swagger-ui/index.html
 ```
 
 ## How it works
