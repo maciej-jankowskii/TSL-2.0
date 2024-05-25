@@ -3,7 +3,7 @@
 1. [English version](#en)
 2. [Opis](#opis)
 3. [Zmiany](#zmiany)
-4. [Instalacja + swagger](#instalacja)
+4. [Instalacja](#instalacja)
 5. [Działanie](#działanie)
 6. [Autor](#autor)
 
@@ -54,19 +54,21 @@ W najbliższym czasie chciałbym dodać przede wszystkim:
 - poprawki w testach
   
 
-<b>Na ten moment jednak kluczowe jest stworzenie interfejsu użytkownika z wykorzystaniem frameworka React, do którego dążę. </b>
-
-
-
 
 ## Instalacja
 
-W pierwszej kolejności należy sklonować repozytorium: 
+W pierwszej kolejności należy pobrać repozytorium: 
 
 ```bash
   git clone https://github.com/maciej-jankowskii/TSL-2.0
 ```
-Należy pamiętać o utworzeniu bazy danych lokalnie na swoim komputerze, i odpowiednim skonfigurowaniu pliku application.yml
+
+Przygotowany został już plik Dockerfile oraz docker-compose w związku z czym wystarczy użyć poniższej komendy aby uruchomić aplikację
+
+```bash
+  docker compose up
+```
+
 Do łatwiejszego testowania aplikacji polecam pobranie Postmana. 
 Można to zrobić z oficjalnej strony: 
 
@@ -79,6 +81,8 @@ Aplikacje można również testować z użyciem Swaggera
 ```bash
  http://localhost:8080/swagger-ui/index.html
 ```
+
+Należy jednak pamiętać że również i w tym przypadku najpierw należy dokonać logowania i w sekcji Authorize użyć wygenerowany token. 
 
 
 ## Działanie
@@ -728,7 +732,12 @@ Firstly, you need to clone the repository:
   git clone https://github.com/maciej-jankowskii/TSL-2.0
 ```
 
-Remember to create a local database on your computer and configure the application.yml file accordingly. 
+The Dockerfile and docker-compose file have already been prepared, so just use the command below to run the application
+
+```bash
+  docker compose up
+```
+
 For easier application testing, I recommend downloading Postman from the official website:
 
 ```bash
@@ -740,6 +749,8 @@ You can also use Swagger
 ```bash
  http://localhost:8080/swagger-ui/index.html
 ```
+
+However, please remember that also in this case you must first log in and use the generated token in the Authorize section.
 
 ## How it works
 
