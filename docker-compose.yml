@@ -1,0 +1,49 @@
+version: "3.9"
+services:
+  tsl:
+    image: maciejjankowskii/tsl:v1
+    container_name: tsl
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/tsl
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+      SPRING_LIQUIBASE_CHANGE-LOG: classpath:db/changelog/master.xml
+      SPRING_JPA_MAIL_HOST: smtp.gmail.com
+      SPRING_JPA_MAIL_PORT: 587
+      SPRING_JPA_MAIL_USERNAME: testtslapp@gmail.com
+      SPRING_JPA_MAIL_PASSWORD: msjt kgoc ypxq ahol
+      SPRING_JPA_MAIL_PROPERTIES_MAIL_SMTP_AUTH: true
+      SPRING_JPA_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: true
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    networks:
+      - tsl-network
+  mysql:
+    image: mysql:8.4.0
+    container_name: tsldb
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: tsl
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - tsl-network
+
+
+
+volumes:
+  mysql-data:
+networks:
+  tsl-network:
+    driver: bridge
+
+
+
+
+
+
+
